@@ -1,3 +1,3 @@
 <div id="content">
-<?php (new SignController($this->config))->actionIndex() ?>
+<?php (new CommentsController($this->config))->actionIndex() ?>
 </div>

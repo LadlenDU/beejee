@@ -1,18 +1,21 @@
 <?php
 
-#require_once(dirname(__FILE__) . '/IDatabaseOperations.php');
+#require_once(dirname(__FILE__) . '/IDatabaseComponent.php');
 
 /**
  * Class MySqliDatabaseComponent
  *
  * Работа с БД mySqli.
  */
-class MySqliDatabaseComponent implements IDatabaseOperations
+class MySqliDatabaseComponent implements DatabaseInterface
 {
     protected static $mySqlLink;
 
-    public function __construct()
+    protected $config;
+
+    public function __construct($config)
     {
+        $this->config = $config;
         $this->mysqli_prepare();
     }
 
@@ -20,7 +23,12 @@ class MySqliDatabaseComponent implements IDatabaseOperations
     {
         if (is_null(self::$mySqlLink))
         {
-            self::$mySqlLink = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+            self::$mySqlLink = mysqli_connect(
+                $this->config['database']['connection']['host'],
+                $this->config['database']['connection']['user'],
+                $this->config['database']['connection']['password'],
+                $this->config['database']['connection']['databaseName']
+            );
             if (mysqli_connect_errno())
             {
                 throw new Exception('Не установлено соединение с базой данных : ' . mysqli_error(self::$mySqlLink));

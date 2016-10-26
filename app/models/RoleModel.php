@@ -1,6 +1,6 @@
 <?php
 
-require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
+#require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
  * Class RoleModel

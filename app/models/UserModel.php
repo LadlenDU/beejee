@@ -1,7 +1,7 @@
 <?php
 
 //TODO: что-то здесь не так, но в данном случае одновременно быстрого и оптимального решения не вижу
-require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
+#require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
  * Class UserModel

@@ -38,7 +38,7 @@ class DbHelper
             #require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
             #$className = DATABASE_CLASS;
             #self::$bdClass = new $className;
-            self::$bdClass = new $className;
+            #self::$bdClass = new $className;
         }
 
         return self::$bdClass;
