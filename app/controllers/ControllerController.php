@@ -73,6 +73,6 @@ class ControllerController
      * Default action.
      *
      * @return mixed
-     *
-    abstract function actionIndex();*/
+     */
+    abstract function actionIndex();
 }

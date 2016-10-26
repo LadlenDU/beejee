@@ -52,7 +52,7 @@ class CommentsController extends ControllerController
 
         $this->render(
             //APP_DIR . 'views/comments',
-            'comments',
+            'index',
             ['comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
         );
     }
