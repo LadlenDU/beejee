@@ -4,7 +4,7 @@
 require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
- * Class UserModel
+ * Class User
  *
  * Данные по пользователю.
  */
@@ -20,7 +20,7 @@ class User
      * Название таблицы в БД.
      * @var string
      */
-    protected static $tableName = 'users';
+    protected static $tableName = 'user';
 
     /**
      * Конструктор.

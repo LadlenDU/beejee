@@ -2,16 +2,16 @@
 
 require_once(APP_DIR . 'controllers/Controller.php');
 require_once(APP_DIR . 'models/User.php');
-require_once(APP_DIR . 'models/City.php');
-require_once(APP_DIR . 'helpers/prepareJSON.php');
+require_once(APP_DIR . 'models/Comment.php');
+#require_once(APP_DIR . 'helpers/prepareJSON.php');
 
-class UserController extends Controller
+class CommentsController extends Controller
 {
     public function actionIndex()
     {
         $model = User::GetAllUsers();
         $cities = City::GetAllCities();
-        $this->render(APP_DIR . 'views/User.php', ['model' => $model->rows, 'cities' => $cities->rows]);
+        $this->render(APP_DIR . 'views/Comments.php', ['model' => $model->rows, 'cities' => $cities->rows]);
     }
 
     public function actionUpdate()

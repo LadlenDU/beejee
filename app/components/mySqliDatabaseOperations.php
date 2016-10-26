@@ -1,8 +1,13 @@
 <?php
 
-require_once(dirname(__FILE__) . '/DatabaseOperations.php');
+require_once(dirname(__FILE__) . '/IDatabaseOperations.php');
 
-class mySqliDatabaseOperations implements DatabaseOperations
+/**
+ * Class mySqliDatabaseOperations
+ *
+ * Работа с БД mySqli.
+ */
+class mySqliDatabaseOperations implements IDatabaseOperations
 {
     protected static $mySqlLink;
 
@@ -41,11 +46,7 @@ class mySqliDatabaseOperations implements DatabaseOperations
     }
 
     /**
-     * Запрос вставки.
-     *
-     * @param string $sql запрос SQL
-     * @return stdClass объект, в параметре rows будет содержать массив объектов с результатом
-     * @throws Exception
+     * @inheritdoc
      */
     public function selectQuery($sql)
     {
@@ -70,11 +71,8 @@ class mySqliDatabaseOperations implements DatabaseOperations
     }
 
     /**
-     * Запрос SQL.
-     *
-     * @param string $sql запрос SQL
-     * @return mixed успешность операции
-     * @throws Exception
+     * @inheritdoc
+     * @return bool|mysqli_result
      */
     public function query($sql)
     {
