@@ -1,7 +1,7 @@
 <?php
 
 require_once(APP_DIR . 'controllers/Controller.php');
-require_once(APP_DIR . 'models/User.php');
+#require_once(APP_DIR . 'models/User.php');
 require_once(APP_DIR . 'models/Comment.php');
 #require_once(APP_DIR . 'helpers/prepareJSON.php');
 
@@ -9,9 +9,30 @@ class CommentsController extends Controller
 {
     public function actionIndex()
     {
-        $model = User::GetAllUsers();
-        $cities = City::GetAllCities();
-        $this->render(APP_DIR . 'views/Comments.php', ['model' => $model->rows, 'cities' => $cities->rows]);
+        #$model = User::GetAllUsers();
+        #$cities = City::GetAllCities();
+        #$this->render(APP_DIR . 'views/Comments.php', ['model' => $model->rows, 'cities' => $cities->rows]);
+
+        $orderBy = (isset($_REQUEST['comments']['order']['by']) && in_array(
+                Comment::getValidOrderFields(),
+                $_REQUEST['comments']['order']['by'],
+                true
+            )) ? $_REQUEST['comments']['order']['by'] : 'created';
+
+        $orderDir = (isset($_REQUEST['comments']['order']['dir']) && DB::obj()->ifValidOrderDirection(
+                $_REQUEST['comments']['order']['dir']
+            )) ? $_REQUEST['comments']['order']['dir'] : 'DESC';
+
+        $comments = Comment::getComments($orderBy, $orderDir);
+        $orderFields = Comment::getValidOrderFields();
+        $orderLabels = Comment::getLabels();
+        $orderTypes = [];
+        foreach ($orderFields as $ot)
+        {
+            $orderTypes[] = ['id' => $ot, 'name' => $orderLabels[$ot]];
+        }
+
+        $this->render(APP_DIR . 'views/Comments.php', ['comments' => $comments->rows, 'orderTypes' => $orderTypes]);
     }
 
     public function actionUpdate()

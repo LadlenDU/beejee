@@ -139,24 +139,30 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
     });
 </script>
 
-<div id="user_list">
-    <div id="header">
-        <div class="row">
-            <div class="id">ID</div><!--
-            --><div class="name">Имя</div><!--
-            --><div class="age">Возраст</div><!--
-            --><div class="city_id">Город</div><!--
-            --><div class="delete">Удалить</div>
-        </div>
-    </div>
+<div id="order_by">
+    Сортировать по:
+    <select>
+        <?php foreach ($orderTypes as $o): ?>
+        <option name="<?php echo $o->id ?>"><?php echo htmlspecialchars($o->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<div id="comment_list">
     <div id="list">
-        <?php if (!count($model)): ?>
-            <div id="no_users">НЕТ ПОЛЬЗОВАТЕЛЕЙ</div>
+        <?php if (!count($comments)): ?>
+            <div id="no_comments">НЕТ СООБЩЕНИЙ</div>
         <?php endif ?>
-        <?php foreach ($model as $user): ?>
-            <div class="row" data-id="<?php echo $user->id ?>">
-                <div class="id"><?php echo htmlspecialchars($user->id, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
-              --><input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--
+        <?php foreach ($comments as $item): ?>
+            <?php echo $this->renderPhpFile('_comment.php'); ?>
+            <div class="row" data-id="<?php echo $item->id ?>">
+                <div class="image">
+                    <img width="<?php echo $item->image['width'] ?>" height="<?php echo $item->image['height'] ?>" src="<?php echo $item->image['src'] ?>"/>
+                </div>
+                <div class="content">
+                    <>
+                </div>
+
+                <input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--
               --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
               --><input type="text" value="<?php echo $user->age ?>" class="age" maxlength="3" style="display:none"/><!--
               --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--

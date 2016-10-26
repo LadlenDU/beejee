@@ -15,18 +15,8 @@ class Comment
      */
     public static $tableName = 'comment';
 
-    static public function getComments()
+    static public function getComments($orderBy = 'created', $orderDir = 'DESC')
     {
-        $orderBy = (isset($_REQUEST['comments']['order']['by']) && in_array(
-                self::getValidOrderFields(),
-                $_REQUEST['comments']['order']['by'],
-                true
-            )) ? $_REQUEST['comments']['order']['by'] : 'created';
-
-        $orderDir = (isset($_REQUEST['comments']['order']['dir']) && DB::obj()->ifValidOrderDirection(
-                $_REQUEST['comments']['order']['dir']
-            )) ? $_REQUEST['comments']['order']['dir'] : 'DESC';
-
         $res = DB::obj()->selectQuery(
             'SELECT * FROM ' . self::$tableName . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
         );
@@ -38,8 +28,17 @@ class Comment
      *
      * @return array
      */
-    static private function getValidOrderFields()
+    static public function getValidOrderFields()
     {
-        return array('created', 'name', 'email');
+        return ['created', 'name', 'email'];
+    }
+
+    static public function getLabels()
+    {
+        return [
+            'created' => _('Дата создания'),
+            'name' => _('Имя'),
+            'email' => _('Email'),
+        ];
     }
 }

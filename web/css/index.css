@@ -16,14 +16,14 @@ html, body {
     min-width: 300px;
 }
 
-#header {
+/*#header {
     margin-bottom: 15px;
     border-bottom: 1px solid black;
 }
 
 #list .id, #header .id, #list .age, #header .age, #list .delete, #header .delete {
     text-align: center;
-}
+}*/
 
 .id {
     width: 9%;
@@ -58,7 +58,7 @@ html, body {
     margin-top: 15px;
 }
 
-#create_user, #no_users {
+#create_user, #no_comments {
     text-align: center;
     width: 100%;
 }
