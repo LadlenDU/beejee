@@ -25,4 +25,12 @@ interface IDatabaseOperations
     public function query($sql);
 
     public function escape_string($string);
+
+    /**
+     * Верно ли значение направления для выражения сортировки.
+     *
+     * @param string $order название направления сортировки
+     * @return bool
+     */
+    public function ifValidOrderDirection($order);
 }

@@ -94,4 +94,12 @@ class mySqliDatabaseOperations implements IDatabaseOperations
         return $ret;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function ifValidOrderDirection($order)
+    {
+        return in_array(strtoupper($order), array('DESC', 'ASC'), true);
+    }
+
 }
