@@ -1,6 +1,7 @@
 <?php
 
 require_once(APP_DIR . 'components/DB.php');
+require_once(APP_DIR . 'models/Image.php');
 
 /**
  * Class Comment
@@ -18,8 +19,11 @@ class Comment
     static public function getComments($orderBy = 'created', $orderDir = 'DESC')
     {
         $res = DB::obj()->selectQuery(
-            'SELECT * FROM ' . self::$tableName . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
+            'SELECT * FROM ' . self::$tableName . ' AS com '
+            . ' LEFT JOIN ' . Image::$tableName . ' AS img ON com.image_id=img.id '
+            . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
         );
+
         return $res;
     }
 

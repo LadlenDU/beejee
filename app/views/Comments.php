@@ -141,9 +141,9 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
 
 <div id="order_by">
     Сортировать по:
-    <select>
+    <select name="order_by">
         <?php foreach ($orderTypes as $o): ?>
-        <option name="<?php echo $o->id ?>"><?php echo htmlspecialchars($o->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>></option>
+        <option value="<?php echo $o['id'] ?>"><?php echo htmlspecialchars($o['name'], ENT_QUOTES, DOCUMENT_ENCODING) ?></option>
         <?php endforeach; ?>
     </select>
 </div>
@@ -153,52 +153,20 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
             <div id="no_comments">НЕТ СООБЩЕНИЙ</div>
         <?php endif ?>
         <?php foreach ($comments as $item): ?>
-            <?php echo $this->renderPhpFile('_comment.php'); ?>
-            <div class="row" data-id="<?php echo $item->id ?>">
-                <div class="image">
-                    <img width="<?php echo $item->image['width'] ?>" height="<?php echo $item->image['height'] ?>" src="<?php echo $item->image['src'] ?>"/>
-                </div>
-                <div class="content">
-                    <>
-                </div>
-
-                <input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--
-              --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
-              --><input type="text" value="<?php echo $user->age ?>" class="age" maxlength="3" style="display:none"/><!--
-              --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
-              --><div class="city_id" title="<?php echo CLICK_TO_MOD ?>"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
-              --><select style="display:none" class="city_id">
-                    <option value="0" <?php echo ($user->city_id == 0) ? 'selected="selected"' : ''; ?>>Город не выбран</option>
-                    <?php foreach($cities as $city): ?>
-                        <option value="<?php echo $city->id ?>" <?php
-                        if($user->city_id == $city->id)
-                        {
-                            echo 'selected="selected"';
-                        }
-                        ?>><?php echo htmlspecialchars($city->name, ENT_QUOTES, DOCUMENT_ENCODING) ?></option>
-                    <?php endforeach ?>
-                </select><!--
-                <input type="text" value="<?php echo $user->city_id ?>" class="city" disabled="disabled"/>
-              --><input type="button" value="Удалить" class="delete"/>
-            </div>
+            <?php echo $this->renderPhpFile(dirname(__FILE__) . '/_comment.php', ['item' => $item]); ?>
         <?php endforeach ?>
     </div>
-    <div id="new_user" style="display: none;">
-        <div class="row caption">Введите данные нового пользователя:</div>
+    <div id="new_comment">
+        <div class="row caption">Создайте новый комментарий:</div>
         <div class="row">
-            <div class="id">&nbsp;</div>
-            <input type="text" class="name"/>
-            <input type="number" min="0" max="255" class="age" />
-            <select class="city_id">
-                <option value="0" selected="selected">Город не выбран</option>
-                <?php foreach($cities as $city): ?>
-                    <option value="<?php echo $city->id ?>"><?php echo htmlspecialchars($city->name, ENT_QUOTES, DOCUMENT_ENCODING) ?></option>
-                <?php endforeach ?>
-            </select>
-            <input type="button" class="delete" value="Создать"/>
+            Ваше имя: <input type="text" name="name" maxlength="<?php echo $fieldMaxLength['name'] ?>" />
+            Ваш email: <input type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>" />
+            Текст сообщения:
+            <textarea name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>"></textarea>
+            <input type="button" id="comment_preview" value="Предварительный просмотр"/>
+            <input type="button" id="comment_sent" value="Отправить"/>
         </div>
     </div>
-    <button id="create_user">СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ</button>
 </div>
 
 

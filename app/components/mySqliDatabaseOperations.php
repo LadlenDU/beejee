@@ -102,4 +102,19 @@ class mySqliDatabaseOperations implements IDatabaseOperations
         return in_array(strtoupper($order), array('DESC', 'ASC'), true);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getCharacterMaximumLength($table, $column)
+    {
+        $sql = 'SELECT character_maximum_length FROM information_schema.columns'
+            . ' WHERE  table_schema = Database() '
+            . ' AND '
+            . ' table_name = ' . $this->escape_string($table)
+            . ' AND '
+            . ' column_name = ' . $this->escape_string($column);
+
+        return $this->selectQuery($sql)->rows[0]->character_maximum_length;
+    }
+
 }

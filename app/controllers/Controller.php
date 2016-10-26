@@ -6,7 +6,7 @@ class Controller
     {
         $actionName = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'index';
         $functionName = 'action' . ucfirst($actionName);
-        if(method_exists($this, $functionName))
+        if (method_exists($this, $functionName))
         {
             $this->$functionName();
         }

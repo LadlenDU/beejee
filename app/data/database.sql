@@ -13,20 +13,22 @@ CREATE TABLE image
 (
   `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `type`    VARCHAR(5)       NOT NULL,
+  `width`   INT(11)          NOT NULL,
+  `height`  INT(11)          NOT NULL,
   `content` MEDIUMBLOB,
   PRIMARY KEY (`id`)
 );
 
 CREATE TABLE comment
 (
-  `id`       INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(150)     NOT NULL DEFAULT 'Anonimous',
+  `id`       INT(11) UNSIGNED                           NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(150)                               NOT NULL DEFAULT 'Anonimous',
   `email`    VARCHAR(255),
   `text`     TEXT,
-  `image_id` INT(11) UNSIGNED NULL,
-  `status`   ENUM ('UNDEFINED', 'REJECTED', 'APPROVED'),
-  `created`  TIMESTAMP        NOT NULL,
-  `modified` TIMESTAMP        NULL,
+  `image_id` INT(11) UNSIGNED                           NULL,
+  `status`   ENUM ('UNDEFINED', 'REJECTED', 'APPROVED') NOT NULL DEFAULT 'UNDEFINED',
+  `created`  TIMESTAMP                                  NOT NULL,
+  `modified` TIMESTAMP                                  NULL,
   FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
     ON DELETE SET NULL,
   PRIMARY KEY (`id`)

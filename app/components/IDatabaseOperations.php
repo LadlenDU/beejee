@@ -33,4 +33,13 @@ interface IDatabaseOperations
      * @return bool
      */
     public function ifValidOrderDirection($order);
+
+    /**
+     * Получает максимальную длину колонки в таблице.
+     *
+     * @param string $table название таблицы
+     * @param string $column название колонки
+     * @return int
+     */
+    public function getCharacterMaximumLength($table, $column);
 }

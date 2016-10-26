@@ -3,6 +3,7 @@
 require_once(APP_DIR . 'controllers/Controller.php');
 #require_once(APP_DIR . 'models/User.php');
 require_once(APP_DIR . 'models/Comment.php');
+
 #require_once(APP_DIR . 'helpers/prepareJSON.php');
 
 class CommentsController extends Controller
@@ -32,7 +33,15 @@ class CommentsController extends Controller
             $orderTypes[] = ['id' => $ot, 'name' => $orderLabels[$ot]];
         }
 
-        $this->render(APP_DIR . 'views/Comments.php', ['comments' => $comments->rows, 'orderTypes' => $orderTypes]);
+        $fieldMaxLength = [];
+        $fieldMaxLength['name'] = DB::obj()->getCharacterMaximumLength(Comment::$tableName, 'username');
+        $fieldMaxLength['email'] = DB::obj()->getCharacterMaximumLength(Comment::$tableName, 'email');
+        $fieldMaxLength['text'] = DB::obj()->getCharacterMaximumLength(Comment::$tableName, 'text');
+
+        $this->render(
+            APP_DIR . 'views/Comments.php',
+            ['comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
+        );
     }
 
     public function actionUpdate()

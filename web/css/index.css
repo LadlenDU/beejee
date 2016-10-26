@@ -63,11 +63,11 @@ html, body {
     width: 100%;
 }
 
-#new_user .row {
+#new_comment .row {
     color: red;
 }
 
-#new_user .caption {
+#new_comment .caption {
     text-align: center;
 }
 
