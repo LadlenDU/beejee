@@ -30,7 +30,7 @@ catch (Exception $e)
 {
     if ($config['debug'])
     {
-        $msg = sprintf(_('Error occured. Code: %s. Message: %s. File: %s. Line: %s. Trace: %s'),
+        $msg = sprintf(_("Error occured.\nCode: %s.\nMessage: %s.\nFile: %s.\nLine: %s.\nTrace: %s\n"),
             $e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString());
 
         (new LoggerComponent($config))->log($msg);
@@ -40,13 +40,16 @@ catch (Exception $e)
         $msg = _('Server error');
     }
 
-    if (empty($_REQUEST['ajax']))
+    #if (empty($_REQUEST['ajax']))
+    if (CommonHelper::ifAjax())
     {
-        die($msg);
+        header('Content-Type: application/json');
+        die(json_encode(['success' => false, 'message' => $msg]));
     }
     else
     {
-        die(json_encode(['success' => false, 'message' => $msg]));
+        header('Content-Type: text/plain; charset=' . $config['globalEncoding']);
+        die($msg);
     }
 }
 

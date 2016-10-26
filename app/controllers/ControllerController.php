@@ -1,6 +1,6 @@
 <?php
 
-class ControllerController
+abstract class ControllerController
 {
     /**
      * Default page title.
@@ -45,7 +45,7 @@ class ControllerController
 
     protected function getViewsPath()
     {
-        $className = get_class($this);
+        $className = strtolower(get_class($this));
         $folderName = substr($className, 0, -strlen('Controller'));
         return APP_DIR . "views/$folderName/";
     }

@@ -11,4 +11,10 @@ class SiteController extends ControllerController
     {
         $this->render('index');
     }
+
+    public function action404()
+    {
+        header('HTTP/1.0 404 Not Found');
+        $this->render('404');
+    }
 }
