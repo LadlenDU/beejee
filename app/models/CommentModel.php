@@ -20,7 +20,7 @@ class CommentModel
     {
         $res = DbHelper::obj()->selectQuery(
             'SELECT * FROM ' . self::$tableName . ' AS com '
-            . ' LEFT JOIN ' . Image::$tableName . ' AS img ON com.image_id=img.id '
+            . ' LEFT JOIN ' . ImageModel::$tableName . ' AS img ON com.image_id=img.id '
             . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
         );
 

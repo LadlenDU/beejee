@@ -33,7 +33,7 @@ class MySqliDatabaseComponent implements DatabaseInterface
             {
                 throw new Exception('Не установлено соединение с базой данных : ' . mysqli_error(self::$mySqlLink));
             }
-            $dbSelected = mysqli_select_db(self::$mySqlLink, MYSQL_DB);
+            $dbSelected = mysqli_select_db(self::$mySqlLink, $this->config['database']['connection']['databaseName']);
             if (!$dbSelected)
             {
                 throw new Exception('Не могу выбрать базу данных : ' . mysqli_error(self::$mySqlLink));

@@ -20,14 +20,11 @@ class DbHelper
     {
         if (!self::$bdClass)
         {
-            #require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
-            #$className = DATABASE_CLASS;
-            #self::$bdClass = new $className;
             assert(isset(self::$config));
             assert(isset(self::$config['database']['type']));
 
             $className = self::$config['database']['type'] . 'DatabaseComponent';
-            self::$bdClass = new $className;
+            self::$bdClass = new $className(self::$config);
         }
 
         return self::$bdClass;

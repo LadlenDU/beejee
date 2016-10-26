@@ -1,5 +1,7 @@
 <?php
 
+define('DOCUMENT_ENCODING', 'UTF-8');
+
 $config = [
     'appDir' => dirname(__DIR__),
 
@@ -18,6 +20,8 @@ $config = [
         // Path to log file.
         'filePath' => dirname(__DIR__) . 'runtime/logs/app.log',
     ],
+
+    'globalEncoding' => 'UTF-8',
 
     // Switch the debug mode
     'debug' => true

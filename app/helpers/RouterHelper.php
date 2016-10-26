@@ -97,7 +97,7 @@ class RouterHelper
             $controllerName = $this->getControllerName($this->page404['controller']);
             $actionName = $this->getActionName($this->page404['action']);
         }
-        elseif (!is_callable(array($controllerName, 'action' . ucfirst($actionName))))
+        elseif (!is_callable(array($controllerName, ucfirst($actionName))))
         {
             // No action in the controller.
             $actionName = $this->getActionName('index');

@@ -51,7 +51,8 @@ class CommentsController extends ControllerController
         $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::$tableName, 'text');
 
         $this->render(
-            APP_DIR . 'views/Comments.php',
+            //APP_DIR . 'views/comments',
+            'comments',
             ['comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
         );
     }
