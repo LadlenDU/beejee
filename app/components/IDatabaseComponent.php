@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Interface IDatabaseOperations
+ * Interface DatabaseComponent
  *
  * Интерфейс для работы с БД.
  */
-interface IDatabaseOperations
+interface DatabaseComponent
 {
     /**
      * Запрос выбирающий данные.

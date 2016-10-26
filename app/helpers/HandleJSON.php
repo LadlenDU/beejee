@@ -1,6 +1,6 @@
 <?php
 
-class prepareJSON
+class HandleJSON
 {
     /**
      * Конвертирует все строки массива в кодировку UTF-8.
@@ -15,6 +15,18 @@ class prepareJSON
            {
                $item = mb_convert_encoding($item, 'UTF-8', DOCUMENT_ENCODING);
            }
+        });
+
+        return json_encode($arr);
+    }
+
+    public static function prepareRequest($arr)
+    {
+        array_walk_recursive($arr, function(&$item) {
+            if(is_string($item))
+            {
+                $item = mb_convert_encoding($item, 'UTF-8', DOCUMENT_ENCODING);
+            }
         });
 
         return json_encode($arr);

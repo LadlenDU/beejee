@@ -1,14 +1,14 @@
 <?php
 
-require_once(APP_DIR . 'components/DB.php');
-require_once(APP_DIR . 'models/Image.php');
+#require_once(APP_DIR . 'components/DbComponent.php');
+#require_once(APP_DIR . 'models/ImageModel.php');
 
 /**
- * Class Comment
+ * Class CommentModel
  *
  * Содержит данные комментариев.
  */
-class Comment
+class CommentModel
 {
     /**
      * Название таблицы в БД.
@@ -18,7 +18,7 @@ class Comment
 
     static public function getComments($orderBy = 'created', $orderDir = 'DESC')
     {
-        $res = DB::obj()->selectQuery(
+        $res = DbHelper::obj()->selectQuery(
             'SELECT * FROM ' . self::$tableName . ' AS com '
             . ' LEFT JOIN ' . Image::$tableName . ' AS img ON com.image_id=img.id '
             . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"

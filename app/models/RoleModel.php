@@ -3,11 +3,11 @@
 require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
- * Class Role
+ * Class RoleModel
  *
  * Содержит данные комментариев.
  */
-class Role
+class RoleModel
 {
     /**
      * Название таблицы в БД.

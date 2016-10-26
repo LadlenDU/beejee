@@ -1,0 +1,28 @@
+<?php
+
+$config = [
+    'appDir' => dirname(__DIR__),
+
+    'database' => [
+        'type' => 'MySqli',
+        'connection' => [
+            'host' => 'localhost',
+            'user' => 'root',
+            'password' => 'temp123',
+            'databaseName' => 'beejee'
+        ],
+    ],
+
+    // Log file info.
+    'log' => [
+        // Path to log file.
+        'filePath' => dirname(__DIR__) . 'runtime/logs/app.log',
+    ],
+
+    // Switch the debug mode
+    'debug' => true
+];
+
+$config['database']['className'] = $config['database']['type'] . 'DatabaseComponent';
+
+return $config;

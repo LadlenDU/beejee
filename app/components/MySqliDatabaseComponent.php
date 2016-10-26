@@ -1,13 +1,13 @@
 <?php
 
-require_once(dirname(__FILE__) . '/IDatabaseOperations.php');
+#require_once(dirname(__FILE__) . '/IDatabaseOperations.php');
 
 /**
- * Class mySqliDatabaseOperations
+ * Class MySqliDatabaseComponent
  *
  * Работа с БД mySqli.
  */
-class mySqliDatabaseOperations implements IDatabaseOperations
+class MySqliDatabaseComponent implements IDatabaseOperations
 {
     protected static $mySqlLink;
 

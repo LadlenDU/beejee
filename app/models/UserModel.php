@@ -4,11 +4,11 @@
 require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
- * Class User
+ * Class UserModel
  *
  * Данные по пользователю.
  */
-class User
+class UserModel
 {
     /**
      * Информация о пользователе.

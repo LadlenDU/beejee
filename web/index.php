@@ -1,9 +1,15 @@
 <?php
 
-define('APP_DIR', dirname(__FILE__) . '/../app/');
-require_once(APP_DIR . 'config.php');
+if (version_compare(phpversion(), '5.4.0', '<') == true)
+{
+    die(_('Please use version of PHP not less than 5.4.'));
+}
 
-if (DEBUG)
+define('APP_DIR', realpath(__DIR__ . '/../app') . '/');
+
+$config = require(APP_DIR . 'config/Common.php');
+
+if ($config['debug'])
 {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -13,22 +19,34 @@ else
     error_reporting(0);
 }
 
-require_once(APP_DIR . 'controllers/Comments.php');
+require(APP_DIR . 'helpers/Autoloader.php');
 
 try
 {
-    $comments = new CommentsController();
+    #$user = new UserController();
+    (new RouterHelper($config))->run();
 }
 catch (Exception $e)
 {
-    if (DEBUG)
+    if ($config['debug'])
     {
-        echo 'Произошла ошибка. Код: ' . $e->getCode() . '. Сообщение: ' . $e->getMessage() .
-            '. Файл: ' . $e->getFile() . '. Строка: ' . $e->getFile() . '. Trace: ' . $e->getTraceAsString();
+        $msg = sprintf(_('Error occured. Code: %s. Message: %s. File: %s. Line: %s. Trace: %s'),
+            $e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString());
+
+        (new LoggerComponent($config))->log($msg);
     }
     else
     {
-        echo _('Ошибка на сервере');
+        $msg = _('Server error');
+    }
+
+    if (empty($_REQUEST['ajax']))
+    {
+        die($msg);
+    }
+    else
+    {
+        die(json_encode(['success' => false, 'message' => $msg]));
     }
 }
 

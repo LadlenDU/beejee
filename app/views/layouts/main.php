@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title><?php echo _('Управление списком пользователей'); ?></title>
     <link rel="stylesheet" href="css/index.css"/>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
@@ -14,6 +15,8 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="/js/helper.js"></script>
 
 </head>
 <body>

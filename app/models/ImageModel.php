@@ -1,13 +1,13 @@
 <?php
 
-require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
+#require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
- * Class Image
+ * Class ImageModel
  *
  * Работа с изображениями.
  */
-class Image
+class ImageModel
 {
     /**
      * Название таблицы в БД.
