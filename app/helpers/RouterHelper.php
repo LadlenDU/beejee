@@ -3,33 +3,21 @@
 /**
  * Class RouterHelper
  *
- * Routing.
+ * Работа с роутингом.
  */
 class RouterHelper
 {
     /**
-     * URL parts for default page.
+     * URL части страницы по умолчанию.
      * @var array
      */
     protected $pageDefault = ['controller' => 'default', 'action' => 'index'];
 
     /**
-     * URL parts for sub default page.
-     * @var array
-     *
-     * protected $subPageDefault = ['controller' => 'default', 'action' => 'index'];*/
-
-    /**
-     * URL parts for empty page.
+     * URL части для не найденной страницы.
      * @var array
      */
     protected $page404 = ['controller' => 'default', 'action' => '404'];
-
-    /**
-     * Url parts.
-     * @var array|null
-     */
-    protected $parts;
 
     /**
      * Configuration.
@@ -43,26 +31,15 @@ class RouterHelper
     }
 
     /**
-     * Create controller name.
+     * Проанализировать путь и найти по нему контроллер и действие.
+     * Если контроллер или действие не найдено, возвращает контроллер и действие к странице 404.
      *
-     * @param string $controllerPart url part of the controller
-     * @return string controller name
-     *
-     * protected function getControllerName($controllerPart)
-     * {
-     * $controller = $this->pageDefault['controller'];
-     * if (!empty($controllerPart))
-     * {
-     * $controller = ucfirst($controllerPart) . 'Controller';
-     * }
-     * return $controller;
-     * }*/
-
+     * @param array $path строка пути, разделенная в массив
+     * @return array
+     */
     protected function getControllerActionName($path)
     {
         $ret = $this->page404;
-
-        $path = ['admin', 'defAUlt'];
 
         if (empty($path))
         {
@@ -75,24 +52,29 @@ class RouterHelper
             $path,
             function (&$str)
             {
-                $str = ucfirst($str);
+                $str = ucfirst(strtolower($str));
             }
         );
+
         $lastElement = end($path);
+        $lastElementActonName = $this->getActionFunctionName($lastElement);
+
         unset($path[count($path) - 1]);
 
-        $controller = implode('', $path) . 'Controller';
+        #$controller = implode('', $path) . 'Controller';
+        $controller = $this->getControllerClassName($path);
         if (class_exists($controller))
         {
-            if (method_exists($controller, $lastElement))
+            if (is_callable([$controller, $lastElementActonName], true))
             {
-                return ['controller' => $controller, 'action' => $lastElement];
+                return ['controller' => $controller, 'action' => $lastElementActonName];
             }
         }
 
         // Find if $lastElement is a part of the controller name, not an action.
         $path[] = $lastElement;
-        $controller = implode('', $path) . 'Controller';
+        #$controller = implode('', $path) . 'Controller';
+        $controller = $this->getControllerClassName($path);
         if (class_exists($controller))
         {
             return ['controller' => $controller, 'action' => $this->pageDefault['action']];
@@ -100,10 +82,14 @@ class RouterHelper
 
         // Find if this is the default controller.
         $path[count($path) - 1] = $this->pageDefault['controller'];
-        $controller = implode('', $path) . 'Controller';
+        #$controller = implode('', $path) . 'Controller';
+        $controller = $this->getControllerClassName($path);
         if (class_exists($controller))
         {
-            $action = method_exists($controller, $lastElement) ? $lastElement : $this->pageDefault['action'];
+            $action = is_callable(
+                [$controller, $lastElementActonName],
+                true
+            ) ? $lastElementActonName : $this->getActionFunctionName($this->pageDefault['action']);
             return ['controller' => $controller, 'action' => $action];
         }
 
@@ -111,50 +97,58 @@ class RouterHelper
     }
 
     /**
-     * Create action name.
+     * Создать название вызываемой функции по названию акции.
      *
-     * @param string $actionName url part of the action
-     * @return string action name
+     * @param string $urlActionName название акции в URL
+     * @return string название функции акции
      */
-    protected
-    function getActionName(
-        $actionName
-    )
+    protected function getActionFunctionName($urlActionName)
     {
-        $action = $this->pageDefault['action'];
-        if (!empty($actionName))
-        {
-            $action = 'action' . ucfirst($actionName);
-        }
+        $urlActionName = !empty($urlActionName) ?: $this->pageDefault['action'];
+        $action = 'action' . ucfirst(strtolower($urlActionName));
         return $action;
     }
 
     /**
+     * Create controller name.
+     * Проанализировать путь и найти по нему контроллер и действие.
+     * Если контроллер или действие не найдено, возвращает контроллер и действие к странице 404.
+     *
+     * @param array $urlControllerParts путь к контроллеру в URL
+     * @return string название класса контроллера
+     */
+    protected function getControllerClassName($urlControllerParts)
+    {
+        $urlControllerParts = !empty($urlControllerParts) ?: $this->pageDefault['controller'];
+        $urlControllerParts = (array)$urlControllerParts;
+
+        array_walk(
+            $urlControllerParts,
+            function (&$str)
+            {
+                $str = ucfirst(strtolower($str));
+            }
+        );
+
+        $controller = implode('', $urlControllerParts) . 'Controller';
+        return $controller;
+    }
+
+
+    /**
      * Analyse URL then evoke controller action.
      */
-    public
-    function run()
+    public function run()
     {
         $controllerName = $this->getControllerName($this->pageDefault['controller']);
         $actionName = $this->getActionName($this->pageDefault['action']);
 
         if (isset($_REQUEST['route']))
         {
-            $_REQUEST['route'] = '//some///route/ss//';
             $route = trim($_REQUEST['route'], '/\\');
             $this->parts = array_filter(explode('/', $route));
 
-            #$path = str_replace('\\', DIRECTORY_SEPARATOR, strtolower($class, 0, $file_position + 1));
-
-            if (isset($this->parts[0]))
-            {
-                #$controllerName = $this->getControllerName($this->parts[0]);
-                $controllerName = $this->getControllerName($this->parts);
-            }
-            if (isset($this->parts[1]))
-            {
-                $actionName = $this->getActionName($this->parts[1]);
-            }
+            $this->getControllerActionName($this->parts);
         }
 
         if (!is_readable(APP_DIR . "controllers/$controllerName.php"))

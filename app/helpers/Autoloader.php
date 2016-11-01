@@ -1,36 +1,33 @@
 <?php
 
 /**
- * @param string $className class name
- * @throws Exception
- */
+ * @param string $className
+  */
 function __autoload($className)
 {
     $matches = array();
-    $matchesCount = preg_match_all("/.*([A-Z].*)/", $className, $matches);
-    if ($matchesCount == 1)
+    $matchesCount = preg_match_all("/[A-Z]+[a-z0-9_]*/", $className, $matches);
+    if ($matchesCount > 1)
     {
-        // Find the directory.
-        $dirName = APP_DIR . strtolower($matches[1][0]) . 's';
+        $firstDirName = APP_DIR . strtolower(end($matches[0])) . 's';
+        $trimmedMatches = $matches[0];
+        unset($trimmedMatches[count($trimmedMatches) - 1], $trimmedMatches[count($trimmedMatches) - 1]);
+        array_walk(
+            $trimmedMatches,
+            function (&$str)
+            {
+                $str = strtolower($str);
+            }
+        );
+        $subPath = implode('/', $trimmedMatches);
+        $dirName = rtrim("$firstDirName/$subPath", '/');
         if (is_dir($dirName))
         {
             $fileName = "$dirName/$className.php";
             if (is_readable($fileName))
             {
-                require($fileName);
+                require_once($fileName);
             }
-            else
-            {
-                throw new Exception(
-                    sprintf(_("Unable to load class %s because there is no %s file."), $className, $fileName)
-                );
-            }
-        }
-        else
-        {
-            throw new Exception(
-                sprintf(_("Unable to load class %s because there is no %s directory."), $className, $dirName)
-            );
         }
     }
 }
