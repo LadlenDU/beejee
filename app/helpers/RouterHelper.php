@@ -20,7 +20,7 @@ class RouterHelper
     protected $page404 = ['controller' => 'default', 'action' => '404'];
 
     /**
-     * Configuration.
+     * Конфигурация.
      * @var array
      */
     protected $config;
@@ -31,19 +31,19 @@ class RouterHelper
     }
 
     /**
-     * Проанализировать путь и найти по нему контроллер и действие.
+     * Проанализировать путь и найти по нему названия класса контроллера и название функции действие.
      * Если контроллер или действие не найдено, возвращает контроллер и действие к странице 404.
      *
      * @param array $path строка пути, разделенная в массив
      * @return array
      */
-    protected function getControllerActionName($path)
+    protected function getRoute($path)
     {
-        $ret = $this->page404;
+        $ret = $this->getControllerActionName($this->page404);
 
         if (empty($path))
         {
-            return $this->pageDefault;
+            return $this->getControllerActionName($this->pageDefault);
         }
 
         $path = (array)$path;
@@ -56,41 +56,88 @@ class RouterHelper
             }
         );
 
-        $lastElement = end($path);
-        $lastElementActonName = $this->getActionFunctionName($lastElement);
-
-        unset($path[count($path) - 1]);
-
-        #$controller = implode('', $path) . 'Controller';
-        $controller = $this->getControllerClassName($path);
-        if (class_exists($controller))
+        if (($map = $this->ifControllerClassAndActionNameExist($path)) ||
+            ($map = $this->ifControllerClassAndDefaultActionNameExist($path)) ||
+            ($map = $this->ifDefaultControllerClassAndActionNameExist($path))
+        )
         {
-            if (is_callable([$controller, $lastElementActonName], true))
+            $ret = $map;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Проверка существования указанного класса контроллера и указанной функции акции.
+     *
+     * @param array $path путь URL разбитый в массив
+     * @return array|bool PHP название контроллера и акции или false если соответствие не найдено
+     */
+    protected function ifControllerClassAndActionNameExist($path)
+    {
+        $ret = false;
+
+        $actionNameURL = end($path);
+        $controllerPathURL = $path;
+        unset($controllerPathURL[count($controllerPathURL) - 1]);
+
+        $controllerClass = $this->getControllerClassName($controllerPathURL);
+        if (class_exists($controllerClass))
+        {
+            $actionName = $this->getActionFunctionName($actionNameURL);
+            if (is_callable([$controllerClass, $actionName], true))
             {
-                return ['controller' => $controller, 'action' => $lastElementActonName];
+                $ret = ['controller' => $controllerClass, 'action' => $actionName];
             }
         }
 
-        // Find if $lastElement is a part of the controller name, not an action.
-        $path[] = $lastElement;
-        #$controller = implode('', $path) . 'Controller';
-        $controller = $this->getControllerClassName($path);
-        if (class_exists($controller))
+        return $ret;
+    }
+
+    /**
+     * Проверка существования указанного класса контроллера и функции акции по умолчанию.
+     *
+     * @param $path путь URL разбитый в массив
+     * @return array|bool PHP название контроллера и акции или false если соответствие не найдено
+     */
+    protected function ifControllerClassAndDefaultActionNameExist($path)
+    {
+        $ret = false;
+
+        $controllerClass = $this->getControllerClassName($path);
+        if (class_exists($controllerClass))
         {
-            return ['controller' => $controller, 'action' => $this->pageDefault['action']];
+            $actionName = $this->getActionFunctionName($this->pageDefault['action']);
+            if (is_callable([$controllerClass, $actionName], true))
+            {
+                $ret = ['controller' => $controllerClass, 'action' => $actionName];
+            }
         }
 
-        // Find if this is the default controller.
-        $path[count($path) - 1] = $this->pageDefault['controller'];
-        #$controller = implode('', $path) . 'Controller';
-        $controller = $this->getControllerClassName($path);
-        if (class_exists($controller))
+        return $ret;
+    }
+
+    /**
+     * Проверка существования класса контроллера по умолчанию и указанной функции акции.
+     *
+     * @param $path путь URL разбитый в массив
+     * @return array|bool PHP название контроллера и акции или false если соответствие не найдено
+     */
+    protected function ifDefaultControllerClassAndActionNameExist($path)
+    {
+        $ret = false;
+
+        $controllerPathURL = $path;
+        $controllerPathURL[count($controllerPathURL) - 1] = $this->pageDefault['controller'];
+
+        $controllerClass = $this->getControllerClassName($controllerPathURL);
+        if (class_exists($controllerClass))
         {
-            $action = is_callable(
-                [$controller, $lastElementActonName],
-                true
-            ) ? $lastElementActonName : $this->getActionFunctionName($this->pageDefault['action']);
-            return ['controller' => $controller, 'action' => $action];
+            $actionName = $this->getActionFunctionName(end($path));
+            if (is_callable([$controllerClass, $actionName], true))
+            {
+                return ['controller' => $controllerClass, 'action' => $actionName];
+            }
         }
 
         return $ret;
@@ -110,11 +157,9 @@ class RouterHelper
     }
 
     /**
-     * Create controller name.
-     * Проанализировать путь и найти по нему контроллер и действие.
-     * Если контроллер или действие не найдено, возвращает контроллер и действие к странице 404.
+     * Создать название класса контроллера по пути к нему.
      *
-     * @param array $urlControllerParts путь к контроллеру в URL
+     * @param array $urlControllerParts путь к контроллеру в URL, разбитый на массив
      * @return string название класса контроллера
      */
     protected function getControllerClassName($urlControllerParts)
@@ -134,9 +179,22 @@ class RouterHelper
         return $controller;
     }
 
+    /**
+     * Создает из URL параметров контроллера и действия их PHP названия.
+     *
+     * @param array $params содержит параметры URL контроллера и действия
+     * @return array
+     */
+    protected function getControllerActionName($params)
+    {
+        return [
+            'controller' => $this->getControllerClassName($params['controller']),
+            'action' => $this->getActionFunctionName($params['action'])
+        ];
+    }
 
     /**
-     * Analyse URL then evoke controller action.
+     * Проанализировать URL, после чего запустить действие.
      */
     public function run()
     {
