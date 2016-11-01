@@ -1,6 +1,6 @@
 <?php
 
-class SiteController extends ControllerController
+class DefaultController extends ControllerController
 {
     public function __construct($config)
     {

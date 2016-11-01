@@ -151,7 +151,7 @@ class RouterHelper
      */
     protected function getActionFunctionName($urlActionName)
     {
-        $urlActionName = !empty($urlActionName) ?: $this->pageDefault['action'];
+        $urlActionName = empty($urlActionName) ?: $this->pageDefault['action'];
         $action = 'action' . ucfirst(strtolower($urlActionName));
         return $action;
     }
@@ -164,7 +164,7 @@ class RouterHelper
      */
     protected function getControllerClassName($urlControllerParts)
     {
-        $urlControllerParts = !empty($urlControllerParts) ?: $this->pageDefault['controller'];
+        $urlControllerParts = empty($urlControllerParts) ?: $this->pageDefault['controller'];
         $urlControllerParts = (array)$urlControllerParts;
 
         array_walk(
@@ -198,32 +198,15 @@ class RouterHelper
      */
     public function run()
     {
-        $controllerName = $this->getControllerName($this->pageDefault['controller']);
-        $actionName = $this->getActionName($this->pageDefault['action']);
+        $controllerAction = $this->getControllerActionName($this->pageDefault);
 
         if (isset($_REQUEST['route']))
         {
             $route = trim($_REQUEST['route'], '/\\');
-            $this->parts = array_filter(explode('/', $route));
-
-            $this->getControllerActionName($this->parts);
+            $routeParts = array_filter(explode('/', $route));
+            $controllerAction = $this->getRoute($routeParts);
         }
 
-        if (!is_readable(APP_DIR . "controllers/$controllerName.php"))
-        {
-            // No such page.
-            $controllerName = $this->getControllerName($this->page404['controller']);
-            $actionName = $this->getActionName($this->page404['action']);
-        }
-        elseif (!is_callable(array($controllerName, ucfirst($actionName))))
-        {
-            $controllerName = $this->getControllerName($this->page404['controller']);
-            $actionName = $this->getActionName($this->page404['action']);
-
-            #// No action in the controller - set default.
-            #$actionName = $this->getActionName('index');
-        }
-
-        (new $controllerName($this->config))->$actionName($this->parts);
+        (new $controllerAction['controller']($this->config))->$controllerAction['action']();
     }
 }

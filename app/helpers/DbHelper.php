@@ -23,7 +23,7 @@ class DbHelper
             assert(isset(self::$config));
             assert(isset(self::$config['database']['type']));
 
-            $className = self::$config['database']['type'] . 'DatabaseComponent';
+            $className = self::$config['database']['type'] . 'databaseComponent';
             self::$bdClass = new $className(self::$config);
         }
 

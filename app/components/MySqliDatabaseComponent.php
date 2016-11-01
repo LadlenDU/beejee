@@ -1,13 +1,11 @@
 <?php
 
-#require_once(dirname(__FILE__) . '/IDatabaseComponent.php');
-
 /**
  * Class MySqliDatabaseComponent
  *
  * Работа с БД mySqli.
  */
-class MySqliDatabaseComponent implements DatabaseInterface
+class MysqlidatabaseComponent implements DatabaseInterface
 {
     protected static $mySqlLink;
 

@@ -5,7 +5,7 @@ define('DOCUMENT_ENCODING', 'UTF-8');
 $config = [
     'appDir' => dirname(__DIR__),
     'database' => [
-        'type' => 'MySqli',
+        'type' => 'Mysqli',
         'connection' => [
             'host' => 'localhost',
             'user' => 'root',
