@@ -21,12 +21,16 @@ function __autoload($className)
             }
             else
             {
-                throw new Exception(sprintf(_("Unable to load class %s because there is no %s file."), $className, $fileName));
+                throw new Exception(
+                    sprintf(_("Unable to load class %s because there is no %s file."), $className, $fileName)
+                );
             }
         }
         else
         {
-            throw new Exception(sprintf(_("Unable to load class %s because there is no %s directory."), $className, $dirName));
+            throw new Exception(
+                sprintf(_("Unable to load class %s because there is no %s directory."), $className, $dirName)
+            );
         }
     }
 }

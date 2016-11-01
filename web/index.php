@@ -30,8 +30,14 @@ catch (Exception $e)
 {
     if ($config['debug'])
     {
-        $msg = sprintf(_("Error occured.\nCode: %s.\nMessage: %s.\nFile: %s.\nLine: %s.\nTrace: %s\n"),
-            $e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString());
+        $msg = sprintf(
+            _("Error occured.\nCode: %s.\nMessage: %s.\nFile: %s.\nLine: %s.\nTrace: %s\n"),
+            $e->getCode(),
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine(),
+            $e->getTraceAsString()
+        );
 
         (new LoggerComponent($config))->log($msg);
     }

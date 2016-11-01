@@ -1,3 +1,3 @@
 <?php
 
-throw new Exception('Страница не найдена ===');
+throw new Exception('Страница не найдена');

@@ -1,8 +1,5 @@
 <?php
 
-#require_once(APP_DIR . 'components/DbComponent.php');
-#require_once(APP_DIR . 'models/ImageModel.php');
-
 /**
  * Class CommentModel
  *

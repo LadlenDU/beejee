@@ -5,8 +5,13 @@
     <div class="image">
         <img width="<?php echo $item->image['width'] ?>" height="<?php echo $item->image['height'] ?>" src="<?php echo $item->image['src'] ?>"/>
     </div>
-    <div class="content">
-        <>
+    <div class="name">
+        <div class="capt">Имя:</div>
+        <div class="value"><?php $item->name ?></div>
+    </div>
+    <div class="email">
+        <div class="capt">Email:</div>
+        <div class="value"><?php $item->email ?></div>
     </div>
 
     <input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--

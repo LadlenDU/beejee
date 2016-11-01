@@ -1,11 +1,5 @@
 <?php
 
-#require_once(APP_DIR . 'controllers/ControllerController.php');
-#require_once(APP_DIR . 'models/User.php');
-#require_once(APP_DIR . 'models/CommentModel.php');
-
-#require_once(APP_DIR . 'helpers/prepareJSON.php');
-
 class CommentsController extends ControllerController
 {
     public function __construct($config)
@@ -16,16 +10,15 @@ class CommentsController extends ControllerController
 
     public function actionPreview()
     {
-        echo 'HJLSJDLFJSFLD';
+        $this->renderPartial(
+            '_comment',
+            ['item' => []]
+        );
         exit;
     }
 
     public function actionIndex()
     {
-        #$model = User::GetAllUsers();
-        #$cities = City::GetAllCities();
-        #$this->render(APP_DIR . 'views/Comments.php', ['model' => $model->rows, 'cities' => $cities->rows]);
-
         $orderBy = (isset($_REQUEST['comments']['order']['by']) && in_array(
                 CommentModel::getValidOrderFields(),
                 $_REQUEST['comments']['order']['by'],
@@ -51,7 +44,6 @@ class CommentsController extends ControllerController
         $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::$tableName, 'text');
 
         $this->render(
-            //APP_DIR . 'views/comments',
             'index',
             ['comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
         );
