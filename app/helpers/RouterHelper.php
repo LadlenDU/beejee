@@ -85,7 +85,7 @@ class RouterHelper
         if (class_exists($controllerClass))
         {
             $actionName = $this->getActionFunctionName($actionNameURL);
-            if (is_callable([$controllerClass, $actionName], true))
+            if (is_callable([$controllerClass, $actionName]))
             {
                 $ret = ['controller' => $controllerClass, 'action' => $actionName];
             }
@@ -108,7 +108,7 @@ class RouterHelper
         if (class_exists($controllerClass))
         {
             $actionName = $this->getActionFunctionName($this->pageDefault['action']);
-            if (is_callable([$controllerClass, $actionName], true))
+            if (is_callable([$controllerClass, $actionName]))
             {
                 $ret = ['controller' => $controllerClass, 'action' => $actionName];
             }
@@ -134,7 +134,7 @@ class RouterHelper
         if (class_exists($controllerClass))
         {
             $actionName = $this->getActionFunctionName(end($path));
-            if (is_callable([$controllerClass, $actionName], true))
+            if (is_callable([$controllerClass, $actionName]))
             {
                 return ['controller' => $controllerClass, 'action' => $actionName];
             }
@@ -151,7 +151,7 @@ class RouterHelper
      */
     protected function getActionFunctionName($urlActionName)
     {
-        $urlActionName = empty($urlActionName) ?: $this->pageDefault['action'];
+        $urlActionName = $urlActionName ?: $this->pageDefault['action'];
         $action = 'action' . ucfirst(strtolower($urlActionName));
         return $action;
     }
@@ -164,7 +164,7 @@ class RouterHelper
      */
     protected function getControllerClassName($urlControllerParts)
     {
-        $urlControllerParts = empty($urlControllerParts) ?: $this->pageDefault['controller'];
+        $urlControllerParts = $urlControllerParts ?: $this->pageDefault['controller'];
         $urlControllerParts = (array)$urlControllerParts;
 
         array_walk(
