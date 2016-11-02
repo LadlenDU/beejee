@@ -16,7 +16,7 @@ $config = [
     // Log file info.
     'log' => [
         // Path to log file.
-        'filePath' => dirname(__DIR__) . 'runtime/logs/app.log',
+        'filePath' => dirname(__DIR__) . '/runtime/logs/app.log',
     ],
     'globalEncoding' => 'UTF-8',
     // Switch the debug mode

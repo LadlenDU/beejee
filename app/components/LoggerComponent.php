@@ -4,7 +4,7 @@ class LoggerComponent
 {
     protected $config;
 
-    public function __contruct($config)
+    public function __construct($config)
     {
         $this->config = $config;
     }
@@ -13,7 +13,8 @@ class LoggerComponent
     {
         if (is_writable($this->config['log']['filePath']))
         {
-            file_put_contents($this->config['log']['filePath'], $message . PHP_EOL . PHP_EOL, FILE_APPEND);
+            $message .= PHP_EOL . PHP_EOL . '++++++++++++++++++++++++++++++++++++++++++++' . PHP_EOL . PHP_EOL . PHP_EOL;
+            file_put_contents($this->config['log']['filePath'], $message, FILE_APPEND);
         }
     }
 }
