@@ -2,10 +2,10 @@
 
 class CommentsController extends ControllerController
 {
-    public function __construct($config)
+    public function __construct()
     {
-        parent::__construct($config);
-        DbHelper::setConfig($config);
+        parent::__construct();
+        DbHelper::setConfig();
     }
 
     public function actionPreview()
@@ -45,7 +45,7 @@ class CommentsController extends ControllerController
 
         $this->render(
             'index',
-            ['comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
+            ['titus' => '123', 'comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
         );
     }
 

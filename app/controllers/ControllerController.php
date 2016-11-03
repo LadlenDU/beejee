@@ -11,9 +11,11 @@ abstract class ControllerController
 
     protected $config;
 
-    public function __construct($config)
+    protected $layout = 'main.php';
+
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = ConfigComponent::getConfig();
         $this->title = '';
     }
 
@@ -33,7 +35,7 @@ abstract class ControllerController
 
         $scripts = '';
         $content = $this->renderPhpFile($file, $params);
-        require(APP_DIR . 'views/layouts/main.php');
+        require(APP_DIR . 'views/layouts/' . $this->layout);
     }
 
     protected function renderPartial($view, $params = [])

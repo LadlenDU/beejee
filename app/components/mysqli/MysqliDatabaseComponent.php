@@ -11,9 +11,9 @@ class MysqlidatabaseComponent implements DatabaseInterface
 
     protected $config;
 
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = ConfigComponent::getConfig();
         $this->mysqli_prepare();
     }
 

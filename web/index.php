@@ -23,8 +23,9 @@ require(APP_DIR . 'helpers/Autoloader.php');
 
 try
 {
-    #$user = new UserController();
-    (new RouterHelper($config))->run();
+    #(new RouterHelper($config))->run();
+    (new UserComponent($config))->logIn('admin', '123');
+
 }
 catch (Exception $e)
 {
@@ -46,7 +47,6 @@ catch (Exception $e)
         $msg = _('Server error');
     }
 
-    #if (empty($_REQUEST['ajax']))
     if (CommonHelper::ifAjax())
     {
         header('Content-Type: application/json');

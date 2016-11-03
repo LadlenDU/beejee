@@ -16,4 +16,16 @@ class CommonHelper
     {
         return !empty($_REQUEST['ajax']);
     }
+
+    /**
+     * Перенаправление на другую локацию этой же страницы.
+     *
+     * @param string $path путь и ([параметры][якорь]) после названия хоста (порта)
+     */
+    public static function redirect($path = '')
+    {
+        $host  = $_SERVER['HTTP_HOST'];
+        header("Location: http://$host/$path");
+        exit;
+    }
 }

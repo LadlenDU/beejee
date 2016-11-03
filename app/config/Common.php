@@ -23,6 +23,8 @@ $config = [
     'debug' => true
 ];
 
-$config['database']['className'] = $config['database']['type'] . 'DatabaseComponent';
+#$config['debug'] = !empty($_GET['debug']);
+
+#$config['database']['className'] = $config['database']['type'] . 'DatabaseComponent';
 
 return $config;

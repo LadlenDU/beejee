@@ -31,6 +31,37 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
     });
 </script>
 
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Список сообщений</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right">
+                <!--<div class="form-group">
+                    <input placeholder="Email" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <input placeholder="Password" class="form-control" type="password">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>-->
+                <?php (new AdminWidget)->renderLogoutItem(); ?>
+                <?php if(0): ?>
+                    <a class="navbar-brand" href="/">lsdkjflksdf</a>
+                <?php endif; ?>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">Список:</div>
+        <div class="col-md-5"><?php #echo $content ?></div>
+        <div class="col-md-5"><?php #echo $content ?></div>
+    </div>
+</div>
+
 <div id="order_by">
     Сортировать по:
     <select name="order_by">

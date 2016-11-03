@@ -1,3 +1,8 @@
-<div id="content">
-    <?php (new CommentsController($this->config))->actionIndex() ?>
-</div>
+<?php #(new CommentsController($this->config))->actionIndex() ?>
+Вы на заглавной странице.
+Перейдите на любую из страниц:
+<a href="/comments">Страница комментариев</a><br><br>
+<a href="/user/login">Залогиниться</a><br>
+На данный момент есть только один пользователь - администратор (логин "admin", пароль "123").<br>
+После чего станет доступна <a href="/comments/admin">страница администратора</a>, которая повторяет <a href="/comments">страницу комментариев</a>, но с элементами управления для администрирования.
+
