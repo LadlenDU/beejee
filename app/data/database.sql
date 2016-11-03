@@ -39,7 +39,8 @@ CREATE TABLE user
   `id`            INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `login`         VARCHAR(150)     NOT NULL,
   `password_hash` VARCHAR(255)     NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE (`login`)
 );
 
 CREATE TABLE role
@@ -65,3 +66,11 @@ SET login = 'admin', password_hash = PASSWORD('123');
 
 INSERT INTO `role`
 SET name = 'admin';
+
+INSERT INTO `user_role`
+SET user_id = (SELECT `id`
+               FROM `user`
+               WHERE `login` = 'admin'),
+  role_id   = (SELECT `id`
+               FROM `role`
+               WHERE `name` = 'admin');
