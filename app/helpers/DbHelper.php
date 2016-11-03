@@ -7,19 +7,31 @@
  */
 class DbHelper
 {
-    private static $bdClass;
+    protected static $bdClassInstance;
+
+    protected function __construct()
+    {
+    }
+
+    protected function __clone()
+    {
+    }
+
+    protected function __wakeup()
+    {
+    }
 
     public static function obj()
     {
-        if (!self::$bdClass)
+        if (!self::$bdClassInstance)
         {
             assert(isset(ConfigComponent::getConfig()['database']['type']));
 
             $className = ConfigComponent::getConfig()['database']['type'] . 'DatabaseComponent';
-            self::$bdClass = new $className();
+            self::$bdClassInstance = new $className();
         }
 
-        return self::$bdClass;
+        return self::$bdClassInstance;
     }
 
 }

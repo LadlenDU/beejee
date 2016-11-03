@@ -4,21 +4,24 @@ class ConfigComponent
 {
     protected $config;
 
-    protected static $item;
+    protected static $instance;
 
-    public function __construct()
+    protected function __construct()
     {
         require_once(APP_DIR . '/config/Common.php');
         $this->config = $GLOBALS['config'];
     }
 
+    private function __clone()    { /* ... @return Singleton */ }  // Защищаем от создания через клонирование
+    private function __wakeup()   { /* ... @return Singleton */ }  // Защищаем от создания через unserialize
+
     public static function getConfig()
     {
-        if (empty(self::$item))
+        if (empty(self::$instance))
         {
-            self::$item = new ConfigComponent;
+            self::$instance = new ConfigComponent;
         }
-        return self::$item->config;
+        return self::$instance->config;
     }
 }
 

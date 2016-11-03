@@ -11,13 +11,10 @@ class ImageModel
      * Название таблицы в БД.
      * @var string
      */
-    public static $tableName = 'image';
+    protected static $tableName = 'image';
 
-    /*static public function GetAllCities()
+    public static function getTableName()
     {
-        $className = DATABASE_CLASS;
-        $db = new $className;
-        $res = $db->selectQuery("SELECT * FROM " . self::$tableName);
-        return $res;
-    }*/
+        return self::$tableName;
+    }
 }

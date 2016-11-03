@@ -11,13 +11,22 @@ class RoleModel
      * Название таблицы в БД.
      * @var string
      */
-    public static $tableName = 'role';
+    protected static $tableName = 'role';
 
-    /*static public function GetAllCities()
+    /**
+     * Название таблицы в БД - связь с таблицей пользователей.
+     * @var string
+     */
+    protected static $tableConjuctWithUserName = 'user_role';
+
+    public static function getTableName()
     {
-        $className = DATABASE_CLASS;
-        $db = new $className;
-        $res = $db->selectQuery("SELECT * FROM " . self::$tableName);
-        return $res;
-    }*/
+        return self::$tableName;
+    }
+
+    public static function getConjuctWithUserTableName()
+    {
+        return self::$tableConjuctWithUserName;
+    }
+
 }

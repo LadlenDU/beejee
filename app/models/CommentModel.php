@@ -11,13 +11,18 @@ class CommentModel
      * Название таблицы в БД.
      * @var string
      */
-    public static $tableName = 'comment';
+    protected static $tableName = 'comment';
+
+    public static function getTableName()
+    {
+        return self::$tableName;
+    }
 
     static public function getComments($orderBy = 'created', $orderDir = 'DESC')
     {
         $res = DbHelper::obj()->selectQuery(
             'SELECT * FROM ' . self::$tableName . ' AS com '
-            . ' LEFT JOIN ' . ImageModel::$tableName . ' AS img ON com.image_id=img.id '
+            . ' LEFT JOIN ' . ImageModel::getTableName() . ' AS img ON com.image_id=img.id '
             . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
         );
 

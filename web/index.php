@@ -24,7 +24,8 @@ require(APP_DIR . 'helpers/Autoloader.php');
 try
 {
     #(new RouterHelper($config))->run();
-    (new UserComponent($config))->logIn('admin', '123');
+    UserComponent::getInstance()->logIn('admin', '123');
+    UserComponent::getInstance()->getUserRoles();
 
 }
 catch (Exception $e)
@@ -40,7 +41,7 @@ catch (Exception $e)
             $e->getTraceAsString()
         );
 
-        (new LoggerComponent($config))->log($msg);
+        LoggerComponent::getInstance()->log($msg);
     }
     else
     {
