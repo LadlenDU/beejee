@@ -24,8 +24,30 @@ class CommonHelper
      */
     public static function redirect($path = '')
     {
-        $host  = $_SERVER['HTTP_HOST'];
+        $host = $_SERVER['HTTP_HOST'];
         header("Location: http://$host/$path");
         exit;
+    }
+
+    /**
+     * Начинает сессию если ещё не начата.
+     */
+    public static function startSession()
+    {
+        if (session_id() == '' || !isset($_SESSION))
+        {
+            session_start();
+        }
+    }
+
+    /**
+     * Перевод строки + конвертация в специальные html символы.
+     *
+     * @param string $str
+     * @return string
+     */
+    public static function _h($str)
+    {
+        return htmlspecialchars(_($str), ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']);
     }
 }

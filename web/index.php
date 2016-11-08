@@ -23,6 +23,7 @@ require(APP_DIR . 'helpers/Autoloader.php');
 
 try
 {
+    CommonHelper::startSession();
     #(new RouterHelper($config))->run();
     UserComponent::getInstance()->logIn('admin', '123');
     UserComponent::getInstance()->getUserRoles();

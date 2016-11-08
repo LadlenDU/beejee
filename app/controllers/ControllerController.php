@@ -15,7 +15,7 @@ abstract class ControllerController
 
     public function __construct()
     {
-        $this->config = ConfigComponent::getConfig();
+        $this->config = ConfigHelper::getConfig();
         $this->title = '';
     }
 

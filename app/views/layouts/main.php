@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="<?php ConfigHelper::getConfig()['globalEncoding']; ?>"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo _('Форма обратной связи'); ?></title>
+    <meta name="csrf-param" content="<?php echo ConfigHelper::getConfig()['csrf']['tokenName'] ?>">
+    <meta name="csrf-token" content="<?php echo CsrfHelper::getCsrfToken() ?>">
+
+    <title><?php echo CommonHelper::_h('Форма обратной связи'); ?></title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 

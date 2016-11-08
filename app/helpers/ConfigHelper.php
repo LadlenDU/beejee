@@ -1,6 +1,6 @@
 <?php
 
-class ConfigComponent
+class ConfigHelper
 {
     protected $config;
 
@@ -19,7 +19,7 @@ class ConfigComponent
     {
         if (empty(self::$instance))
         {
-            self::$instance = new ConfigComponent;
+            self::$instance = new ConfigHelper;
         }
         return self::$instance->config;
     }

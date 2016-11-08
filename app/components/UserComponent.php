@@ -7,7 +7,7 @@
  */
 class UserComponent
 {
-    private static $instance;  // экземпляр объекта
+    private static $_instance;  // экземпляр объекта
 
     private function __construct()
     {
@@ -23,12 +23,12 @@ class UserComponent
 
     public static function getInstance()
     {
-        if (empty(self::$instance))
+        if (empty(self::$_instance))
         {
-            session_start();
-            self::$instance = new self();
+            CommonHelper::startSession();
+            self::$_instance = new self();
         }
-        return self::$instance;
+        return self::$_instance;
     }
 
     /**
@@ -52,7 +52,7 @@ class UserComponent
         {
             $_SESSION['user'] = [];
             $_SESSION['user']['logged'] = true;
-            $_SESSION['user']['id'] = $result->rows[0]['id'];
+            $_SESSION['user']['id'] = $result->rows[0]->id;
             $success = true;
         }
 

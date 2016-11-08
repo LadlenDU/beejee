@@ -2,7 +2,7 @@
 
 class LoggerComponent
 {
-    private static $instance;  // экземпляр объекта
+    private static $_instance;  // экземпляр объекта
 
     private function __construct()
     {
@@ -18,18 +18,18 @@ class LoggerComponent
 
     public static function getInstance()
     {
-        if (empty(self::$instance))
+        if (empty(self::$_instance))
         {
-            self::$instance = new self();
+            self::$_instance = new self();
         }
-        return self::$instance;
+        return self::$_instance;
     }
 
     public function log($message)
     {
-        assert(ConfigComponent::getConfig()['log']['filePath']);
+        assert(ConfigHelper::getConfig()['log']['filePath']);
 
-        $fPath = ConfigComponent::getConfig()['log']['filePath'];
+        $fPath = ConfigHelper::getConfig()['log']['filePath'];
         if (is_writable($fPath))
         {
             $message .= PHP_EOL . PHP_EOL . '++++++++++++++++++++++++++++++++++++++++++++' . PHP_EOL . PHP_EOL . PHP_EOL;

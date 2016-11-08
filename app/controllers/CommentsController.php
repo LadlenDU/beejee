@@ -56,7 +56,7 @@ class CommentsController extends ControllerController
         $_REQUEST['value'] = trim($_REQUEST['value']);
 
         $model = new User();
-        $win1251Value = mb_convert_encoding($_REQUEST['value'], DOCUMENT_ENCODING, 'UTF-8');
+        $win1251Value = mb_convert_encoding($_REQUEST['value'], ConfigHelper::getConfig()['globalEncoding'], 'UTF-8');
 
         if ($errors = $model->verifyUserInfo([$_REQUEST['name'] => $win1251Value]))
         {
@@ -81,7 +81,7 @@ class CommentsController extends ControllerController
         $_REQUEST['name'] = trim($_REQUEST['name']);
 
         $model = new User();
-        $win1251Name = mb_convert_encoding($_REQUEST['name'], DOCUMENT_ENCODING, 'UTF-8');
+        $win1251Name = mb_convert_encoding($_REQUEST['name'], ConfigHelper::getConfig()['globalEncoding'], 'UTF-8');
 
         if ($errors = $model->verifyUserInfo(['name' => $win1251Name, 'age' => $_REQUEST['age']]))
         {
