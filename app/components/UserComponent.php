@@ -88,7 +88,7 @@ class UserComponent extends SingletonHelper
      * @param int $id
      * @return mixed
      */
-    protected function getUserId($id = false)
+    public function getUserId($id = false)
     {
         if (!$id)
         {

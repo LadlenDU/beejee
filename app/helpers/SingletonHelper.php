@@ -2,26 +2,28 @@
 
 class SingletonHelper
 {
-    protected static $_instance;  // экземпляр объекта
+    private static $instances = array();
 
-    private function __construct()
+    protected function __construct()
     {
     }
 
-    private function __clone()
+    protected function __clone()
     {
     }
 
-    private function __wakeup()
+    public function __wakeup()
     {
+        throw new Exception("Cannot unserialize singleton");
     }
 
     public static function getInstance()
     {
-        if (empty(static::$_instance))
+        $cls = get_called_class();
+        if (!isset(self::$instances[$cls]))
         {
-            static::$_instance = new static();
+            self::$instances[$cls] = new static;
         }
-        return static::$_instance;
+        return self::$instances[$cls];
     }
 }
