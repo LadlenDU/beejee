@@ -5,7 +5,6 @@ class CommentsController extends ControllerController
     public function __construct()
     {
         parent::__construct();
-        DbHelper::setConfig();
     }
 
     public function actionPreview()
@@ -39,9 +38,9 @@ class CommentsController extends ControllerController
         }
 
         $fieldMaxLength = [];
-        $fieldMaxLength['name'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::$tableName, 'username');
-        $fieldMaxLength['email'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::$tableName, 'email');
-        $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::$tableName, 'text');
+        $fieldMaxLength['name'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username');
+        $fieldMaxLength['email'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email');
+        $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text');
 
         $this->render(
             'index',

@@ -57,10 +57,11 @@ class CommonHelper
      * @param array $params список [параметр => значение[, ...]]
      * @return string
      */
-    public static function getHtmlTagParams($params)
+    public static function getHtmlTagParams($params = [])
     {
         $s = '';
 
+        $params = (array)$params;
         foreach ($params as $pName => $pVal)
         {
             $s .= ' ' . htmlspecialchars($pName, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) . '="' .

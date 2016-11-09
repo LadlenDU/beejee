@@ -24,10 +24,10 @@ require(APP_DIR . 'helpers/Autoloader.php');
 try
 {
     CommonHelper::startSession();
-    #(new RouterHelper($config))->run();
-    UserComponent::getInstance()->logIn('admin', '123');
-    $roles = UserComponent::getInstance()->getUserRoles();
-$tt = 400;
+    (new RouterHelper($config))->run();
+    #UserComponent::getInstance()->logIn('admin', '123');
+    #$roles = UserComponent::getInstance()->getUserRoles();
+
 }
 catch (Exception $e)
 {

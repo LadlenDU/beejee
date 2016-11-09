@@ -37,19 +37,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
             <a class="navbar-brand" href="/">Список сообщений</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right">
-                <!--<div class="form-group">
-                    <input placeholder="Email" class="form-control" type="text">
-                </div>
-                <div class="form-group">
-                    <input placeholder="Password" class="form-control" type="password">
-                </div>
-                <button type="submit" class="btn btn-success">Sign in</button>-->
-                <?php (new AdminWidget)->renderLogoutItem(); ?>
-                <?php if(0): ?>
-                    <a class="navbar-brand" href="/">lsdkjflksdf</a>
-                <?php endif; ?>
-            </form>
+            <?php echo (new UserWidget)->htmlLogoutItem(['form' => ['class' => 'navbar-form navbar-right']]) ?>
         </div>
     </div>
 </nav>

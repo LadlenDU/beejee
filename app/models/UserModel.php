@@ -42,7 +42,7 @@ class UserModel
         {
             $result = $result->rows;
         }
-        
+
         return $result;
     }
 }
