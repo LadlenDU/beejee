@@ -95,8 +95,16 @@ class MysqlidatabaseComponent implements DatabaseInterface
 
     public function escape_string($string, $quotes = true)
     {
-        $ret = mysqli_real_escape_string(self::$mySqlLink, $string);
-        $ret = $quotes ? "'$ret'" : $ret;
+        if (is_string($string))
+        {
+            $ret = mysqli_real_escape_string(self::$mySqlLink, $string);
+            $ret = $quotes ? "'$ret'" : $ret;
+        }
+        else
+        {
+            $ret = (int)$string;
+        }
+
         return $ret;
     }
 

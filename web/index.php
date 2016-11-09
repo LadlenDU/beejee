@@ -26,8 +26,8 @@ try
     CommonHelper::startSession();
     #(new RouterHelper($config))->run();
     UserComponent::getInstance()->logIn('admin', '123');
-    UserComponent::getInstance()->getUserRoles();
-
+    $roles = UserComponent::getInstance()->getUserRoles();
+$tt = 400;
 }
 catch (Exception $e)
 {

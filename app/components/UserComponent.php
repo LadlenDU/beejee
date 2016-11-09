@@ -90,14 +90,14 @@ class UserComponent
 
     public function getUserInfo($id = false)
     {
-        $roles = false;
+        $info = false;
 
         if ($nId = $this->getUserId($id))
         {
-            $roles = UserModel::getRolesById($nId);
+            $info = UserModel::getUserInfo($nId);
         }
 
-        return $roles;
+        return $info;
     }
 
     /**

@@ -15,12 +15,13 @@ class UserWidget
      */
     public static function htmlLogoutItem($params = [])
     {
-        $s = '<div class="user_logout"><div class="username">' . . '</div><button type="submit" ';
+        $s = '<div class="user_logout"><div class="username">' .
+            CommonHelper::_h('Ваш логин:') . ' ' . UserComponent::getUserInfo()->login . '</div><button type="submit" ';
         if ($params)
         {
             $s .= CommonHelper::getHtmlTagParams($params);
         }
-        $s .= '>' . CommonHelper::_h('Выйти') . '</button></div>';
+        $s .= '>' . CommonHelper::_h('Выйти') . '</button></div></div>';
         return $s;
     }
 }
