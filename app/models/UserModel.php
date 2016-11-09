@@ -16,7 +16,7 @@ class UserModel
         return self::$tableName;
     }
 
-    static public function getRolesById($id)
+    public static function getRolesById($id)
     {
         $result = DbHelper::obj()->selectQuery(
             'SELECT `role`.`name` FROM `' . RoleModel::getConjuctWithUserTableName() . '` AS `user_role` '
@@ -25,5 +25,13 @@ class UserModel
             . 'WHERE `user`.`id` = %d',
             $id
         );
+
+        return $result;
+    }
+
+    public static function getUserInfo($id)
+    {
+        $result = DbHelper::obj()->selectQuery('SELECT * FROM `user` WHERE `id`=%d', $id);
+        return $result;
     }
 }

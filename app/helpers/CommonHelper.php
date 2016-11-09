@@ -50,4 +50,24 @@ class CommonHelper
     {
         return htmlspecialchars(_($str), ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']);
     }
+
+    /**
+     * Возвращает строку параметров для вставки в html тег.
+     *
+     * @param array $params список [параметр => значение[, ...]]
+     * @return string
+     */
+    public static function getHtmlTagParams($params)
+    {
+        $s = '';
+
+        foreach ($params as $pName => $pVal)
+        {
+            $s .= ' ' . htmlspecialchars($pName, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) . '="' .
+                htmlspecialchars($pVal, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) . '" ';
+        }
+
+
+        return $s;
+    }
 }

@@ -50,7 +50,6 @@ class UserComponent
 
         if (count($result->rows) == 1)
         {
-            $_SESSION['user'] = [];
             $_SESSION['user']['logged'] = true;
             $_SESSION['user']['id'] = $result->rows[0]->id;
             $success = true;
@@ -64,11 +63,11 @@ class UserComponent
      */
     public function logOut()
     {
-        assert($_SESSION['user']);
         assert($_SESSION['user']['logged']);
         assert($_SESSION['user']['id']);
 
         unset($_SESSION['user']['logged']);
+        unset($_SESSION['user']['id']);
     }
 
     /**
@@ -81,20 +80,43 @@ class UserComponent
     {
         $roles = false;
 
+        if ($nId = $this->getUserId($id))
+        {
+            $roles = UserModel::getRolesById($nId);
+        }
+
+        return $roles;
+    }
+
+    public function getUserInfo($id = false)
+    {
+        $roles = false;
+
+        if ($nId = $this->getUserId($id))
+        {
+            $roles = UserModel::getRolesById($nId);
+        }
+
+        return $roles;
+    }
+
+    /**
+     * Возвращает сессионный id залогиненого пользователя если id не задан.
+     *
+     * @param int $id
+     * @return mixed
+     */
+    protected function getUserId($id)
+    {
         if (!$id)
         {
-            if (isset($_SESSION['user']) && isset($_SESSION['user']['logged']))
+            if (isset($_SESSION['user']['logged']))
             {
                 assert($_SESSION['user']['id']);
                 $id = $_SESSION['user']['id'];
             }
         }
 
-        if ($id)
-        {
-            $roles = UserModel::getRolesById($id);
-        }
-
-        return $roles;
+        return $id;
     }
 }

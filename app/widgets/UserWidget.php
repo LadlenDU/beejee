@@ -13,14 +13,14 @@ class UserWidget
      * @param array $params массив параметров
      * @return string html строка для разлогинивания
      */
-    public static function htmlLogoutItem($params)
+    public static function htmlLogoutItem($params = [])
     {
-        $s = '<button type="submit" ';
-        if (!empty($params['class']))
+        $s = '<div class="user_logout"><div class="username">' . . '</div><button type="submit" ';
+        if ($params)
         {
-            $s .= ' class="' . htmlspecialchars($params['class'], ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) . '" ';
+            $s .= CommonHelper::getHtmlTagParams($params);
         }
-        $s .= '>' . CommonHelper::_h('Выйти') . '</button>';
+        $s .= '>' . CommonHelper::_h('Выйти') . '</button></div>';
         return $s;
     }
 }
