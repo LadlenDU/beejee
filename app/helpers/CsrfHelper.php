@@ -5,32 +5,9 @@
  *
  * Класс для защиты от CSRF атак.
  */
-class CsrfHelper
+class CsrfHelper extends SingletonHelper
 {
-    private static $_instance;  // экземпляр объекта
-
     protected $requestMethodsToCheck = ['POST', 'PUT', 'DELETE'];
-
-    private function __construct()
-    {
-    }
-
-    private function __clone()
-    {
-    }
-
-    private function __wakeup()
-    {
-    }
-
-    public static function getInstance()
-    {
-        if (empty(self::$_instance))
-        {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
 
     public function getCsrfToken()
     {

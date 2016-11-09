@@ -1,30 +1,7 @@
 <?php
 
-class LoggerComponent
+class LoggerComponent extends SingletonHelper
 {
-    private static $_instance;  // экземпляр объекта
-
-    private function __construct()
-    {
-    }
-
-    private function __clone()
-    {
-    }
-
-    private function __wakeup()
-    {
-    }
-
-    public static function getInstance()
-    {
-        if (empty(self::$_instance))
-        {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
-
     public function log($message)
     {
         assert(ConfigHelper::getConfig()['log']['filePath']);

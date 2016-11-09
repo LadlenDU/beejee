@@ -5,30 +5,12 @@
  *
  * Управление пользователями.
  */
-class UserComponent
+class UserComponent extends SingletonHelper
 {
-    private static $_instance;  // экземпляр объекта
-
-    private function __construct()
-    {
-    }
-
-    private function __clone()
-    {
-    }
-
-    private function __wakeup()
-    {
-    }
-
     public static function getInstance()
     {
-        if (empty(self::$_instance))
-        {
-            CommonHelper::startSession();
-            self::$_instance = new self();
-        }
-        return self::$_instance;
+        CommonHelper::startSession();
+        return parent::getInstance();
     }
 
     /**
@@ -106,7 +88,7 @@ class UserComponent
      * @param int $id
      * @return mixed
      */
-    protected function getUserId($id)
+    protected function getUserId($id = false)
     {
         if (!$id)
         {
