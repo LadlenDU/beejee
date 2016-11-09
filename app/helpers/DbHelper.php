@@ -25,9 +25,10 @@ class DbHelper
     {
         if (!self::$bdClassInstance)
         {
-            assert(isset(ConfigHelper::getConfig()['database']['type']));
+            $conf = ConfigHelper::getInstance()->getConfig();
+            assert(isset($conf['database']['type']));
 
-            $className = ConfigHelper::getConfig()['database']['type'] . 'DatabaseComponent';
+            $className = $conf['database']['type'] . 'DatabaseComponent';
             self::$bdClassInstance = new $className();
         }
 

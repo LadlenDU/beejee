@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="<?php echo ConfigHelper::getConfig()['globalEncoding']; ?>"/>
+    <meta charset="<?php echo ConfigHelper::getInstance()->getConfig()['globalEncoding']; ?>"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="csrf-param" content="<?php echo ConfigHelper::getConfig()['csrf']['tokenName'] ?>">
+    <meta name="csrf-param" content="<?php echo ConfigHelper::getInstance()->getConfig()['csrf']['tokenName'] ?>">
     <meta name="csrf-token" content="<?php echo CsrfHelper::getInstance()->getCsrfToken() ?>">
 
     <title><?php echo CommonHelper::_h('Форма обратной связи'); ?></title>

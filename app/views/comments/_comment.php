@@ -14,10 +14,10 @@
         <div class="value"><?php $item->email ?></div>
     </div>
 
-    <input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) ?>" class="name" maxlength="30" style="display:none"/><!--
-              --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) : '&nbsp;' ?></div><!--
+    <input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) ?>" class="name" maxlength="30" style="display:none"/><!--
+              --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) : '&nbsp;' ?></div><!--
               --><input type="text" value="<?php echo $user->age ?>" class="age" maxlength="3" style="display:none"/><!--
-              --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) ?></div><!--
+              --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) ?></div><!--
               --><div class="city_id" title="<?php echo CLICK_TO_MOD ?>"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
               --><select style="display:none" class="city_id">
         <option value="0" <?php echo ($user->city_id == 0) ? 'selected="selected"' : ''; ?>>Город не выбран</option>
@@ -27,7 +27,7 @@
             {
                 echo 'selected="selected"';
             }
-            ?>><?php echo htmlspecialchars($city->name, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) ?></option>
+            ?>><?php echo htmlspecialchars($city->name, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) ?></option>
         <?php endforeach ?>
     </select><!--
                 <input type="text" value="<?php echo $user->city_id ?>" class="city" disabled="disabled"/>

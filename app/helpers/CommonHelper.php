@@ -48,7 +48,7 @@ class CommonHelper
      */
     public static function _h($str)
     {
-        return htmlspecialchars(_($str), ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']);
+        return htmlspecialchars(_($str), ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']);
     }
 
     /**
@@ -64,8 +64,8 @@ class CommonHelper
         $params = (array)$params;
         foreach ($params as $pName => $pVal)
         {
-            $s .= ' ' . htmlspecialchars($pName, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) . '="' .
-                htmlspecialchars($pVal, ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) . '" ';
+            $s .= ' ' . htmlspecialchars($pName, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) . '="' .
+                htmlspecialchars($pVal, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) . '" ';
         }
 
 

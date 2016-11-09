@@ -9,15 +9,7 @@ abstract class ControllerController
      */
     protected $title = '';
 
-    protected $config;
-
     protected $layout = 'main.php';
-
-    public function __construct()
-    {
-        $this->config = ConfigHelper::getConfig();
-        $this->title = '';
-    }
 
     protected function renderPhpFile($file, $params = [])
     {
@@ -47,8 +39,13 @@ abstract class ControllerController
 
     protected function getViewsPath()
     {
-        $className = strtolower(get_class($this));
-        $folderName = substr($className, 0, -strlen('Controller'));
+        $className = get_class($this);
+        $matchesCount = preg_match_all("/[A-Z]+[a-z0-9_]*/", $className, $matches);
+        assert($matchesCount > 1);
+        unset($matches[0][count($matches[0]) - 1]);
+        $folderName = implode('/', $matches[0]);
+        #$className = strtolower(get_class($this));
+        #$folderName = substr($className, 0, -strlen('Controller'));
         return APP_DIR . "views/$folderName/";
     }
 

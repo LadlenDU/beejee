@@ -13,7 +13,7 @@ class MysqlidatabaseComponent implements DatabaseInterface
 
     public function __construct()
     {
-        $this->config = ConfigHelper::getConfig();
+        $this->config = ConfigHelper::getInstance()->getConfig();
         $this->mysqli_prepare();
     }
 
@@ -36,7 +36,7 @@ class MysqlidatabaseComponent implements DatabaseInterface
             {
                 throw new Exception('Не могу выбрать базу данных : ' . mysqli_error(self::$mySqlLink));
             }
-            mysqli_set_charset(self::$mySqlLink, ConfigHelper::getConfig()['globalEncoding']);
+            mysqli_set_charset(self::$mySqlLink, ConfigHelper::getInstance()->getConfig()['globalEncoding']);
         }
     }
 

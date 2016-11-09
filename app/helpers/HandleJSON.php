@@ -16,7 +16,7 @@ class HandleJSON
             {
                 if (is_string($item))
                 {
-                    $item = mb_convert_encoding($item, 'UTF-8', ConfigHelper::getConfig()['globalEncoding']);
+                    $item = mb_convert_encoding($item, 'UTF-8', ConfigHelper::getInstance()->getConfig()['globalEncoding']);
                 }
             }
         );
@@ -32,7 +32,7 @@ class HandleJSON
             {
                 if (is_string($item))
                 {
-                    $item = mb_convert_encoding($item, 'UTF-8', ConfigHelper::getConfig()['globalEncoding']);
+                    $item = mb_convert_encoding($item, 'UTF-8', ConfigHelper::getInstance()->getConfig()['globalEncoding']);
                 }
             }
         );

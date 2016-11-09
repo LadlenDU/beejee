@@ -54,7 +54,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
     Сортировать по:
     <select name="order_by">
         <?php foreach ($orderTypes as $o): ?>
-        <option value="<?php echo $o['id'] ?>"><?php echo htmlspecialchars($o['name'], ENT_QUOTES, ConfigHelper::getConfig()['globalEncoding']) ?></option>
+        <option value="<?php echo $o['id'] ?>"><?php echo htmlspecialchars($o['name'], ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) ?></option>
         <?php endforeach; ?>
     </select>
 </div>

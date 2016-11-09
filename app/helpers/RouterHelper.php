@@ -27,7 +27,7 @@ class RouterHelper
 
     public function __construct()
     {
-        $this->config = ConfigHelper::getConfig();
+        $this->config = ConfigHelper::getInstance()->getConfig();
     }
 
     /**

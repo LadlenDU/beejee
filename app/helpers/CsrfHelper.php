@@ -13,7 +13,7 @@ class CsrfHelper extends SingletonHelper
     {
         if (!$csrfToken = $this->loadCsrfToken())
         {
-            $salt = ConfigHelper::getConfig()['csrf']['salt'];
+            $salt = ConfigHelper::getInstance()->getConfig()['csrf']['salt'];
 
             $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.';
             $mask = substr(str_shuffle(str_repeat($chars, 5)), 0, 8);
@@ -48,7 +48,7 @@ class CsrfHelper extends SingletonHelper
     {
         $ret = false;
 
-        $tokenName = ConfigHelper::getConfig()['csrf']['tokenName'];
+        $tokenName = ConfigHelper::getInstance()->getConfig()['csrf']['tokenName'];
 
         assert($_SERVER['REQUEST_METHOD']);
 

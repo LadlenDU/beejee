@@ -1,10 +1,8 @@
 <?php
 
-class ConfigHelper
+class ConfigHelper extends SingletonHelper
 {
     protected $config;
-
-    protected static $instance;
 
     protected function __construct()
     {
@@ -12,16 +10,9 @@ class ConfigHelper
         $this->config = $GLOBALS['config'];
     }
 
-    private function __clone()    { /* ... @return Singleton */ }  // Защищаем от создания через клонирование
-    private function __wakeup()   { /* ... @return Singleton */ }  // Защищаем от создания через unserialize
-
-    public static function getConfig()
+    public function getConfig()
     {
-        if (empty(self::$instance))
-        {
-            self::$instance = new ConfigHelper;
-        }
-        return self::$instance->config;
+        return $this->config;
     }
 }
 

@@ -2,11 +2,6 @@
 
 class CommentsController extends ControllerController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function actionPreview()
     {
         $this->renderPartial(
@@ -55,7 +50,7 @@ class CommentsController extends ControllerController
         $_REQUEST['value'] = trim($_REQUEST['value']);
 
         $model = new User();
-        $win1251Value = mb_convert_encoding($_REQUEST['value'], ConfigHelper::getConfig()['globalEncoding'], 'UTF-8');
+        $win1251Value = mb_convert_encoding($_REQUEST['value'], ConfigHelper::getInstance()->getConfig()['globalEncoding'], 'UTF-8');
 
         if ($errors = $model->verifyUserInfo([$_REQUEST['name'] => $win1251Value]))
         {
@@ -80,7 +75,7 @@ class CommentsController extends ControllerController
         $_REQUEST['name'] = trim($_REQUEST['name']);
 
         $model = new User();
-        $win1251Name = mb_convert_encoding($_REQUEST['name'], ConfigHelper::getConfig()['globalEncoding'], 'UTF-8');
+        $win1251Name = mb_convert_encoding($_REQUEST['name'], ConfigHelper::getInstance()->getConfig()['globalEncoding'], 'UTF-8');
 
         if ($errors = $model->verifyUserInfo(['name' => $win1251Name, 'age' => $_REQUEST['age']]))
         {
