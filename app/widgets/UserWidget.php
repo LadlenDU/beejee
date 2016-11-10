@@ -21,11 +21,11 @@ class UserWidget
         {
             $s .= '<form '
                 . (isset($params['form']) ? CommonHelper::getHtmlTagParams($params['form']) : '') . '>'
-                . '<div class="user_logout"><div class="username">'
+                . '<p class="navbar-text">'
                 . CommonHelper::_h('Ваш логин:') . ' ' . UserComponent::getInstance()->getUserInfo()->login
-                . '</div><button type="submit" '
-                . (isset($params['button']) ? CommonHelper::getHtmlTagParams($params['form']) : '')
-                . '>' . CommonHelper::_h('Выйти') . '</button></div></form>';
+                . '</p><button type="submit" '
+                . (isset($params['button']) ? CommonHelper::getHtmlTagParams($params['button']) : '')
+                . '>' . CommonHelper::_h('Выйти') . '</button></form>';
         }
 
         return $s;

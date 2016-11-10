@@ -40,7 +40,7 @@ class UserModel
 
         if ($result)
         {
-            $result = $result->rows;
+            $result = $result->rows[0];
         }
 
         return $result;
