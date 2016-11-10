@@ -34,8 +34,8 @@
 </script>
 
 <div class="row wrapper">
-    <div class="col-md-2 hidden-xs hidden-sm bg-info"><p class="text-center">Список:</p></div>
-    <div class="col-md-5">
+    <div class="col-md-2 hidden-xs hidden-sm list_caption main_column"><p class="text-center"><strong>Список:</strong></p></div>
+    <div class="col-md-5 main_column">
 
         <div class="row order container-fluid">
             <div class="col-md-4 col-sm-4 text-nowrap narrow-sides">Сортировать по:</div>
@@ -68,32 +68,32 @@
     </div>
 
 
-    <div class="col-md-5">
+    <div class="col-md-5 create_comment main_column">
 
-        <div class="row">Новый комментарий:</div>
+        <div class="row container-fluid"><strong>Новый комментарий:</strong></div>
         <div class="row container-fluid">
             <?php echo FormWidget::startForm(
                 ['enctype' => 'multipart/form-data', 'action' => '/comments/add', 'id' => 'form_comment']
             ) ?>
                 <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
 
-            <div class="row">
+            <div class="row container-fluid">
                 Прикрепить изображение (допустимые форматы: JPG, GIF, PNG):<br>
                 <input name="image" type="file"
                        accept=".jpg, .gif, .png, image/jpeg, image/gif, image/png"/>
             </div>
 
-            <div class="row">
-                Имя: <input type="text" name="name" maxlength="<?php echo $fieldMaxLength['name'] ?>" />
+            <div class="row container-fluid">
+                <input type="text" name="name" maxlength="<?php echo $fieldMaxLength['name'] ?>" placeholder="Имя" />
             </div>
-            <div class="row">
-                Email: <input type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>" />
+            <div class="row container-fluid">
+                <input type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>" placeholder="Email" />
             </div>
-            <div class="row">
+            <div class="row container-fluid">
                 Текст сообщения:<br>
                 <textarea name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>"></textarea>
             </div>
-            <div class="row">
+            <div class="row container-fluid">
                 <div class="col-md-8 col-sm-4">
                     <input type="submit" id="comment_preview" value="Предварительный просмотр"/>
                 </div>
