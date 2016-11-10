@@ -7,13 +7,22 @@
  */
 class CsrfHelper extends SingletonHelper
 {
+    /** @var array методы при которых нужна проверка на CSRF */
     protected $requestMethodsToCheck = ['POST', 'PUT', 'DELETE'];
+
+    /** @var array методы при которых НЕ нужна проверка на CSRF */
+    protected $requestMethodsAllowed = ['GET'];
 
     public function getCsrfTokenName()
     {
         return ConfigHelper::getInstance()->getConfig()['csrf']['tokenName'];
     }
 
+    /**
+     * Создает и сохраняет CSRF токен если надо.
+     *
+     * @return null|string
+     */
     public function getCsrfToken()
     {
         if (!$csrfToken = $this->loadCsrfToken())
@@ -55,19 +64,26 @@ class CsrfHelper extends SingletonHelper
 
         $tokenName = ConfigHelper::getInstance()->getConfig()['csrf']['tokenName'];
 
-        assert(!empty($_SERVER['REQUEST_METHOD']));
+        if (!empty($_SERVER['REQUEST_METHOD']))
+        {
+            $method = strtoupper($_SERVER['REQUEST_METHOD']);
+            if (in_array($method, $this->requestMethodsToCheck))
+            {
+                if (!$this->loadCsrfToken())
+                {
+                    // Возможно закончилась сессия на сервере.
+                    CommonHelper::redirect('?session_expired=true');
+                }
 
-        $method = strtoupper($_SERVER['REQUEST_METHOD']);
-        if (in_array($method, $this->requestMethodsToCheck))
-        {
-            $method = '_' . $method;
-            global ${$method};
-            $ret = ((isset(${$method}[$tokenName]) && ${$method}[$tokenName] == $this->loadCsrfToken())
-                || (isset($_COOKIE[$tokenName]) && $_COOKIE[$tokenName] == $this->loadCsrfToken()));
-        }
-        else
-        {
-            $ret = true;
+                $method = '_' . $method;
+                global ${$method};
+                $ret = ((isset(${$method}[$tokenName]) && ${$method}[$tokenName] == $this->loadCsrfToken())
+                    || (isset($_COOKIE[$tokenName]) && $_COOKIE[$tokenName] == $this->loadCsrfToken()));
+            }
+            elseif (in_array($method, $this->requestMethodsAllowed))
+            {
+                $ret = true;
+            }
         }
 
         return $ret;
