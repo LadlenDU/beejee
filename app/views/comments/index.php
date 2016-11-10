@@ -33,22 +33,37 @@
     });
 </script>
 
-<div class="row">
-    <div class="col-md-2">Список:</div>
+<div class="row wrapper">
+    <div class="col-md-2 hidden-xs hidden-sm bg-info"><p class="text-center">Список:</p></div>
     <div class="col-md-5">
 
-        <div id="order_by">
-            Сортировать по:
-            <select name="order_by">
-                <?php foreach ($orderTypes as $o): ?>
-                    <option value="<?php echo $o['id'] ?>"><?php echo htmlspecialchars($o['name'], ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) ?></option>
-                <?php endforeach; ?>
-            </select>
+        <div class="row order">
+            <div class="col-xs-7">
+                <div class="row">
+                    <div class="col-xs-5 text-nowrap">Сортировать по:</div>
+                    <div class="col-xs-5">
+                        <select name="order_by">
+                            <?php foreach ($orderTypes as $o): ?>
+                                <option value="<?php echo $o['id'] ?>">
+                                    <?php echo CommonHelper::_h($o['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-xs-5">
+                        <select name="order_direction">
+                            <option value="asc">По возрастанию</option>
+                            <option value="desc">По убыванию</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5"></div>
         </div>
 
-        <div id="list">
+        <div class="row">
             <?php if (!count($comments)): ?>
-                <div id="no_comments">НЕТ СООБЩЕНИЙ</div>
+                <p class="text-center">НЕТ СООБЩЕНИЙ</p>
             <?php endif ?>
             <?php foreach ($comments as $item): ?>
                 <?php echo $this->renderPhpFile(dirname(__FILE__) . '/_comment.php', ['item' => $item]); ?>

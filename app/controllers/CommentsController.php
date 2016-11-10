@@ -14,7 +14,7 @@ class CommentsController extends ControllerController
     public function actionIndex()
     {
         $this->title = CommonHelper::createTitle('список комментариев');
-        $this->scripts['css'] .= CommonHelper::createCssLink('/css/index.css');
+        $this->scripts['css'] .= CommonHelper::createCssLink('/css/comments.css');
 
         $orderBy = (isset($_REQUEST['comments']['order']['by']) && in_array(
                 CommentModel::getValidOrderFields(),
