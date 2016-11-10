@@ -9,6 +9,11 @@ class CsrfHelper extends SingletonHelper
 {
     protected $requestMethodsToCheck = ['POST', 'PUT', 'DELETE'];
 
+    public function getCsrfTokenName()
+    {
+        return ConfigHelper::getInstance()->getConfig()['csrf']['tokenName'];
+    }
+
     public function getCsrfToken()
     {
         if (!$csrfToken = $this->loadCsrfToken())
@@ -50,13 +55,19 @@ class CsrfHelper extends SingletonHelper
 
         $tokenName = ConfigHelper::getInstance()->getConfig()['csrf']['tokenName'];
 
-        assert($_SERVER['REQUEST_METHOD']);
+        assert(!empty($_SERVER['REQUEST_METHOD']));
 
         $method = strtoupper($_SERVER['REQUEST_METHOD']);
         if (in_array($method, $this->requestMethodsToCheck))
         {
             $method = '_' . $method;
-            $ret = ($$method[$tokenName] == $this->loadCsrfToken() || $_COOKIE[$tokenName] == $this->loadCsrfToken());
+            global ${$method};
+            $ret = ((isset(${$method}[$tokenName]) && ${$method}[$tokenName] == $this->loadCsrfToken())
+                || (isset($_COOKIE[$tokenName]) && $_COOKIE[$tokenName] == $this->loadCsrfToken()));
+        }
+        else
+        {
+            $ret = true;
         }
 
         return $ret;

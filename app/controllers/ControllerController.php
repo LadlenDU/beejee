@@ -9,6 +9,8 @@ abstract class ControllerController
      */
     protected $title = '';
 
+    protected $scripts = ['css' => '', 'js' => ''];
+
     protected $layout = 'main.php';
 
     protected function renderPhpFile($file, $params = [])
@@ -25,8 +27,9 @@ abstract class ControllerController
     {
         $file = $this->getViewsPath() . "$view.php";
 
-        $scripts = '';
+        $scripts = $this->scripts;
         $content = $this->renderPhpFile($file, $params);
+        $title = $this->title;
         require(APP_DIR . 'views/layouts/' . $this->layout);
     }
 
@@ -44,8 +47,6 @@ abstract class ControllerController
         assert($matchesCount > 1);
         unset($matches[0][count($matches[0]) - 1]);
         $folderName = implode('/', $matches[0]);
-        #$className = strtolower(get_class($this));
-        #$folderName = substr($className, 0, -strlen('Controller'));
         return APP_DIR . "views/$folderName/";
     }
 

@@ -9,7 +9,22 @@ class UserDefaultController extends ControllerController
 
     public function actionLogin()
     {
-        $this->render('login');
+        $this->title = CommonHelper::createTitle('логин пользователя');
+
+        $wrong_login = false;
+        if (isset($_POST['login']))
+        {
+            if (UserComponent::getInstance()->logIn($_POST['login'], $_POST['password']))
+            {
+                CommonHelper::redirect('comments');
+            }
+            else
+            {
+                $wrong_login = true;
+            }
+        }
+
+        $this->render('login', ['wrong_login' => $wrong_login]);
     }
 
 }

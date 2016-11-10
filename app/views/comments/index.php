@@ -31,17 +31,6 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
     });
 </script>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Список сообщений</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <?php echo (new UserWidget)->htmlLogoutItem(['form' => ['class' => 'navbar-form navbar-right']]) ?>
-        </div>
-    </div>
-</nav>
-
 <div class="container">
     <div class="row">
         <div class="col-md-2">Список:</div>

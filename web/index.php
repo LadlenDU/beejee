@@ -24,10 +24,15 @@ require(APP_DIR . 'helpers/Autoloader.php');
 try
 {
     CommonHelper::startSession();
+
+    if (!CsrfHelper::getInstance()->validateCsrfToken())
+    {
+        throw new Exception('Ошибка CSRF токена');
+    }
+
     (new RouterHelper($config))->run();
     #UserComponent::getInstance()->logIn('admin', '123');
     #$roles = UserComponent::getInstance()->getUserRoles();
-
 }
 catch (Exception $e)
 {
@@ -41,13 +46,13 @@ catch (Exception $e)
             $e->getLine(),
             $e->getTraceAsString()
         );
-
-        LoggerComponent::getInstance()->log($msg);
     }
     else
     {
         $msg = _('Server error');
     }
+
+    LoggerComponent::getInstance()->log($msg);
 
     if (CommonHelper::ifAjax())
     {

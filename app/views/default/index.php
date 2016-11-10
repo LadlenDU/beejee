@@ -1,4 +1,5 @@
 <?php #(new CommentsController($this->config))->actionIndex() ?>
+<?php echo CommonWidget::headerPanel() ?>
 Вы на заглавной странице.
 Перейдите на любую из страниц:
 <ul>

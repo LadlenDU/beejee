@@ -4,11 +4,14 @@ class FormWidget
 {
     public static function startForm($params)
     {
-        echo '<form type="submit" class="btn btn-success">';
+        $s = '<form ' . CommonHelper::getHtmlTagParams($params) . ">\n"
+            . '<input type="hidden" name="' . CsrfHelper::getInstance()->getCsrfTokenName() . '" '
+            . 'value="' . CsrfHelper::getInstance()->getCsrfToken() . '">' . "\n";
+        return $s;
     }
 
     public static function endForm()
     {
-        echo '</form>';
+        echo "</form>\n";
     }
 }

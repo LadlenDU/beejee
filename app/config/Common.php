@@ -4,6 +4,9 @@
 
 $config = [
     'appDir' => dirname(__DIR__),
+    'site' => [
+        'name' => 'Форма обратной связи'
+    ],
     'database' => [
         'type' => 'Mysqli',
         'connection' => [
