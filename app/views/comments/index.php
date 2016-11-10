@@ -37,31 +37,26 @@
     <div class="col-md-2 hidden-xs hidden-sm bg-info"><p class="text-center">Список:</p></div>
     <div class="col-md-5">
 
-        <div class="row order">
-            <div class="col-xs-7">
-                <div class="row">
-                    <div class="col-xs-5 text-nowrap">Сортировать по:</div>
-                    <div class="col-xs-5">
-                        <select name="order_by">
-                            <?php foreach ($orderTypes as $o): ?>
-                                <option value="<?php echo $o['id'] ?>">
-                                    <?php echo CommonHelper::_h($o['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-xs-5">
-                        <select name="order_direction">
-                            <option value="asc">По возрастанию</option>
-                            <option value="desc">По убыванию</option>
-                        </select>
-                    </div>
-                </div>
+        <div class="row order container-fluid">
+            <div class="col-md-4 col-sm-4 text-nowrap narrow-sides">Сортировать по:</div>
+            <div class="col-md-4 col-sm-4 narrow-sides">
+                <select name="order_by">
+                    <?php foreach ($orderTypes as $o): ?>
+                        <option value="<?php echo $o['id'] ?>">
+                            <?php echo CommonHelper::_h($o['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-            <div class="col-xs-5"></div>
+            <div class="col-md-4 col-sm-4 narrow-sides">
+                <select name="order_direction">
+                    <option value="asc">По возрастанию</option>
+                    <option value="desc">По убыванию</option>
+                </select>
+            </div>
         </div>
 
-        <div class="row">
+        <div class="row container-fluid">
             <?php if (!count($comments)): ?>
                 <p class="text-center">НЕТ СООБЩЕНИЙ</p>
             <?php endif ?>
@@ -75,25 +70,39 @@
 
     <div class="col-md-5">
 
-        <div id="new_comment">
-            <div class="row caption">Создайте новый комментарий:</div>
+        <div class="row">Новый комментарий:</div>
+        <div class="row container-fluid">
+            <?php echo FormWidget::startForm(
+                ['enctype' => 'multipart/form-data', 'action' => '/comments/add', 'id' => 'form_comment']
+            ) ?>
+                <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+
             <div class="row">
-                <form enctype="multipart/form-data" action="/addComment" method="POST" id="form_comment">
-                    <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
-                    <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
-                    <!-- Название элемента input определяет имя в массиве $_FILES -->
-                    Прикрепить изображение (допустимые форматы: JPG, GIF, PNG): <input name="image" type="file" />
-
-                Ваше имя: <input type="text" name="name" maxlength="<?php echo $fieldMaxLength['name'] ?>" />
-                Ваш email: <input type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>" />
-                Текст сообщения:
-                <textarea name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>"></textarea>
-
-                    <input type="submit" id="comment_preview" value="Предварительный просмотр"/>
-                    <input type="submit" name="send_comment" id="send_comment" value="Отправить"/>
-
-                </form>
+                Прикрепить изображение (допустимые форматы: JPG, GIF, PNG):<br>
+                <input name="image" type="file"
+                       accept=".jpg, .gif, .png, image/jpeg, image/gif, image/png"/>
             </div>
+
+            <div class="row">
+                Имя: <input type="text" name="name" maxlength="<?php echo $fieldMaxLength['name'] ?>" />
+            </div>
+            <div class="row">
+                Email: <input type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>" />
+            </div>
+            <div class="row">
+                Текст сообщения:<br>
+                <textarea name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>"></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-4">
+                    <input type="submit" id="comment_preview" value="Предварительный просмотр"/>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <input type="submit" id="send_comment" name="send_comment" value="Отправить"/>
+                </div>
+            </div>
+
+            <?php echo FormWidget::endForm() ?>
         </div>
 
     </div>

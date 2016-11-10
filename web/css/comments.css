@@ -30,9 +30,29 @@
 }
 
 [name="order_direction"] {
-    width: 135px;
+    width: 100%;
 }
 
 [name="order_by"] {
+    width: 100%;
+}
+
+/*.col-fixed-240 {
     width: 135px;
+    padding-left: 5px;
+    padding-right: 5px;
+}*/
+
+.order .narrow-sides {
+    padding-top: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.order div:first-child {
+    padding-left: 0;
+}
+
+.order div:last-child {
+    padding-right: 0;
 }
