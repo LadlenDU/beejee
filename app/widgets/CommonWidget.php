@@ -5,9 +5,10 @@ class CommonWidget
     public static function headerPanel()
     {
         $s =
-            '<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            '<nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">';
+
         if (UserComponent::getInstance()->getUserId())
         {
             $s .=
@@ -19,17 +20,22 @@ class CommonWidget
                     <span class="icon-bar"></span>
                 </button>';
         }
+
         $s .= '<a class="navbar-brand" href="/">Список сообщений</a>
-                    </div>
-                    <div class="navbar-collapse collapse" aria-expanded="true" id="w0-collapse">' .
-            (new UserWidget)->htmlLogoutItem(
-                [
-                    'form' => ['class' => 'navbar-right nav', 'role' => 'form'],
-                    'button' => ['class' => 'btn navbar-btn', 'type' => 'submit']
-                ]
-            )
-            . '      </div>
-                </div>
+                    </div>';
+        if (UserComponent::getInstance()->getUserId())
+        {
+            $s .= '<div class="navbar-collapse collapse" id="w0-collapse">'
+                . (new UserWidget)->htmlLogoutItem(
+                    [
+                        'form' => ['class' => 'navbar-right nav', 'role' => 'form'],
+                        'button' => ['class' => 'btn navbar-btn']
+                    ]
+                )
+                . '      </div>';
+        }
+
+        $s .= '</div>
             </nav>';
 
         return $s;

@@ -15,6 +15,6 @@ class FormWidget
 
     public static function endForm()
     {
-        echo "</form>\n";
+        return "</form>\n";
     }
 }
