@@ -19,13 +19,20 @@ class UserWidget
 
         if (UserComponent::getInstance()->getUserId())
         {
-            $s .= '<form '
-                . (isset($params['form']) ? CommonHelper::getHtmlTagParams($params['form']) : '') . '>'
+            $params['form'] = isset($params['form']) ? $params['form'] : [];
+            $params['button'] = isset($params['button']) ? $params['button'] : [];
+
+            $params['form']['action'] = '/user/logout';
+            $params['form']['method'] = 'POST';
+
+            $s .= FormWidget::startForm($params['form'])
+                . '<input type="hidden" name="logout" value="1">'
                 . '<p class="navbar-text">'
                 . CommonHelper::_h('Ваш логин:') . ' ' . UserComponent::getInstance()->getUserInfo()->login
                 . '</p><button type="submit" '
-                . (isset($params['button']) ? CommonHelper::getHtmlTagParams($params['button']) : '')
-                . '>' . CommonHelper::_h('Выйти') . '</button></form>';
+                . CommonHelper::getHtmlTagParams($params['button'])
+                . '>' . CommonHelper::_h('Выйти') . '</button>'
+                . FormWidget::endForm();
         }
 
         return $s;

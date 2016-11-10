@@ -27,4 +27,12 @@ class UserDefaultController extends ControllerController
         $this->render('login', ['wrong_login' => $wrong_login]);
     }
 
+    public function actionLogout()
+    {
+        if (!empty($_POST['logout']))
+        {
+            UserComponent::getInstance()->logOut();
+            CommonHelper::redirect();
+        }
+    }
 }

@@ -45,8 +45,8 @@ class UserComponent extends SingletonHelper
      */
     public function logOut()
     {
-        assert($_SESSION['user']['logged']);
-        assert($_SESSION['user']['id']);
+        #assert($_SESSION['user']['logged']);
+        #assert($_SESSION['user']['id']);
 
         unset($_SESSION['user']['logged']);
         unset($_SESSION['user']['id']);
