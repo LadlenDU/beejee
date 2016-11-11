@@ -8,6 +8,30 @@ class CommentsController extends ControllerController
             '_comment',
             ['item' => []]
         );
+
+        if (!empty($_FILES['image']['tmp_name']))
+        {
+            if ($_FILES['image']['size'] > ConfigHelper::getInstance(
+                )->getConfig['site']['comments']['creation_settings']['max_file_size']
+            )
+            {
+                CommonHelper::sendJsonResponse(false, ['message' => 'Вы пытались загрузить слишком большой файл.']);
+            }
+
+            $destFile = ConfigHelper::getInstance()->getConfig['appDir'] . '/runtime/temp_uploaded_files/'
+                . basename($_FILES['image']['tmp_name']);
+            if (move_uploaded_file($_FILES['userfile']['tmp_name'], $destFile))
+            {
+                CommonHelper::startSession();
+                $_SESSION['preview_image'] = $destFile;
+            }
+            else
+            {
+                CommonHelper::sendJsonResponse(false, ['message' => 'Ошибка загрузки файла.']);
+            }
+
+        }
+
         exit;
     }
 
@@ -15,16 +39,17 @@ class CommentsController extends ControllerController
     {
         $this->title = CommonHelper::createTitle('список комментариев');
         $this->scripts['css'] .= CommonHelper::createCssLink('/css/comments.css');
+        $this->scripts['js'] .= CommonHelper::createJsLink('/js/comments.js');
 
-        $orderBy = (isset($_REQUEST['comments']['order']['by']) && in_array(
+        $orderBy = (isset($_POST['comments']['order']['by']) && in_array(
                 CommentModel::getValidOrderFields(),
-                $_REQUEST['comments']['order']['by'],
+                $_POST['comments']['order']['by'],
                 true
-            )) ? $_REQUEST['comments']['order']['by'] : 'created';
+            )) ? $_POST['comments']['order']['by'] : 'created';
 
-        $orderDir = (isset($_REQUEST['comments']['order']['dir']) && DbHelper::obj()->ifValidOrderDirection(
-                $_REQUEST['comments']['order']['dir']
-            )) ? $_REQUEST['comments']['order']['dir'] : 'DESC';
+        $orderDir = (isset($_POST['comments']['order']['dir']) && DbHelper::obj()->ifValidOrderDirection(
+                $_POST['comments']['order']['dir']
+            )) ? $_POST['comments']['order']['dir'] : 'DESC';
 
         $comments = CommentModel::getComments($orderBy, $orderDir);
         $orderFields = CommentModel::getValidOrderFields();
@@ -40,9 +65,16 @@ class CommentsController extends ControllerController
         $fieldMaxLength['email'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email');
         $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text');
 
+        $imageParams = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings'];
+
         $this->render(
             'index',
-            ['titus' => '123', 'comments' => $comments->rows, 'orderTypes' => $orderTypes, 'fieldMaxLength' => $fieldMaxLength]
+            [
+                'comments' => $comments->rows,
+                'orderTypes' => $orderTypes,
+                'fieldMaxLength' => $fieldMaxLength,
+                'imageParams' => $imageParams
+            ]
         );
     }
 
@@ -53,7 +85,11 @@ class CommentsController extends ControllerController
         $_REQUEST['value'] = trim($_REQUEST['value']);
 
         $model = new User();
-        $win1251Value = mb_convert_encoding($_REQUEST['value'], ConfigHelper::getInstance()->getConfig()['globalEncoding'], 'UTF-8');
+        $win1251Value = mb_convert_encoding(
+            $_REQUEST['value'],
+            ConfigHelper::getInstance()->getConfig()['globalEncoding'],
+            'UTF-8'
+        );
 
         if ($errors = $model->verifyUserInfo([$_REQUEST['name'] => $win1251Value]))
         {
@@ -71,25 +107,4 @@ class CommentsController extends ControllerController
         exit;
     }
 
-    public function actionCreateNewUser()
-    {
-        $ret = ['success' => false];
-
-        $_REQUEST['name'] = trim($_REQUEST['name']);
-
-        $model = new User();
-        $win1251Name = mb_convert_encoding($_REQUEST['name'], ConfigHelper::getInstance()->getConfig()['globalEncoding'], 'UTF-8');
-
-        if ($errors = $model->verifyUserInfo(['name' => $win1251Name, 'age' => $_REQUEST['age']]))
-        {
-            $ret = ['success' => false, 'messages' => $errors];
-        }
-        elseif ($model->createUser($win1251Name, $_REQUEST['age'], $_REQUEST['city']))
-        {
-            $ret['success'] = true;
-        }
-
-        echo prepareJSON::jsonEncode($ret);
-        exit;
-    }
 }

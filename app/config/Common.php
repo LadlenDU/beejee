@@ -1,11 +1,15 @@
 <?php
 
-#define('DOCUMENT_ENCODING', 'UTF-8');
-
 $config = [
     'appDir' => dirname(__DIR__),
     'site' => [
-        'name' => 'Форма обратной связи'
+        'name' => 'Форма обратной связи',
+        'comments' => [
+            'creation_settings' => [
+                'max_file_size' => '3000000',
+                'types_allowed' => '.jpg, .gif, .png, image/jpeg, image/gif, image/png'
+            ]
+        ]
     ],
     'database' => [
         'type' => 'Mysqli',
@@ -31,7 +35,5 @@ $config = [
 ];
 
 #$config['debug'] = !empty($_GET['debug']);
-
-#$config['database']['className'] = $config['database']['type'] . 'DatabaseComponent';
 
 return $config;

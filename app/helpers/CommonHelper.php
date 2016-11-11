@@ -98,6 +98,12 @@ class CommonHelper
         return $rightPart ? ($leftPart . ' - ' . $rightPart) : $leftPart;
     }
 
+    public static function sendJsonResponse($success, $data = [])
+    {
+        header('Content-Type: application/json');
+        die(json_encode(['success' => $success, 'data' => $data]));
+    }
+
     /**
      * Создать тег для добавления файла CSS в хеадер.
      *
@@ -108,6 +114,20 @@ class CommonHelper
         $lnk = '<link rel="stylesheet" href="'
             . htmlspecialchars($file, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding'])
             . '">' . "\n";
+
+        return $lnk;
+    }
+
+    /**
+     * Создать тег для добавления файла JS в хеадер.
+     *
+     * @param string $file путь к файлу
+     */
+    public static function createJsLink($file)
+    {
+        $lnk = '<script src="'
+            . htmlspecialchars($file, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding'])
+            . '"></script>' . "\n";
 
         return $lnk;
     }

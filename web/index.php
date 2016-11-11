@@ -56,8 +56,7 @@ catch (Exception $e)
 
     if (CommonHelper::ifAjax())
     {
-        header('Content-Type: application/json');
-        die(json_encode(['success' => false, 'message' => $msg]));
+        CommonHelper::sendJsonResponse(false, ['message' => $msg]);
     }
     else
     {

@@ -12,9 +12,9 @@ DROP TABLE IF EXISTS image;
 CREATE TABLE image
 (
   `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type`    VARCHAR(5)       NOT NULL,
-  `width`   INT(11)          NOT NULL,
-  `height`  INT(11)          NOT NULL,
+--  `type`    VARCHAR(5)       NOT NULL,
+--  `width`   INT(11)          NOT NULL,
+--  `height`  INT(11)          NOT NULL,
   `content` MEDIUMBLOB,
   PRIMARY KEY (`id`)
 );
