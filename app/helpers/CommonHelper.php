@@ -52,6 +52,16 @@ class CommonHelper
     }
 
     /**
+     * htmlspecialchars
+     *
+     * @param string $html
+     */
+    public static function h($html)
+    {
+        return htmlspecialchars($html, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']);
+    }
+
+    /**
      * Возвращает строку параметров для вставки в html тег.
      *
      * @param array $params список [параметр => значение[, ...]]
@@ -130,5 +140,34 @@ class CommonHelper
             . '"></script>' . "\n";
 
         return $lnk;
+    }
+
+    /**
+     * Проверка на соответствие изображения к комментарию заданным в настройках параметрам.
+     *
+     * @param string $file путь к файлу
+     * @throws Exception
+     */
+    public static function validateCommentImage($file)
+    {
+        $ret = false;
+
+        if ($file)
+        {
+            $size = getimagesize($file);
+            if (!empty($size['mime']))
+            {
+                if (in_array(
+                    $size['mime'],
+                    ConfigHelper::getInstance()->getConfig(
+                    )['site']['comments']['creation_settings']['types_allowed_mime']
+                ))
+                {
+                    $ret = true;
+                }
+            }
+        }
+
+        return $ret;
     }
 }

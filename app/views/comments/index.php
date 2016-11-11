@@ -2,15 +2,15 @@
 
 <script type="text/javascript">
     $(function(){
-        comments.elements.lengths.name.min = 1;
-        comments.elements.lengths.name.max = <?php echo $fieldMaxLength['name'] ?>;
+        comments.elements.lengths.username.min = 1;
+        comments.elements.lengths.username.max = <?php echo $fieldMaxLength['username'] ?>;
         comments.elements.lengths.email.min = 5;
         comments.elements.lengths.email.max = <?php echo $fieldMaxLength['email'] ?>;
         comments.elements.lengths.text.min = 1;
         comments.elements.lengths.text.max = <?php echo $fieldMaxLength['text'] ?>;
     });
 
-    $(function () {
+    /*$(function () {
         $('#form_comment').click(function(e) {
 
             if ($(document.activeElement).attr('id') == 'comment_preview') {
@@ -34,7 +34,7 @@
                 });
             }
         });
-    });
+    });*/
 </script>
 
 <div class="row wrapper">
@@ -88,8 +88,8 @@
             ) ?>
 
             <div class="form-group">
-                <label for="name">Имя:</label>
-                <input id="name" type="text" name="name" maxlength="<?php echo $fieldMaxLength['name'] ?>" placeholder="Имя" class="form-control" />
+                <label for="username">Имя:</label>
+                <input id="username" type="text" name="username" maxlength="<?php echo $fieldMaxLength['username'] ?>" placeholder="Имя" class="form-control" />
             </div>
 
             <div class="form-group">

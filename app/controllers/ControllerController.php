@@ -36,8 +36,9 @@ abstract class ControllerController
     protected function renderPartial($view, $params = [])
     {
         $file = $this->getViewsPath() . "$view.php";
-        extract($params, EXTR_OVERWRITE);
-        require($file);
+        #extract($params, EXTR_OVERWRITE);
+        #require($file);
+        return $this->renderPhpFile($file, $params);
     }
 
     protected function getViewsPath()

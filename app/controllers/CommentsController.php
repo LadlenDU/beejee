@@ -4,23 +4,36 @@ class CommentsController extends ControllerController
 {
     public function actionPreview()
     {
-        $this->renderPartial(
-            '_comment',
-            ['item' => []]
-        );
+        $data = $_POST;
+        $data['image'] = [];
+
+        $data['username'] = trim($data['username']);
+        $data['email'] = trim($data['email']);
 
         if (!empty($_FILES['image']['tmp_name']))
         {
             if ($_FILES['image']['size'] > ConfigHelper::getInstance(
-                )->getConfig['site']['comments']['creation_settings']['max_file_size']
+                )->getConfig()['site']['comments']['creation_settings']['max_file_size']
             )
             {
                 CommonHelper::sendJsonResponse(false, ['message' => 'Вы пытались загрузить слишком большой файл.']);
             }
 
-            $destFile = ConfigHelper::getInstance()->getConfig['appDir'] . '/runtime/temp_uploaded_files/'
+            $data['image'] = $_FILES['image']['tmp_name'];
+        }
+
+        if (!$this->commentDataValidation($data))
+        {
+            CommonHelper::sendJsonResponse(false, ['message' => 'Не пройдена валидация.']);
+        }
+
+        $destFile = false;
+
+        if (!empty($_FILES['image']['tmp_name']))
+        {
+            $destFile = ConfigHelper::getInstance()->getConfig()['appDir'] . '/runtime/temp_uploaded_files/'
                 . basename($_FILES['image']['tmp_name']);
-            if (move_uploaded_file($_FILES['userfile']['tmp_name'], $destFile))
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $destFile))
             {
                 CommonHelper::startSession();
                 $_SESSION['preview_image'] = $destFile;
@@ -29,10 +42,64 @@ class CommentsController extends ControllerController
             {
                 CommonHelper::sendJsonResponse(false, ['message' => 'Ошибка загрузки файла.']);
             }
-
         }
 
+        $sqlFields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
+
+        $fields = [];
+        foreach ($sqlFields as $fld)
+        {
+            $fields[$fld->COLUMN_NAME] = '';
+        }
+
+        /*$fields = array_flip($fields);
+        array_walk(
+            $fields,
+            function (&$el)
+            {
+                $el = '';
+            }
+        );*/
+
+        $fields = array_merge($fields, $data);
+
+        $this->renderPartial(
+            '_comment',
+            [['item' => $fields, 'image' => $destFile]]
+        );
+
+        CommonHelper::sendJsonResponse(true, ['data' => 'Ошибка загрузки файла.']);
+
         exit;
+    }
+
+    protected function commentDataValidation($data)
+    {
+        $ret = false;
+
+        $lName = strlen($data['username']);
+        $lEmail = strlen($data['email']);
+        $lText = strlen($data['text']);
+        if (($lName >= 1 && $lName <= DbHelper::obj()->getCharacterMaximumLength(
+                    CommentModel::getTableName(),
+                    'username'
+                ))
+            && ($lEmail >= 5 && $lEmail <= DbHelper::obj()->getCharacterMaximumLength(
+                    CommentModel::getTableName(),
+                    'email'
+                ))
+            && ($lText >= 5 && $lText <= DbHelper::obj()->getCharacterMaximumLength(
+                    CommentModel::getTableName(),
+                    'text'
+                ))
+            && filter_var($data['email'], FILTER_VALIDATE_EMAIL)
+            && CommonHelper::validateCommentImage($data['image'])
+        )
+        {
+            $ret = true;
+        }
+
+        return $ret;
     }
 
     public function actionIndex()
@@ -61,7 +128,7 @@ class CommentsController extends ControllerController
         }
 
         $fieldMaxLength = [];
-        $fieldMaxLength['name'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username');
+        $fieldMaxLength['username'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username');
         $fieldMaxLength['email'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email');
         $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text');
 
@@ -78,7 +145,7 @@ class CommentsController extends ControllerController
         );
     }
 
-    public function actionUpdate()
+    /*public function actionUpdate()
     {
         $ret = ['success' => false];
 
@@ -105,6 +172,6 @@ class CommentsController extends ControllerController
 
         echo prepareJSON::jsonEncode($ret);
         exit;
-    }
+    }*/
 
 }

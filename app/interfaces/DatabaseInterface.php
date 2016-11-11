@@ -42,4 +42,12 @@ interface DatabaseInterface
      * @return int
      */
     public function getCharacterMaximumLength($table, $column);
+
+    /**
+     * Получает названия полей из таблицы.
+     *
+     * @param string $table название таблицы
+     * @return array
+     */
+    public function getFieldsName($table);
 }

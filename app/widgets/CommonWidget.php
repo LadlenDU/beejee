@@ -12,7 +12,6 @@ class CommonWidget
         if (UserComponent::getInstance()->getUserId())
         {
             $s .=
-
                 '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse">
                     <span class="sr-only">Переключить навигацию</span>
                     <span class="icon-bar"></span>

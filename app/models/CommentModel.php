@@ -18,7 +18,7 @@ class CommentModel
         return self::$tableName;
     }
 
-    static public function getComments($orderBy = 'created', $orderDir = 'DESC')
+    public static function getComments($orderBy = 'created', $orderDir = 'DESC')
     {
         $res = DbHelper::obj()->selectQuery(
             'SELECT * FROM ' . self::$tableName . ' AS com '
@@ -34,12 +34,12 @@ class CommentModel
      *
      * @return array
      */
-    static public function getValidOrderFields()
+    public static function getValidOrderFields()
     {
         return ['created', 'name', 'email'];
     }
 
-    static public function getLabels()
+    public static function getLabels()
     {
         return [
             'created' => _('Дата создания'),

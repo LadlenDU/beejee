@@ -1,5 +1,5 @@
 var comments = {
-    elements: {lengths: {name: {min: 1, max: 150}, email: {min: 5, max: 255}, text: {min: 1, max: 65535}}},
+    elements: {lengths: {username: {min: 1, max: 150}, email: {min: 5, max: 255}, text: {min: 1, max: 65535}}},
     verifyLength: function (type, length) {
         if (length < this.elements.lengths[type].min || length > this.elements.lengths[type].max) {
             return false;

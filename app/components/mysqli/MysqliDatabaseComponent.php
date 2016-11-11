@@ -5,7 +5,7 @@
  *
  * Работа с БД mySqli.
  */
-class MysqlidatabaseComponent implements DatabaseInterface
+class MysqliDatabaseComponent implements DatabaseInterface
 {
     protected static $mySqlLink;
 
@@ -121,14 +121,24 @@ class MysqlidatabaseComponent implements DatabaseInterface
      */
     public function getCharacterMaximumLength($table, $column)
     {
-        $sql = 'SELECT character_maximum_length FROM information_schema.columns'
-            . ' WHERE  table_schema = Database() '
+        $sql = 'SELECT `character_maximum_length` FROM `information_schema`.`columns`'
+            . ' WHERE `table_schema` = Database() '
             . ' AND '
-            . ' table_name = ' . $this->escape_string($table)
+            . ' `table_name` = ' . $this->escape_string($table)
             . ' AND '
-            . ' column_name = ' . $this->escape_string($column);
+            . ' `column_name` = ' . $this->escape_string($column);
 
         return $this->selectQuery($sql)->rows[0]->character_maximum_length;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getFieldsName($table)
+    {
+        $sql = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = '
+            . $this->escape_string($table);
+
+        return $this->selectQuery($sql)->rows;
+    }
 }

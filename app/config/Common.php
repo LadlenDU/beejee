@@ -7,7 +7,8 @@ $config = [
         'comments' => [
             'creation_settings' => [
                 'max_file_size' => '3000000',
-                'types_allowed' => '.jpg, .gif, .png, image/jpeg, image/gif, image/png'
+                'types_allowed' => '.jpg, .gif, .png, image/jpeg, image/gif, image/png',
+                'types_allowed_mime' => ['image/jpeg', 'image/gif', 'image/png'],
             ]
         ]
     ],
