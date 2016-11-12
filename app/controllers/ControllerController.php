@@ -47,7 +47,7 @@ abstract class ControllerController
         $matchesCount = preg_match_all("/[A-Z]+[a-z0-9_]*/", $className, $matches);
         assert($matchesCount > 1);
         unset($matches[0][count($matches[0]) - 1]);
-        $folderName = implode('/', $matches[0]);
+        $folderName = strtolower(implode('/', $matches[0]));
         return APP_DIR . "views/$folderName/";
     }
 
