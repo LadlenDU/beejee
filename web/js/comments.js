@@ -13,6 +13,10 @@ var comments = {
 
 $(function () {
 
+    $(".thumb_image").click(function (e) {
+        alert($(this).attr('data-preview-src'));
+    });
+
     $("#comment_preview").click(function (e) {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
@@ -25,11 +29,17 @@ $(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                helper.logInfo("success");
-                helper.logInfo(data);
+                if (data.success) {
+
+                } else {
+                    alert("Произошла ошибка: " + data.data.message);
+                }
+                //helper.logInfo("success");
+                //helper.logInfo(data);
             },
             error: function (data) {
-                helper.logInfo("error");
+                alert("Произошла ошибка: " + data);
+                helper.logInfo("Ошибка:");
                 helper.logInfo(data);
             }
         });

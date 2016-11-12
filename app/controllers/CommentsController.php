@@ -71,10 +71,15 @@ class CommentsController extends ControllerController
 
             if (is_uploaded_file($_FILES['image']['tmp_name']))
             {
-                if (($fNames = ImageHelper::reduceImageToMaxDimensions($_FILES['image']['tmp_name'], true, true))
-                    && (!empty($fNames['new_path']) && !empty($fNames['new_thumb_path'])))
+                if (($images = ImageHelper::reduceImageToMaxDimensions($_FILES['image']['tmp_name'], true, true))
+                    && (!empty($images['new']) && !empty($images['new_thumb']))
+                )
                 {
-                    $fields['images_data']['image']
+                    $images['new']['src'] = '/comments/show_temp_image?name=' . $images['new']['name'];
+                    $images['new_thumb']['src'] = '/comments/show_temp_image?name=' . $images['new_thumb']['name'];
+
+                    $fields['images_data']['image'] = $images['new'];
+                    $fields['images_data']['image_thumb'] = $images['new_thumb'];
                 }
                 else
                 {
@@ -87,14 +92,12 @@ class CommentsController extends ControllerController
             }
         }
 
-        $this->renderPartial(
+        $html = $this->renderPartial(
             '_comment',
             ['item' => $fields]
         );
 
-        CommonHelper::sendJsonResponse(true, ['data' => 'Ошибка загрузки файла.']);
-
-        exit;
+        CommonHelper::sendJsonResponse(true, $html);
     }
 
     protected function commentDataValidation($data)
@@ -167,7 +170,8 @@ class CommentsController extends ControllerController
                 'comments' => $comments->rows,
                 'orderTypes' => $orderTypes,
                 'fieldMaxLength' => $fieldMaxLength,
-                'imageParams' => $imageParams
+                'imageParams' => $imageParams,
+                'maxFileSize' => ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['max_file_size']
             ]
         );
     }

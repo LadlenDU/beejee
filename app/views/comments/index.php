@@ -104,7 +104,7 @@
 
             <div class="form-group">
                 <label for="file_image">Прикрепить изображение:</label>
-                <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $imageParams['max_file_size'] ?>" />
+                <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxFileSize ?>" />
                 <input name="image" type="file" id="file_image"
                        accept="<?php echo $imageParams['types_allowed'] ?>"/>
                 <p class="help-block">Допустимые форматы: JPG, GIF, PNG</p>

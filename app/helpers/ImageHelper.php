@@ -42,18 +42,18 @@ class ImageHelper
         $newPath .= '/' . uniqid('images', true);
 
         $maxSize = $conf['site']['comments']['creation_settings']['image']['max_size'];
-        if (self::resizeImageReduce($imagePath, $newPath, $maxSize))
+        if ($new = self::resizeImageReduce($imagePath, $newPath, $maxSize))
         {
-            $ret['new_path'] = $newPath;
+            $ret['new'] = $new;
         }
 
         if ($thumb)
         {
             $newThumbPath = self::getThumbName($newPath);
             $maxThumbSize = $conf['site']['comments']['creation_settings']['image']['max_thumb_size'];
-            if (self::resizeImageReduce($imagePath, $newThumbPath, $maxThumbSize))
+            if ($newThumb = self::resizeImageReduce($imagePath, $newThumbPath, $maxThumbSize))
             {
-                $ret['new_thumb_path'] = $newThumbPath;
+                $ret['new_thumb'] = $newThumb;
             }
         }
 
@@ -115,18 +115,21 @@ class ImageHelper
                     case 'image/jpeg':
                     case 'image/pjpeg':
                     {
-                        $ret = imagejpeg($dst, $newPath . 'jpg');
+                        $name = $newPath . 'jpg';
+                        $ret = imagejpeg($dst, $name);
                     }
                         break;
                     case 'image/gif':
                     {
-                        $ret = imagegif($dst, $newPath . 'gif');
+                        $name = $newPath . 'gif';
+                        $ret = imagegif($dst, $name);
                     }
                         break;
                     case 'image/png':
                     case 'image/x-png':
                     {
-                        $ret = imagepng($dst, $newPath . 'png', 9, PNG_ALL_FILTERS);
+                        $name = $newPath . 'png';
+                        $ret = imagepng($dst, $name, 9, PNG_ALL_FILTERS);
                     }
                         break;
                     default:
@@ -136,6 +139,11 @@ class ImageHelper
                 }
 
                 imagedestroy($dst);
+
+                if ($ret)
+                {
+                    $ret = ['name' => basename($name), 'width' => $width, 'height' => $height];
+                }
             }
         }
 
