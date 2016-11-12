@@ -2,14 +2,13 @@
 
 class CommentsController extends ControllerController
 {
-    public function actionPreview()
+    /**
+     * Валидация данных о комментарии (рассчитано на использование при $_POST запросе).
+     *
+     * @param array $data подготовленная информация о комментарии (к примеру $_POST запроса)
+     */
+    protected function validateCommentIncomingData($data)
     {
-        $data = $_POST;
-        $data['image'] = [];
-
-        $data['username'] = trim($data['username']);
-        $data['email'] = trim($data['email']);
-
         $validationData = $data;
 
         if (!empty($_FILES['image']['tmp_name']))
@@ -28,12 +27,37 @@ class CommentsController extends ControllerController
         {
             CommonHelper::sendJsonResponse(false, ['message' => 'Не пройдена валидация.']);
         }
+    }
 
-        $destFile = false;
+    protected function mergeTableFieldsAndIncomingData($data)
+    {
+        $fields = [];
+        $sqlFields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
+        foreach ($sqlFields as $fld)
+        {
+            $fields[$fld->COLUMN_NAME] = '';
+        }
+        $fields = array_merge($fields, $data);
+
+        return $fields;
+    }
+
+    public function actionPreview()
+    {
+        $data = $_POST;
+        #$data['image'] = [];
+
+        $data['username'] = trim($data['username']);
+        $data['email'] = trim($data['email']);
+
+        $this->validateCommentIncomingData($data);
+        $fields = $this->mergeTableFieldsAndIncomingData($data);
+
+        $fields['images_data'] = [];
 
         if (!empty($_FILES['image']['tmp_name']))
         {
-            $destFile = ConfigHelper::getInstance()->getConfig()['appDir'] . '/user_data/temp_uploaded_files/'
+            /*$destFile = ConfigHelper::getInstance()->getConfig()['appDir'] . '/user_data/images_temp/'
                 . basename($_FILES['image']['tmp_name']);
             if (move_uploaded_file($_FILES['image']['tmp_name'], $destFile))
             {
@@ -43,22 +67,25 @@ class CommentsController extends ControllerController
             else
             {
                 CommonHelper::sendJsonResponse(false, ['message' => 'Ошибка загрузки файла.']);
+            }*/
+
+            if (is_uploaded_file($_FILES['image']['tmp_name']))
+            {
+                if (($fNames = ImageHelper::reduceImageToMaxDimensions($_FILES['image']['tmp_name'], true, true))
+                    && (!empty($fNames['new_path']) && !empty($fNames['new_thumb_path'])))
+                {
+                    $fields['images_data']['image']
+                }
+                else
+                {
+                    LoggerComponent::getInstance()->log('Ошибка сохранения загруженного файла.');
+                }
+            }
+            else
+            {
+                CommonHelper::sendJsonResponse(false, ['message' => 'Ошибка загрузки файла.']);
             }
         }
-
-        $fields = [];
-        $sqlFields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
-        foreach ($sqlFields as $fld)
-        {
-            $fields[$fld->COLUMN_NAME] = '';
-        }
-
-        if ($destFile)
-        {
-            $data['image'] = '/comments/image_preview?name=' . urlencode($destFile);
-        }
-
-        $fields = array_merge($fields, $data);
 
         $this->renderPartial(
             '_comment',
