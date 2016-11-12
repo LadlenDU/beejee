@@ -3,6 +3,18 @@ var helper = {
         if (typeof console !== "undefined" && typeof console.log !== "undefined") {
             console.log(msg);
         }
+    },
+    ifJson: function (data) {
+        try {
+            jQuery.parseJSON(data)
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
+    showError: function (data) {
+        alert("Произошла ошибка: " + data);
+        this.logInfo("Error: " + data);
     }
 }
 
