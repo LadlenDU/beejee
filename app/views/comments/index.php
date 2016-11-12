@@ -68,6 +68,7 @@
 
         </div>
 
+        <div class="row" id="preview_messages"></div>
         <div class="row messages">
             <?php if (!count($comments)): ?>
                 <p class="text-center">НЕТ СООБЩЕНИЙ</p>

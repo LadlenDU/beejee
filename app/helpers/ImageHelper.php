@@ -104,7 +104,7 @@ class ImageHelper
                 $width = ceil($scale * $size[0]);
                 $height = ceil($scale * $size[1]);
 
-                $src = imagecreatefromstring($currentPath);
+                $src = imagecreatefromstring(file_get_contents($currentPath));
                 $dst = imagecreatetruecolor($width, $height);
 
                 imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
@@ -115,20 +115,20 @@ class ImageHelper
                     case 'image/jpeg':
                     case 'image/pjpeg':
                     {
-                        $name = $newPath . 'jpg';
+                        $name = $newPath . '.jpg';
                         $ret = imagejpeg($dst, $name);
                     }
                         break;
                     case 'image/gif':
                     {
-                        $name = $newPath . 'gif';
+                        $name = $newPath . '.gif';
                         $ret = imagegif($dst, $name);
                     }
                         break;
                     case 'image/png':
                     case 'image/x-png':
                     {
-                        $name = $newPath . 'png';
+                        $name = $newPath . '.png';
                         $ret = imagepng($dst, $name, 9, PNG_ALL_FILTERS);
                     }
                         break;

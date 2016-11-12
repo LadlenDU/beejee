@@ -97,16 +97,19 @@ class CommentsController extends ControllerController
             ['item' => $fields]
         );
 
-        CommonHelper::sendJsonResponse(true, $html);
+        //CommonHelper::sendJsonResponse(true, $html);
+        CommonHelper::sendTextResponse($html);
     }
 
     protected function commentDataValidation($data)
     {
         $ret = false;
 
-        $lName = strlen($data['username']);
-        $lEmail = strlen($data['email']);
-        $lText = strlen($data['text']);
+        $encoding = ConfigHelper::getInstance()->getConfig()['globalEncoding'];
+
+        $lName = mb_strlen($data['username'], $encoding);
+        $lEmail = mb_strlen($data['email'], $encoding);
+        $lText = mb_strlen($data['text'], $encoding);
         if (($lName >= 1 && $lName <= DbHelper::obj()->getCharacterMaximumLength(
                     CommentModel::getTableName(),
                     'username'
@@ -120,7 +123,7 @@ class CommentsController extends ControllerController
                     'text'
                 ))
             && filter_var($data['email'], FILTER_VALIDATE_EMAIL)
-            && CommonHelper::validateCommentImage($data['image'])
+            && (empty($data['image']) || CommonHelper::validateCommentImage($data['image']))
         )
         {
             $ret = true;

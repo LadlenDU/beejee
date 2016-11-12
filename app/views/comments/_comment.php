@@ -1,4 +1,4 @@
-<div class="row" data-id="<?php echo $item['id'] ?>">
+<div class="comment_panel container" data-id="<?php echo $item['id'] ?>">
 
     <?php if ($item['modified']): ?>
     <div class="admin_modified">Изменен администратором</div>
@@ -16,11 +16,14 @@
 
     <div class="name">
         <div class="capt">Имя:</div>
-        <div class="value"><?php $item['username'] ?></div>
+        <div class="value"><?php echo $item['username'] ?></div>
     </div>
     <div class="email">
         <div class="capt">Email:</div>
-        <div class="value"><?php $item['email'] ?></div>
+        <div class="value"><?php echo $item['email'] ?></div>
+    </div>
+    <div class="text">
+        <div class="value"><?php echo $item['text'] ?></div>
     </div>
 
 

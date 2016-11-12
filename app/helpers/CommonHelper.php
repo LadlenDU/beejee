@@ -110,8 +110,18 @@ class CommonHelper
 
     public static function sendJsonResponse($success, $data = [])
     {
+        if (!$success)
+        {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
         header('Content-Type: application/json');
         die(json_encode(['success' => $success, 'data' => $data]));
+    }
+
+    public static function sendTextResponse($text)
+    {
+        header('Content-Type: text/html');
+        die($text);
     }
 
     /**
@@ -166,6 +176,10 @@ class CommonHelper
                     $ret = true;
                 }
             }
+        }
+        else
+        {
+            $ret = true;    // Отсутствие изображения не есть ошибка, т. к. опционно
         }
 
         return $ret;

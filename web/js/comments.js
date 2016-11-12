@@ -29,18 +29,26 @@ $(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                if (data.success) {
-
-                } else {
-                    alert("Произошла ошибка: " + data.data.message);
+                $("#preview_messages").html(data);
+                $(".messages").hide();
+                $("#preview_messages").show(1000);
+                /*if (helper.ifJson(data)) {
+                    if (data.success) {
+                        $("#preview_messages").html(data.data);
+                        $(".messages").hide();
+                        $("#preview_messages").show(500);
+                    } else {
+                        helper.showError(data.data);
+                    }
                 }
-                //helper.logInfo("success");
-                //helper.logInfo(data);
+                else {
+                    helper.showError(data);
+                }*/
             },
-            error: function (data) {
-                alert("Произошла ошибка: " + data);
-                helper.logInfo("Ошибка:");
-                helper.logInfo(data);
+            error: function (x, e) {
+                if (x.status == 500) {
+                    helper.showError(x.responseJSON.data);
+                }
             }
         });
     });

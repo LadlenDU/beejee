@@ -56,7 +56,7 @@ catch (Exception $e)
 
     if (CommonHelper::ifAjax())
     {
-        CommonHelper::sendJsonResponse(false, ['message' => $msg]);
+        CommonHelper::sendJsonResponse(false, $msg);
     }
     else
     {
