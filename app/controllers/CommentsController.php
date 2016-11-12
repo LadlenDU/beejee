@@ -10,19 +10,21 @@ class CommentsController extends ControllerController
         $data['username'] = trim($data['username']);
         $data['email'] = trim($data['email']);
 
+        $validationData = $data;
+
         if (!empty($_FILES['image']['tmp_name']))
         {
-            if ($_FILES['image']['size'] > ConfigHelper::getInstance(
-                )->getConfig()['site']['comments']['creation_settings']['max_file_size']
+            if ($_FILES['image']['size'] > ConfigHelper::getInstance()->getConfig(
+                )['site']['comments']['creation_settings']['max_file_size']
             )
             {
                 CommonHelper::sendJsonResponse(false, ['message' => 'Вы пытались загрузить слишком большой файл.']);
             }
 
-            $data['image'] = $_FILES['image']['tmp_name'];
+            $validationData['image'] = $_FILES['image']['tmp_name'];
         }
 
-        if (!$this->commentDataValidation($data))
+        if (!$this->commentDataValidation($validationData))
         {
             CommonHelper::sendJsonResponse(false, ['message' => 'Не пройдена валидация.']);
         }
@@ -31,7 +33,7 @@ class CommentsController extends ControllerController
 
         if (!empty($_FILES['image']['tmp_name']))
         {
-            $destFile = ConfigHelper::getInstance()->getConfig()['appDir'] . '/runtime/temp_uploaded_files/'
+            $destFile = ConfigHelper::getInstance()->getConfig()['appDir'] . '/user_data/temp_uploaded_files/'
                 . basename($_FILES['image']['tmp_name']);
             if (move_uploaded_file($_FILES['image']['tmp_name'], $destFile))
             {
@@ -44,28 +46,23 @@ class CommentsController extends ControllerController
             }
         }
 
-        $sqlFields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
-
         $fields = [];
+        $sqlFields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
         foreach ($sqlFields as $fld)
         {
             $fields[$fld->COLUMN_NAME] = '';
         }
 
-        /*$fields = array_flip($fields);
-        array_walk(
-            $fields,
-            function (&$el)
-            {
-                $el = '';
-            }
-        );*/
+        if ($destFile)
+        {
+            $data['image'] = '/comments/image_preview?name=' . urlencode($destFile);
+        }
 
         $fields = array_merge($fields, $data);
 
         $this->renderPartial(
             '_comment',
-            [['item' => $fields, 'image' => $destFile]]
+            ['item' => $fields]
         );
 
         CommonHelper::sendJsonResponse(true, ['data' => 'Ошибка загрузки файла.']);
@@ -128,11 +125,14 @@ class CommentsController extends ControllerController
         }
 
         $fieldMaxLength = [];
-        $fieldMaxLength['username'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username');
+        $fieldMaxLength['username'] = DbHelper::obj()->getCharacterMaximumLength(
+            CommentModel::getTableName(),
+            'username'
+        );
         $fieldMaxLength['email'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email');
         $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text');
 
-        $imageParams = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings'];
+        $imageParams = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['image'];
 
         $this->render(
             'index',

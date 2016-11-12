@@ -160,7 +160,7 @@ class CommonHelper
                 if (in_array(
                     $size['mime'],
                     ConfigHelper::getInstance()->getConfig(
-                    )['site']['comments']['creation_settings']['types_allowed_mime']
+                    )['site']['comments']['creation_settings']['image']['types_allowed_mime']
                 ))
                 {
                     $ret = true;

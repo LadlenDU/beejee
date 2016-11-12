@@ -7,30 +7,31 @@ DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS role;
-DROP TABLE IF EXISTS image;
+-- DROP TABLE IF EXISTS image;
 
-CREATE TABLE image
-(
-  `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+-- CREATE TABLE image
+-- (
+--   `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 --  `type`    VARCHAR(5)       NOT NULL,
 --  `width`   INT(11)          NOT NULL,
 --  `height`  INT(11)          NOT NULL,
-  `content` MEDIUMBLOB,
-  PRIMARY KEY (`id`)
-);
+--   `content` MEDIUMBLOB,
+--   PRIMARY KEY (`id`)
+-- );
 
 CREATE TABLE comment
 (
-  `id`       INT(11) UNSIGNED                           NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(150)                               NOT NULL DEFAULT 'Anonimous',
-  `email`    VARCHAR(255),
-  `text`     TEXT,
-  `image_id` INT(11) UNSIGNED                           NULL,
-  `status`   ENUM ('UNDEFINED', 'REJECTED', 'APPROVED') NOT NULL DEFAULT 'UNDEFINED',
-  `created`  TIMESTAMP                                  NOT NULL,
-  `modified` TIMESTAMP                                  NULL,
-  FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
-    ON DELETE SET NULL,
+  `id`         INT(11) UNSIGNED                           NOT NULL AUTO_INCREMENT,
+  `username`   VARCHAR(150)                               NOT NULL DEFAULT 'Anonimous',
+  `email`      VARCHAR(255),
+  `text`       TEXT,
+  --  `image_id` INT(11) UNSIGNED                           NULL,
+  `image_name` VARCHAR(100)                               NULL,
+  `status`     ENUM ('UNDEFINED', 'REJECTED', 'APPROVED') NOT NULL DEFAULT 'UNDEFINED',
+  `created`    TIMESTAMP                                  NOT NULL,
+  `modified`   TIMESTAMP                                  NULL,
+  --  FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
+  --    ON DELETE SET NULL,
   PRIMARY KEY (`id`)
 );
 

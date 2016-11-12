@@ -1,5 +1,5 @@
-<div class="row" data-id="<?php echo isset($item['id']) ? $item['id'] : 0 ?>">
-    <?php if ($item->modified): ?>
+<div class="row" data-id="<?php echo $item['id'] ?>">
+    <?php if ($item['modified']): ?>
     <div class="admin_modified">Изменен администратором</div>
     <?php endif; ?>
     <div class="image">
