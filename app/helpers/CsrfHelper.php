@@ -28,13 +28,7 @@ class CsrfHelper extends SingletonHelper
         if (!$csrfToken = $this->loadCsrfToken())
         {
             $salt = ConfigHelper::getInstance()->getConfig()['csrf']['salt'];
-
-            $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.';
-            $mask = substr(str_shuffle(str_repeat($chars, 5)), 0, 8);
-            // The + sign may be decoded as blank space later, which will fail the validation
-            $secret = str_replace('+', '.', base64_encode($mask));
-
-            $csrfToken = $salt . ':' . md5($salt + ':' + $secret);
+            $csrfToken = $salt . ':' . md5($salt + ':' + uniqid('csrf_comments', true));
             $this->storeCsrfToken($csrfToken);
         }
 
