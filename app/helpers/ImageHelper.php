@@ -35,13 +35,12 @@ class ImageHelper
     {
         $ret = [];
 
-        $conf = ConfigHelper::getInstance()->getConfig();
-
-        $newPath = $conf['appDir'] . '/user_data/';
+        $newPath = ConfigHelper::getInstance()->getConfig()['appDir'] . '/user_data/';
         $newPath .= $temporary ? 'images_temp' : 'images';
         $newPath .= '/' . uniqid('images', true);
 
-        $maxSize = $conf['site']['comments']['creation_settings']['image']['max_size'];
+        $maxSize = ConfigHelper::getInstance()->getConfig(
+        )['site']['comments']['creation_settings']['image']['max_size'];
         if ($new = self::resizeImageReduce($imagePath, $newPath, $maxSize))
         {
             $ret['new'] = $new;
@@ -50,7 +49,8 @@ class ImageHelper
         if ($thumb)
         {
             $newThumbPath = self::getThumbName($newPath);
-            $maxThumbSize = $conf['site']['comments']['creation_settings']['image']['max_thumb_size'];
+            $maxThumbSize = ConfigHelper::getInstance()->getConfig(
+            )['site']['comments']['creation_settings']['image']['max_thumb_size'];
             if ($newThumb = self::resizeImageReduce($imagePath, $newThumbPath, $maxThumbSize))
             {
                 $ret['new_thumb'] = $newThumb;

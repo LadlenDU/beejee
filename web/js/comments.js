@@ -1,14 +1,11 @@
-var comments = {
-    elements: {lengths: {username: {min: 1, max: 150}, email: {min: 5, max: 255}, text: {min: 1, max: 65535}}},
-    verifyLength: function (type, length) {
-        if (length < this.elements.lengths[type].min || length > this.elements.lengths[type].max) {
-            return false;
-        }
-        return true;
-    },
-    verifyData: function (formData) {
-        alert(formData);
+comments.verifyLength = function (type, length) {
+    if (length < this.elements.lengths[type].min || length > this.elements.lengths[type].max) {
+        return false;
     }
+    return true;
+};
+comments.verifyData = function (formData) {
+    alert(formData);
 };
 
 $(function () {
@@ -33,19 +30,19 @@ $(function () {
                 $(".messages").hide();
                 $("#preview_messages").show(1000);
                 /*if (helper.ifJson(data)) {
-                    if (data.success) {
-                        $("#preview_messages").html(data.data);
-                        $(".messages").hide();
-                        $("#preview_messages").show(500);
-                    } else {
-                        helper.showError(data.data);
-                    }
-                }
-                else {
-                    helper.showError(data);
-                }*/
+                 if (data.success) {
+                 $("#preview_messages").html(data.data);
+                 $(".messages").hide();
+                 $("#preview_messages").show(500);
+                 } else {
+                 helper.showError(data.data);
+                 }
+                 }
+                 else {
+                 helper.showError(data);
+                 }*/
             },
-            error: function (x, e) {
+            error: function (x) {
                 if (x.status == 500) {
                     helper.showError(x.responseJSON.data);
                 }
