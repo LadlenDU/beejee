@@ -20,17 +20,6 @@ class RouterHelper
     protected $page404 = ['controller' => 'default', 'action' => '404'];
 
     /**
-     * Конфигурация.
-     * @var array
-     */
-    protected $config;
-
-    public function __construct()
-    {
-        $this->config = ConfigHelper::getInstance()->getConfig();
-    }
-
-    /**
      * Проанализировать путь и найти по нему названия класса контроллера и название функции действие.
      * Если контроллер или действие не найдено, возвращает контроллер и действие к странице 404.
      *
@@ -207,6 +196,6 @@ class RouterHelper
             $controllerAction = $this->getRoute($routeParts);
         }
 
-        (new $controllerAction['controller']($this->config))->$controllerAction['action']();
+        (new $controllerAction['controller']())->$controllerAction['action']();
     }
 }
