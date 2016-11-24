@@ -136,6 +136,7 @@ class CommentsController extends ControllerController
     {
         $this->title = CommonHelper::createTitle('список комментариев');
         $this->scripts['css'] .= CommonHelper::createCssLink('/css/comments.css');
+        $this->scripts['js'] .= CommonHelper::createJsLink('/js/comments.inc');
         $this->scripts['js'] .= CommonHelper::createJsLink('/js/comments.js');
 
         $orderBy = (isset($_POST['comments']['order']['by']) && in_array(
@@ -158,12 +159,18 @@ class CommentsController extends ControllerController
         }
 
         $fieldMaxLength = [];
-        $fieldMaxLength['username'] = DbHelper::obj()->getCharacterMaximumLength(
-            CommentModel::getTableName(),
-            'username'
-        );
-        $fieldMaxLength['email'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email');
-        $fieldMaxLength['text'] = DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text');
+        #$fieldMaxLength['username'] = DbHelper::obj()->getCharacterMaximumLength(
+        #    CommentModel::getTableName(),
+        #    'username'
+        #);
+        $confTS = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['text_sizes'];
+        $fieldMaxLength['username'] = $confTS['username']['max'];
+        $fieldMaxLength['email'] = $confTS['email']['max'];
+        $fieldMaxLength['text'] = $confTS['text']['max'];
+
+        $fieldMinLength['username'] = $confTS['username']['min'];
+        $fieldMinLength['email'] = $confTS['email']['min'];
+        $fieldMinLength['text'] = $confTS['text']['min'];
 
         $imageParams = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['image'];
 
@@ -173,6 +180,7 @@ class CommentsController extends ControllerController
                 'comments' => $comments->rows,
                 'orderTypes' => $orderTypes,
                 'fieldMaxLength' => $fieldMaxLength,
+                'fieldMinLength' => $fieldMinLength,
                 'imageParams' => $imageParams,
                 'maxFileSize' => ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['max_file_size']
             ]
