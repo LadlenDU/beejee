@@ -2,11 +2,7 @@
 
 class SingletonHelper
 {
-    private static $instances = array();
-
-    protected function __construct()
-    {
-    }
+    private static $instances = [];
 
     protected function __clone()
     {
@@ -14,7 +10,7 @@ class SingletonHelper
 
     public function __wakeup()
     {
-        throw new Exception("Cannot unserialize singleton");
+        throw new Exception('Cannot unserialize singleton');
     }
 
     public static function getInstance()
