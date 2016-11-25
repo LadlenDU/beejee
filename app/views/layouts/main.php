@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="ru">
 <head>
     <meta charset="<?php echo ConfigHelper::getInstance()->getConfig()['globalEncoding']; ?>"/>

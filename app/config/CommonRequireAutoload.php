@@ -7,15 +7,15 @@ $config = [
                 'text_sizes' => [
                     'username' => [
                         'min' => 1,
-                        'max' => DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username')
+                        'max' => (int)DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username')
                     ],
-                    'mail' => [
+                    'email' => [
                         'min' => 5,
-                        'max' => DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email')
+                        'max' => (int)DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'email')
                     ],
                     'text' => [
                         'min' => 1,
-                        'max' => DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text')
+                        'max' => (int)DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'text')
                     ]
                 ]
             ]

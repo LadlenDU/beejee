@@ -136,7 +136,6 @@ class CommentsController extends ControllerController
     {
         $this->title = CommonHelper::createTitle('список комментариев');
         $this->scripts['css'] .= CommonHelper::createCssLink('/css/comments.css');
-        $this->scripts['js'] .= CommonHelper::createJsLink('/js/comments.inc');
         $this->scripts['js'] .= CommonHelper::createJsLink('/js/comments.js');
 
         $orderBy = (isset($_POST['comments']['order']['by']) && in_array(
@@ -164,6 +163,7 @@ class CommentsController extends ControllerController
         #    'username'
         #);
         $confTS = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['text_sizes'];
+
         $fieldMaxLength['username'] = $confTS['username']['max'];
         $fieldMaxLength['email'] = $confTS['email']['max'];
         $fieldMaxLength['text'] = $confTS['text']['max'];
@@ -171,6 +171,42 @@ class CommentsController extends ControllerController
         $fieldMinLength['username'] = $confTS['username']['min'];
         $fieldMinLength['email'] = $confTS['email']['min'];
         $fieldMinLength['text'] = $confTS['text']['min'];
+
+        $fieldMaxLengthAlert['username'] = sprintf(
+            _(
+                'Имя пользователя не должно иметь больше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
+            ),
+            $fieldMaxLength['username']
+        );
+        $fieldMaxLengthAlert['email'] = sprintf(
+            _(
+                'Email не должен иметь больше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
+            ),
+            $fieldMaxLength['email']
+        );
+        $fieldMaxLengthAlert['text'] = sprintf(
+            _(
+                'Сообщение не должно иметь больше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
+            ),
+            $fieldMaxLength['text']
+        );
+
+        $fieldMinLengthAlert['username'] = sprintf(
+            _('Имя пользователя не должно иметь меньше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'),
+            $fieldMaxLength['username']
+        );
+        $fieldMinLengthAlert['email'] = sprintf(
+            _(
+                'Email не должен иметь меньше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
+            ),
+            $fieldMaxLength['email']
+        );
+        $fieldMinLengthAlert['text'] = sprintf(
+            _(
+                'Сообщение не должно иметь меньше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
+            ),
+            $fieldMaxLength['text']
+        );
 
         $imageParams = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['image'];
 
@@ -181,8 +217,11 @@ class CommentsController extends ControllerController
                 'orderTypes' => $orderTypes,
                 'fieldMaxLength' => $fieldMaxLength,
                 'fieldMinLength' => $fieldMinLength,
+                'fieldMaxLengthAlert' => $fieldMaxLengthAlert,
+                'fieldMinLengthAlert' => $fieldMinLengthAlert,
                 'imageParams' => $imageParams,
-                'maxFileSize' => ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['max_file_size']
+                'maxFileSize' => ConfigHelper::getInstance()->getConfig(
+                )['site']['comments']['creation_settings']['max_file_size']
             ]
         );
     }

@@ -5,7 +5,49 @@ comments.verifyLength = function (type, length) {
     return true;
 };
 comments.verifyData = function (formData) {
-    alert(formData);
+    var errors = [];
+
+    /*function VVV()
+    {
+        alert('sdfsdflj');
+    }
+
+    VVV();*/
+
+    with (comments.elements.lengths) {
+
+        $("#form_comment .form-group").removeClass("has-error");
+
+        var fUsername = formData.get("username").trim();
+        $("#form_comment input[name=username]").val(fUsername);
+
+        if (fUsername.length < username.min) {
+            $("#form_comment .form-group:has(input[name=username])").addClass("has-error");
+            $("#form_comment input[name=username] + p.help-block-error").html(username.min_alert);
+            $("#form_comment input[name=username] + p.help-block-error").show();
+        } else if (fUsername.length > username.max) {
+            errors.push(username.max_alert);
+        }
+        if (formData.email.length < email.min) {
+            errors.push(email.min_alert);
+        } else if (formData.email.length > email.max) {
+            errors.push(email.max_alert);
+        }
+        if (formData.text.length < text.min) {
+            errors.push(text.min_alert);
+            //$("")
+        } else if (formData.text.length > text.max) {
+            errors.push(text.max_alert);
+        }
+
+        if (errors) {
+            alert(implode('\n', errors));
+            return false;
+        }
+
+    }
+
+    return true;
 };
 
 $(function () {
@@ -18,7 +60,9 @@ $(function () {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
 
-        //comments.verifyData(formData);
+        comments.verifyData(formData);
+        //comments.verifyData.VVV();
+        return false;
 
         $.ajax({
             url: '/comments/preview',

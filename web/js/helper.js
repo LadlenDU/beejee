@@ -15,7 +15,19 @@ var helper = {
     showError: function (data) {
         alert("Произошла ошибка: " + data);
         this.logInfo("Error: " + data);
+    },
+    implode: function (glue, pieces) {
+        return ((pieces instanceof Array) ? pieces.join(glue) : pieces);
     }
+}
+
+if (!String.prototype.trim) {
+    (function () {
+        // Вырезаем BOM и неразрывный пробел
+        String.prototype.trim = function () {
+            return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        };
+    })();
 }
 
 $(function () {

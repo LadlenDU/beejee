@@ -27,6 +27,12 @@
     padding-top: 10px;
 }
 
+.create_comment.main_column {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .wrapper {
     margin-bottom: 20px;
 }
@@ -65,13 +71,13 @@
     width: 100%;
 }
 
-.create_comment .row {
+/*.create_comment .row {
     margin-bottom: 10px;
-}
+}*/
 
-.create_comment {
+/*.create_comment {
     background-color: #d1d1d1;
-}
+}*/
 
 .list_caption {
     background-color: #222222;
@@ -82,4 +88,16 @@
 
 .messages {
     margin-bottom: 20px;
+}
+
+.comment_preview_btn {
+    padding-bottom: 5px;
+}
+
+.create_comment .panel {
+    margin-bottom: 0;
+}
+
+.help-block-error {
+    display: none;
 }
