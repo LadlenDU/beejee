@@ -7,8 +7,6 @@ if (version_compare(phpversion(), '5.4.0', '<') == true)
 
 define('APP_DIR', realpath(__DIR__ . '/../app') . '/');
 
-//setlocale(LC_ALL, 'ru_RU');
-
 require(APP_DIR . 'helpers/Autoloader.php');
 
 $config = ConfigHelper::getInstance()->getConfig();

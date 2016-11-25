@@ -5,49 +5,47 @@ comments.verifyLength = function (type, length) {
     return true;
 };
 comments.verifyData = function (formData) {
-    var errors = [];
 
-    /*function VVV()
-    {
-        alert('sdfsdflj');
-    }
+    var success = true;
 
-    VVV();*/
+    function setWrongLengthInput(itemName) {
+        var itemContent = formData.get(itemName).trim();
+        $("#form_comment input[name=" + itemName + "]").val(itemContent);
 
-    with (comments.elements.lengths) {
+        if (itemContent.length < comments.elements.lengths[itemName].min
+            || itemContent.length > comments.elements.lengths[itemName].max) {
 
-        $("#form_comment .form-group").removeClass("has-error");
+            $("#form_comment .form-group:has(input[name=" + itemName + "])").addClass("has-error");
+            $("#form_comment input[name=" + itemName + "] + p.help-block-error")
+                .html(comments.elements.lengths[itemName].range_alert);
+            $("#form_comment input[name=" + itemName + "] + p.help-block-error").show();
 
-        var fUsername = formData.get("username").trim();
-        $("#form_comment input[name=username]").val(fUsername);
-
-        if (fUsername.length < username.min) {
-            $("#form_comment .form-group:has(input[name=username])").addClass("has-error");
-            $("#form_comment input[name=username] + p.help-block-error").html(username.min_alert);
-            $("#form_comment input[name=username] + p.help-block-error").show();
-        } else if (fUsername.length > username.max) {
-            errors.push(username.max_alert);
-        }
-        if (formData.email.length < email.min) {
-            errors.push(email.min_alert);
-        } else if (formData.email.length > email.max) {
-            errors.push(email.max_alert);
-        }
-        if (formData.text.length < text.min) {
-            errors.push(text.min_alert);
-            //$("")
-        } else if (formData.text.length > text.max) {
-            errors.push(text.max_alert);
-        }
-
-        if (errors) {
-            alert(implode('\n', errors));
             return false;
         }
 
+        return true;
     }
 
-    return true;
+    $("#form_comment .form-group").removeClass("has-error");
+
+    success &= setWrongLengthInput("username");
+    success &= setWrongLengthInput("email");
+    success &= setWrongLengthInput("text");
+
+    var emailContent = formData.get("email").trim();
+
+    var expr = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!expr.test(emailContent))
+    {
+        $("#form_comment .form-group:has(input[name=email])").addClass("has-error");
+        $("#form_comment input[name=email] + p.help-block-error")
+            .html(comments.elements.lengths["email"].wrong_email_alert);
+        $("#form_comment input[name=email] + p.help-block-error").show();
+
+        success = false;
+    }
+
+    return success;
 };
 
 $(function () {

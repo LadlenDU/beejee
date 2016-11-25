@@ -172,41 +172,23 @@ class CommentsController extends ControllerController
         $fieldMinLength['email'] = $confTS['email']['min'];
         $fieldMinLength['text'] = $confTS['text']['min'];
 
-        $fieldMaxLengthAlert['username'] = sprintf(
-            _(
-                'Имя пользователя не должно иметь больше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
-            ),
+        $allowedRangeAlert['username'] = sprintf(
+            _('Допустимое количество знаков в имени пользователя: [%d, %d]'),
+            $fieldMinLength['username'],
             $fieldMaxLength['username']
         );
-        $fieldMaxLengthAlert['email'] = sprintf(
-            _(
-                'Email не должен иметь больше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
-            ),
+        $allowedRangeAlert['email'] = sprintf(
+            _('Допустимое количество знаков в email: [%d, %d]'),
+            $fieldMinLength['email'],
             $fieldMaxLength['email']
         );
-        $fieldMaxLengthAlert['text'] = sprintf(
-            _(
-                'Сообщение не должно иметь больше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
-            ),
+        $allowedRangeAlert['text'] = sprintf(
+            _('Допустимое количество знаков в сообщении: [%d, %d]'),
+            $fieldMinLength['text'],
             $fieldMaxLength['text']
         );
 
-        $fieldMinLengthAlert['username'] = sprintf(
-            _('Имя пользователя не должно иметь меньше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'),
-            $fieldMaxLength['username']
-        );
-        $fieldMinLengthAlert['email'] = sprintf(
-            _(
-                'Email не должен иметь меньше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
-            ),
-            $fieldMaxLength['email']
-        );
-        $fieldMinLengthAlert['text'] = sprintf(
-            _(
-                'Сообщение не должно иметь меньше %d {n, plural, one{# символ} few{# символа} many{# символов} other{# в общем количестве символов}}.'
-            ),
-            $fieldMaxLength['text']
-        );
+        $wrongEmailAlert = _("Неправильный формат email");
 
         $imageParams = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['image'];
 
@@ -217,8 +199,8 @@ class CommentsController extends ControllerController
                 'orderTypes' => $orderTypes,
                 'fieldMaxLength' => $fieldMaxLength,
                 'fieldMinLength' => $fieldMinLength,
-                'fieldMaxLengthAlert' => $fieldMaxLengthAlert,
-                'fieldMinLengthAlert' => $fieldMinLengthAlert,
+                'allowedRangeAlert' => $allowedRangeAlert,
+                'wrongEmailAlert' => $wrongEmailAlert,
                 'imageParams' => $imageParams,
                 'maxFileSize' => ConfigHelper::getInstance()->getConfig(
                 )['site']['comments']['creation_settings']['max_file_size']

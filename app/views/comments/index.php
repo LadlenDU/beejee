@@ -1,65 +1,28 @@
 <?php echo CommonWidget::headerPanel() ?>
 
 <script type="text/javascript">
-    //$(function(){
-        /*comments.elements.lengths.username.min = 1;
-        comments.elements.lengths.username.max = <?php echo $fieldMaxLength['username'] ?>;
-        comments.elements.lengths.email.min = 5;
-        comments.elements.lengths.email.max = <?php echo $fieldMaxLength['email'] ?>;
-        comments.elements.lengths.text.min = 1;
-        comments.elements.lengths.text.max = <?php echo $fieldMaxLength['text'] ?>;*/
-
     var comments = {
         elements: {
             lengths: {
                 username: {
                     min:<?php echo json_encode($fieldMinLength['username']) ?>,
                     max:<?php echo json_encode($fieldMaxLength['username']) ?>,
-                    min_alert:<?php echo json_encode($fieldMinLengthAlert['username']) ?>,
-                    max_alert:<?php echo json_encode($fieldMaxLengthAlert['username']) ?>
+                    range_alert:<?php echo json_encode($allowedRangeAlert['username']) ?>
                 },
                 email: {
                     min:<?php echo json_encode($fieldMinLength['email']) ?>,
                     max:<?php echo json_encode($fieldMaxLength['email']) ?>,
-                    min_alert:<?php echo json_encode($fieldMinLengthAlert['email']) ?>,
-                    max_alert:<?php echo json_encode($fieldMaxLengthAlert['email']) ?>
+                    range_alert:<?php echo json_encode($allowedRangeAlert['email']) ?>,
+                    wrong_email_alert:<?php echo json_encode($wrongEmailAlert) ?>
                 },
                 text: {
                     min:<?php echo json_encode($fieldMinLength['text']) ?>,
                     max:<?php echo json_encode($fieldMaxLength['text']) ?>,
-                    min_alert:<?php echo json_encode($fieldMinLengthAlert['text']) ?>,
-                    max_alert:<?php echo json_encode($fieldMaxLengthAlert['text']) ?>
+                    range_alert:<?php echo json_encode($allowedRangeAlert['text']) ?>
                 }
             }
         }
     };
-    //});
-
-    /*$(function () {
-        $('#form_comment').click(function(e) {
-
-            if ($(document.activeElement).attr('id') == 'comment_preview') {
-                var formData = new FormData(this);
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '/comments/preview',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                        logInfo("success");
-                        logInfo(data);
-                    },
-                    error: function (data) {
-                        logInfo("error");
-                        logInfo(data);
-                    }
-                });
-            }
-        });
-    });*/
 </script>
 
 <div class="row wrapper">
@@ -73,7 +36,8 @@
                 ['class' => 'form-horizontal', 'id' => 'form_order']
             ) ?>
 
-            <div class="col-md-4 col-sm-4 narrow-sides"><label class="text-nowrap control-label">Сортировать по:</label></div>
+            <div class="col-md-4 col-sm-4 narrow-sides"><label class="text-nowrap control-label">Сортировать по:</label>
+            </div>
             <div class="col-md-4 col-sm-4 narrow-sides">
                 <select name="order_by" class="form-control">
                     <?php foreach ($orderTypes as $o): ?>
@@ -119,36 +83,46 @@
 
                     <div class="form-group required">
                         <label for="username" class="control-label">Имя:</label>
-                        <input autofocus="autofocus" id="username" type="text" name="username" maxlength="<?php echo $fieldMaxLength['username'] ?>" placeholder="Имя" class="form-control" />
+                        <input autofocus="autofocus" id="username" type="text" name="username"
+                               maxlength="<?php echo $fieldMaxLength['username'] ?>" placeholder="Имя"
+                               class="form-control"/>
+
                         <p class="help-block help-block-error"></p>
                     </div>
 
                     <div class="form-group required ">
                         <label for="email" class="control-label">Email:</label>
-                        <input id="email" type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>" placeholder="Email" class="form-control" />
+                        <input id="email" type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>"
+                               placeholder="Email" class="form-control"/>
+
                         <p class="help-block help-block-error"></p>
                     </div>
 
                     <div class="form-group required ">
                         <label for="text" class="control-label">Текст сообщения:</label>
-                        <textarea id="text" name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>" rows="5" class="form-control"></textarea>
+                        <textarea id="text" name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>" rows="5"
+                                  class="form-control"></textarea>
+
                         <p class="help-block help-block-error"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="file_image">Прикрепить изображение:</label>
-                        <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxFileSize ?>" />
+                        <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxFileSize ?>"/>
                         <input name="image" type="file" id="file_image"
                                accept="<?php echo $imageParams['types_allowed'] ?>"/>
+
                         <p class="help-block">Допустимые форматы: JPG, GIF, PNG</p>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-8 col-sm-4 comment_preview_btn">
-                            <input type="submit" id="comment_preview" value="Предварительный просмотр" class="btn btn-default"/>
+                            <input type="submit" id="comment_preview" value="Предварительный просмотр"
+                                   class="btn btn-default"/>
                         </div>
                         <div class="col-md-4 col-sm-4">
-                            <input type="submit" id="send_comment" name="send_comment" value="Отправить" class="btn btn-default"/>
+                            <input type="submit" id="send_comment" name="send_comment" value="Отправить"
+                                   class="btn btn-default"/>
                         </div>
                     </div>
 
