@@ -77,6 +77,7 @@
             </div>
             <div class="panel-body">
                 <div class="row container-fluid">
+
                     <?php echo FormWidget::startForm(
                         ['enctype' => 'multipart/form-data', 'action' => '/comments/add', 'id' => 'form_comment']
                     ) ?>
@@ -84,6 +85,8 @@
                     <div class="form-group required">
                         <label for="username" class="control-label">Имя:</label>
                         <input autofocus="autofocus" id="username" type="text" name="username"
+                               data-minlength="<?php echo $fieldMinLength['username'] ?>"
+                               data-range-alert="<?php echo CommonHelper::h($allowedRangeAlert['username']) ?>"
                                maxlength="<?php echo $fieldMaxLength['username'] ?>" placeholder="Имя"
                                class="form-control"/>
 
@@ -93,6 +96,9 @@
                     <div class="form-group required ">
                         <label for="email" class="control-label">Email:</label>
                         <input id="email" type="text" name="email" maxlength="<?php echo $fieldMaxLength['email'] ?>"
+                               data-minlength="<?php echo $fieldMinLength['email'] ?>"
+                               data-range-alert="<?php echo CommonHelper::h($allowedRangeAlert['email']) ?>"
+                               data-wrong-email-alert="<?php echo CommonHelper::h($wrongEmailAlert) ?>"
                                placeholder="Email" class="form-control"/>
 
                         <p class="help-block help-block-error"></p>
@@ -101,6 +107,8 @@
                     <div class="form-group required ">
                         <label for="text" class="control-label">Текст сообщения:</label>
                         <textarea id="text" name="text" maxlength="<?php echo $fieldMaxLength['text'] ?>" rows="5"
+                                  data-minlength="<?php echo $fieldMinLength['text'] ?>"
+                                  data-range-alert="<?php echo CommonHelper::h($allowedRangeAlert['text']) ?>"
                                   class="form-control"></textarea>
 
                         <p class="help-block help-block-error"></p>
@@ -125,7 +133,6 @@
                                    class="btn btn-default"/>
                         </div>
                     </div>
-
 
                     <?php echo FormWidget::endForm() ?>
                 </div>

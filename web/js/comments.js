@@ -8,17 +8,18 @@ comments.verifyData = function (formData) {
 
     var success = true;
 
-    function setWrongLengthInput(itemName) {
-        var itemContent = formData.get(itemName).trim();
-        $("#form_comment input[name=" + itemName + "]").val(itemContent);
-
+    function setWrongLengthInput(itemContent, itemName) {
         if (itemContent.length < comments.elements.lengths[itemName].min
             || itemContent.length > comments.elements.lengths[itemName].max) {
 
-            $("#form_comment .form-group:has(input[name=" + itemName + "])").addClass("has-error");
+            /*$("#form_comment .form-group:has(input[name=" + itemName + "])").addClass("has-error");
             $("#form_comment input[name=" + itemName + "] + p.help-block-error")
                 .html(comments.elements.lengths[itemName].range_alert);
-            $("#form_comment input[name=" + itemName + "] + p.help-block-error").show();
+            $("#form_comment input[name=" + itemName + "] + p.help-block-error").show();*/
+            $("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
+            $("#form_comment [name=" + itemName + "] + p.help-block-error")
+                .html(comments.elements.lengths[itemName].range_alert);
+            $("#form_comment [name=" + itemName + "] + p.help-block-error").show();
 
             return false;
         }
@@ -27,12 +28,15 @@ comments.verifyData = function (formData) {
     }
 
     $("#form_comment .form-group").removeClass("has-error");
+    $("#form_comment .help-block-error").html("");
 
-    success &= setWrongLengthInput("username");
-    success &= setWrongLengthInput("email");
-    success &= setWrongLengthInput("text");
+    var usernameContent = formData.get("username").trim();
+    $("#form_comment input[name=username]").val(usernameContent);
 
     var emailContent = formData.get("email").trim();
+    $("#form_comment input[name=email]").val(emailContent);
+
+    var textContent = formData.get("text");
 
     var expr = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!expr.test(emailContent))
@@ -44,6 +48,10 @@ comments.verifyData = function (formData) {
 
         success = false;
     }
+
+    success &= setWrongLengthInput(usernameContent, "username");
+    success &= setWrongLengthInput(emailContent, "email");
+    success &= setWrongLengthInput(textContent, "text");
 
     return success;
 };
