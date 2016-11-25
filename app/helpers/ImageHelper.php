@@ -149,4 +149,37 @@ class ImageHelper
 
         return $ret;
     }
+
+    /**
+     * Проверка на соответствие изображения к комментарию заданным в настройках параметрам.
+     *
+     * @param string $file путь к файлу
+     * @throws Exception
+     */
+    public static function validateCommentImage($file)
+    {
+        $ret = false;
+
+        if ($file)
+        {
+            $size = getimagesize($file);
+            if (!empty($size['mime']))
+            {
+                if (in_array(
+                    $size['mime'],
+                    ConfigHelper::getInstance()->getConfig(
+                    )['site']['comments']['creation_settings']['image']['types_allowed_mime']
+                ))
+                {
+                    $ret = true;
+                }
+            }
+        }
+        else
+        {
+            $ret = true;    // Отсутствие изображения не есть ошибка, т. к. опционно
+        }
+
+        return $ret;
+    }
 }

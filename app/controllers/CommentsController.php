@@ -123,7 +123,7 @@ class CommentsController extends ControllerController
                     'text'
                 ))
             && filter_var($data['email'], FILTER_VALIDATE_EMAIL)
-            && (empty($data['image']) || CommonHelper::validateCommentImage($data['image']))
+            && (empty($data['image']) || ImageHelper::validateCommentImage($data['image']))
         )
         {
             $ret = true;
