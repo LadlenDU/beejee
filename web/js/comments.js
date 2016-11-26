@@ -1,3 +1,4 @@
+var comments = {};
 comments.verifyLength = function (type, length) {
     if (length < this.elements.lengths[type].min || length > this.elements.lengths[type].max) {
         return false;
@@ -8,17 +9,17 @@ comments.verifyData = function (formData) {
 
     var success = true;
 
-    function setWrongLengthInput(itemContent, itemName) {
-        if (itemContent.length < comments.elements.lengths[itemName].min
-            || itemContent.length > comments.elements.lengths[itemName].max) {
+    function setWrongLengthInput(itemName) {
+        var item = $("#form_comment [name=" + itemName + "]");
 
-            /*$("#form_comment .form-group:has(input[name=" + itemName + "])").addClass("has-error");
-            $("#form_comment input[name=" + itemName + "] + p.help-block-error")
-                .html(comments.elements.lengths[itemName].range_alert);
-            $("#form_comment input[name=" + itemName + "] + p.help-block-error").show();*/
+        itemContent = item.val();
+
+        if (itemContent.length < item.attr("data-minlength")
+            || itemContent.length > item.attr("maxlength")) {
+
             $("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
             $("#form_comment [name=" + itemName + "] + p.help-block-error")
-                .html(comments.elements.lengths[itemName].range_alert);
+                .text(item.attr("data-range-alert"));
             $("#form_comment [name=" + itemName + "] + p.help-block-error").show();
 
             return false;
@@ -43,15 +44,15 @@ comments.verifyData = function (formData) {
     {
         $("#form_comment .form-group:has(input[name=email])").addClass("has-error");
         $("#form_comment input[name=email] + p.help-block-error")
-            .html(comments.elements.lengths["email"].wrong_email_alert);
+            .text($("#form_comment input[name=email]").attr("wrong_email_alert"));
         $("#form_comment input[name=email] + p.help-block-error").show();
 
         success = false;
     }
 
-    success &= setWrongLengthInput(usernameContent, "username");
-    success &= setWrongLengthInput(emailContent, "email");
-    success &= setWrongLengthInput(textContent, "text");
+    success &= setWrongLengthInput("username");
+    success &= setWrongLengthInput("email");
+    success &= setWrongLengthInput("text");
 
     return success;
 };
@@ -66,9 +67,8 @@ $(function () {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
 
-        comments.verifyData(formData);
-        //comments.verifyData.VVV();
-        return false;
+        //comments.verifyData(formData);
+        //return false;
 
         $.ajax({
             url: '/comments/preview',
@@ -94,7 +94,8 @@ $(function () {
             },
             error: function (x) {
                 if (x.status == 500) {
-                    helper.showError(x.responseJSON.data);
+                    helper.showError(x.responseJSON.data.message);
+                    comments.verifyData(new FormData($("#form_comment")[0]));
                 }
             }
         });

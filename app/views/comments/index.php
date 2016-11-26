@@ -1,7 +1,8 @@
 <?php echo CommonWidget::headerPanel() ?>
 
 <script type="text/javascript">
-    var comments = {
+    //var comments = {};
+    /*var comments = {
         elements: {
             lengths: {
                 username: {
@@ -22,7 +23,7 @@
                 }
             }
         }
-    };
+    };*/
 </script>
 
 <div class="row wrapper">

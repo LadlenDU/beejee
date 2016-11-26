@@ -120,10 +120,10 @@ class CommonHelper
         die(json_encode(['success' => $success, 'data' => $data]));
     }
 
-    public static function sendTextResponse($text)
+    public static function sendHtmlResponse($html)
     {
         header('Content-Type: text/html');
-        die($text);
+        die($html);
     }
 
     /**

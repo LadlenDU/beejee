@@ -9,6 +9,8 @@ class CommentsController extends ControllerController
      */
     protected function validateCommentIncomingData($data)
     {
+        $res = [];
+
         $validationData = $data;
 
         if (!empty($_FILES['image']['tmp_name']))
@@ -17,16 +19,25 @@ class CommentsController extends ControllerController
                 )['site']['comments']['creation_settings']['max_file_size']
             )
             {
-                CommonHelper::sendJsonResponse(false, ['message' => 'Вы пытались загрузить слишком большой файл.']);
+                #CommonHelper::sendJsonResponse(false, ['message' => 'Вы пытались загрузить слишком большой файл.']);
+                $res['errors']['input_data'][] = [
+                    'field' => 'image',
+                    'message' => 'Вы пытались загрузить слишком большой файл.'
+                ];
             }
-
-            $validationData['image'] = $_FILES['image']['tmp_name'];
+            else
+            {
+                $validationData['image'] = $_FILES['image']['tmp_name'];
+            }
         }
 
-        if (!$this->commentDataValidation($validationData))
+        if ($validationResult = $this->commentDataValidation($validationData))
         {
-            CommonHelper::sendJsonResponse(false, ['message' => 'Не пройдена валидация.']);
+            $res = array_merge_recursive($res, $validationResult);
+            #CommonHelper::sendJsonResponse(false, ['message' => 'Не пройдена валидация.']);
         }
+
+        return $res;
     }
 
     protected function mergeTableFieldsAndIncomingData($data)
@@ -75,8 +86,8 @@ class CommentsController extends ControllerController
                     && (!empty($images['new']) && !empty($images['new_thumb']))
                 )
                 {
-                    $images['new']['src'] = '/comments/show_temp_image?name=' . $images['new']['name'];
-                    $images['new_thumb']['src'] = '/comments/show_temp_image?name=' . $images['new_thumb']['name'];
+                    #$images['new']['src'] = '/comments/show_temp_image?name=' . $images['new']['name'];
+                    #$images['new_thumb']['src'] = '/comments/show_temp_image?name=' . $images['new_thumb']['name'];
 
                     $fields['images_data']['image'] = $images['new'];
                     $fields['images_data']['image_thumb'] = $images['new_thumb'];
@@ -98,35 +109,46 @@ class CommentsController extends ControllerController
         );
 
         //CommonHelper::sendJsonResponse(true, $html);
-        CommonHelper::sendTextResponse($html);
+        CommonHelper::sendHtmlResponse($html);
     }
 
+    /**
+     * Валидация полей комментариев.
+     *
+     * @param array $data список полей со значениями
+     * @return array пустой массив в случае успеха или содержит элемент ['errors'] с массивами ошибок
+     */
     protected function commentDataValidation($data)
     {
-        $ret = false;
+        $ret = [];
 
-        $encoding = ConfigHelper::getInstance()->getConfig()['globalEncoding'];
+        $config = ConfigHelper::getInstance()->getConfig();
+
+        $encoding = $config['globalEncoding'];
+        $sizes = $config['site']['comments']['creation_settings']['text_sizes'];
 
         $lName = mb_strlen($data['username'], $encoding);
         $lEmail = mb_strlen($data['email'], $encoding);
         $lText = mb_strlen($data['text'], $encoding);
-        if (($lName >= 1 && $lName <= DbHelper::obj()->getCharacterMaximumLength(
-                    CommentModel::getTableName(),
-                    'username'
-                ))
-            && ($lEmail >= 5 && $lEmail <= DbHelper::obj()->getCharacterMaximumLength(
-                    CommentModel::getTableName(),
-                    'email'
-                ))
-            && ($lText >= 5 && $lText <= DbHelper::obj()->getCharacterMaximumLength(
-                    CommentModel::getTableName(),
-                    'text'
-                ))
-            && filter_var($data['email'], FILTER_VALIDATE_EMAIL)
-            && (empty($data['image']) || ImageHelper::validateCommentImage($data['image']))
+
+        if (($lName < $sizes['username']['min'] || $lName > $sizes['username']['max'])
+            || ($lEmail < $sizes['email']['min'] || $lEmail > $sizes['email']['max'])
+            || ($lText < $sizes['text']['min'] && $lText > $sizes['text']['max'])
+            || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)
         )
         {
-            $ret = true;
+            // TODO: надо сделать вывод ошибки по каждому отдельному полю (в input_data), пока пусть будет общая ошибка
+            // т. к. валидация должна проходить в js на стороне клиента (кроме изображений, которые на стороне клиента
+            // проверить невозможно).
+            $ret['errors']['common'][] = 'Ошибка валидации одного или нескольких полей';
+        }
+
+        if (!empty($data['image']) && ($imageResult = ImageHelper::validateCommentImage($data['image'])))
+        {
+            $ret['errors']['input_data'][] = [
+                'field' => 'image',
+                'message' => $imageResult['error']
+            ];
         }
 
         return $ret;

@@ -7,7 +7,10 @@ $config = [
                 'text_sizes' => [
                     'username' => [
                         'min' => 1,
-                        'max' => (int)DbHelper::obj()->getCharacterMaximumLength(CommentModel::getTableName(), 'username')
+                        'max' => (int)DbHelper::obj()->getCharacterMaximumLength(
+                            CommentModel::getTableName(),
+                            'username'
+                        )
                     ],
                     'email' => [
                         'min' => 5,

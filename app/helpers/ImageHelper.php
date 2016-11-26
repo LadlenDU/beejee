@@ -28,7 +28,14 @@ class ImageHelper
      * @param string $imagePath путь к оригинальному изображению
      * @param bool|true $thumb надо ли генерировать тумбнейл
      * @param bool|false $temporary надо ли генерировать файлы во временную директорию
-     * @return array [[new_path][, new_thumb_path]] пути к сгенерированному изображению и тумбнейлу
+     * @return array [[new][, new_thumb]] пути к сгенерированному изображению и тумбнейлу
+     * @throws Exception
+     */
+    /**
+     * @param $imagePath
+     * @param bool|true $thumb
+     * @param bool|false $temporary
+     * @return array
      * @throws Exception
      */
     public static function reduceImageToMaxDimensions($imagePath, $thumb = true, $temporary = false)
@@ -97,7 +104,10 @@ class ImageHelper
 
             if ($scale >= 1)
             {
-                $ret = copy($currentPath, $newPath);
+                if (copy($currentPath, $newPath))
+                {
+                    $ret = ['name' => basename($newPath), 'width' => $size[0], 'height' => $size[1]];
+                }
             }
             else
             {
@@ -154,31 +164,36 @@ class ImageHelper
      * Проверка на соответствие изображения к комментарию заданным в настройках параметрам.
      *
      * @param string $file путь к файлу
-     * @throws Exception
+     * @return array пустой массив в случае удачи, или содержит элемент ['error'] с описанием ошибки в случае ошибки
      */
     public static function validateCommentImage($file)
     {
-        $ret = false;
+        $ret = [];
 
         if ($file)
         {
             $size = getimagesize($file);
             if (!empty($size['mime']))
             {
-                if (in_array(
+                if (!in_array(
                     $size['mime'],
                     ConfigHelper::getInstance()->getConfig(
                     )['site']['comments']['creation_settings']['image']['types_allowed_mime']
                 ))
                 {
-                    $ret = true;
+                    //$ret = true;
+                    $ret['error'] = 'Не допустимый тип изображения: ' . $size['mime'];
                 }
             }
+            else
+            {
+                $ret['error'] = 'Не удалось определить тип изображения';
+            }
         }
-        else
-        {
-            $ret = true;    // Отсутствие изображения не есть ошибка, т. к. опционно
-        }
+//        else
+//        {
+//            $ret = true;    // Отсутствие изображения не есть ошибка, т. к. опционно
+//        }
 
         return $ret;
     }
