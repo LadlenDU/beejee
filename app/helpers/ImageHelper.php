@@ -74,7 +74,7 @@ class ImageHelper
      * @param string $newPath путь к новому изображению (без расширения файла,
      * расширение добавляется автоматически к названию)
      * @param array $maxSize [width, height] максимальный размер изображения
-     * @return bool
+     * @return bool|array false в случае неудачи, массив ['name', 'width', 'height'] в случае удачи
      * @throws Exception
      */
     public static function resizeImageReduce($currentPath, $newPath, $maxSize)

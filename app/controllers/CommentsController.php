@@ -3,9 +3,10 @@
 class CommentsController extends ControllerController
 {
     /**
-     * Валидация данных о комментарии (рассчитано на использование при $_POST запросе).
+     * Валидация данных о комментарии.
      *
      * @param array $data подготовленная информация о комментарии (к примеру $_POST запроса)
+     * @return array пустой массив в случае успеха или содержит элемент ['errors'] с массивами ошибок
      */
     protected function validateCommentIncomingData($data)
     {
@@ -40,7 +41,7 @@ class CommentsController extends ControllerController
         return $res;
     }
 
-    protected function mergeTableFieldsAndIncomingData($data)
+    /*protected function mergeTableFieldsAndIncomingData($data)
     {
         $fields = [];
         $sqlFields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
@@ -51,18 +52,22 @@ class CommentsController extends ControllerController
         $fields = array_merge($fields, $data);
 
         return $fields;
-    }
+    }*/
 
     public function actionPreview()
     {
         $data = $_POST;
-        #$data['image'] = [];
 
         $data['username'] = trim($data['username']);
         $data['email'] = trim($data['email']);
 
-        $this->validateCommentIncomingData($data);
-        $fields = $this->mergeTableFieldsAndIncomingData($data);
+        if ($isNotValid = $this->validateCommentIncomingData($data))
+        {
+            CommonHelper::sendJsonResponse(false, $isNotValid);
+        }
+        //$fields = $this->mergeTableFieldsAndIncomingData($data);
+
+        $fields = [];
 
         $fields['images_data'] = [];
 

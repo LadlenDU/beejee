@@ -94,7 +94,7 @@ $(function () {
             },
             error: function (x) {
                 if (x.status == 500) {
-                    helper.showError(x.responseJSON.data.message);
+                    helper.showError(x.responseJSON.data);
                     comments.verifyData(new FormData($("#form_comment")[0]));
                 }
             }
