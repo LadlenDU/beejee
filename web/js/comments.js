@@ -1,11 +1,19 @@
 var comments = {};
+
 comments.verifyLength = function (type, length) {
     if (length < this.elements.lengths[type].min || length > this.elements.lengths[type].max) {
         return false;
     }
     return true;
 };
-comments.verifyData = function (formData) {
+
+comments.setFormError = function (itemName, errorText) {
+    $("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
+    $("#form_comment [name=" + itemName + "] + p.help-block-error").text(errorText);
+    $("#form_comment [name=" + itemName + "] + p.help-block-error").show();
+};
+
+comments.verifyFormData = function (formData) {
 
     var success = true;
 
@@ -17,10 +25,12 @@ comments.verifyData = function (formData) {
         if (itemContent.length < item.attr("data-minlength")
             || itemContent.length > item.attr("maxlength")) {
 
-            $("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
-            $("#form_comment [name=" + itemName + "] + p.help-block-error")
-                .text(item.attr("data-range-alert"));
-            $("#form_comment [name=" + itemName + "] + p.help-block-error").show();
+            this.setFormError(itemName, item.attr("data-range-alert"));
+
+            /*$("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
+             $("#form_comment [name=" + itemName + "] + p.help-block-error")
+             .text(item.attr("data-range-alert"));
+             $("#form_comment [name=" + itemName + "] + p.help-block-error").show();*/
 
             return false;
         }
@@ -40,12 +50,13 @@ comments.verifyData = function (formData) {
     var textContent = formData.get("text");
 
     var expr = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!expr.test(emailContent))
-    {
-        $("#form_comment .form-group:has(input[name=email])").addClass("has-error");
-        $("#form_comment input[name=email] + p.help-block-error")
-            .text($("#form_comment input[name=email]").attr("wrong_email_alert"));
-        $("#form_comment input[name=email] + p.help-block-error").show();
+    if (!expr.test(emailContent)) {
+        /*$("#form_comment .form-group:has(input[name=email])").addClass("has-error");
+         $("#form_comment input[name=email] + p.help-block-error")
+         .text($("#form_comment input[name=email]").attr("wrong_email_alert"));
+         $("#form_comment input[name=email] + p.help-block-error").show();*/
+
+        this.setFormError("email", $("#form_comment input[name=email]").attr("wrong_email_alert"));
 
         success = false;
     }
@@ -67,7 +78,7 @@ $(function () {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
 
-        //comments.verifyData(formData);
+        //comments.verifyFormData(formData);
         //return false;
 
         $.ajax({
@@ -94,9 +105,21 @@ $(function () {
             },
             error: function (x) {
                 if (x.status == 500) {
-                    helper.showError(x.responseJSON.data);
-                    comments.verifyData(new FormData($("#form_comment")[0]));
+                    //if (typeof (((x || {}).responseJSON || {}).data || {}).errors !== 'undefined')
+                    if ((((x || {}).responseJSON || {}).data || {}).errors) {
+                        if (x.responseJSON.data.errors.input_data) {
+                            var arrLength = x.responseJSON.data.errors.input_data.length;
+                            for (var i = 0; i < arrLength; ++i) {
+                                comments.setFormError(x.responseJSON.data.errors.input_data[i].field,
+                                    x.responseJSON.data.errors.input_data[i].message);
+                            }
+                        }
+                        if (x.responseJSON.data.errors.common) {
+                            helper.showError(implode("\n", x.responseJSON.data.errors.common));
+                        }
+                    }
                 }
+                comments.verifyFormData(new FormData($("#form_comment")[0]));
             }
         });
     });
