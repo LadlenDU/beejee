@@ -12,13 +12,15 @@
     </div>
 
     <?php if ($item['images_data']): ?>
-        <div class="image">
-            <img class="thumb_image" data-preview-src="<?php echo $item['images_data']['image']['src'] ?>" width="<?php echo $item['images_data']['image_thumb']['width'] ?>"
-                 height="<?php echo $item['images_data']['image_thumb']['height'] ?>"
-                 src="<?php echo $item['images_data']['image_thumb']['src'] ?>"
-                 alt="Прикрепленное изображение"
-                 title="Нажмите для полного просмотра"/>
-        </div>
+        <a class="fancybox" href="<?php echo $item['images_data']['image']['src'] ?>">
+            <div class="image row">
+                <img class="thumb_image" data-preview-src="<?php echo $item['images_data']['image']['src'] ?>" width="<?php echo $item['images_data']['image_thumb']['width'] ?>"
+                     height="<?php echo $item['images_data']['image_thumb']['height'] ?>"
+                     src="<?php echo $item['images_data']['image_thumb']['src'] ?>"
+                     alt="Прикрепленное изображение"
+                     title="Нажмите для полного просмотра"/>
+            </div>
+        </a>
     <?php endif; ?>
 
 </div>

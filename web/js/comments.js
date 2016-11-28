@@ -58,11 +58,11 @@ comments.verifyFormData = function (formData) {
     return success;
 };
 
-$(function () {
+comments.addClickForThumb = function () {
+    $(".fancybox").fancybox();
+}
 
-    $(".thumb_image").click(function (e) {
-        alert($(this).attr('data-preview-src'));
-    });
+$(function () {
 
     $("#preview_button").click(function (e) {
         $("#preview_messages_wrapper").hide();
@@ -85,18 +85,7 @@ $(function () {
                 $("#preview_messages").html(data);
                 $("#messages").hide();
                 $("#preview_messages_wrapper").show(1000);
-                /*if (helper.ifJson(data)) {
-                 if (data.success) {
-                 $("#preview_messages").html(data.data);
-                 $(".messages").hide();
-                 $("#preview_messages").show(500);
-                 } else {
-                 helper.showError(data.data);
-                 }
-                 }
-                 else {
-                 helper.showError(data);
-                 }*/
+                comments.addClickForThumb();
             },
             error: function (x) {
                 if (x.status == 500) {
