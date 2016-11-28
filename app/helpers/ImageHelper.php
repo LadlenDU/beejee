@@ -42,9 +42,9 @@ class ImageHelper
     {
         $ret = [];
 
-        $newPath = ConfigHelper::getInstance()->getConfig()['appDir'] . '/user_data/';
+        $newPath = ConfigHelper::getInstance()->getConfig()['webDir'] . 'images/comments/';
         $newPath .= $temporary ? 'images_temp' : 'images';
-        $newPath .= '/' . uniqid('images', true);
+        $newPath .= '/' . str_replace('.', '', uniqid('images', true));
 
         $maxSize = ConfigHelper::getInstance()->getConfig(
         )['site']['comments']['creation_settings']['image']['max_size'];

@@ -68,8 +68,10 @@ class CommentsController extends ControllerController
             }
         );
 
-        $fields['username'] = trim($_POST['username']);
-        $fields['email'] = trim($_POST['email']);
+        $fields = array_merge($fields, $_POST);
+
+        $fields['username'] = trim($fields['username']);
+        $fields['email'] = trim($fields['email']);
 
         if ($isNotValid = $this->validateCommentIncomingData($fields))
         {
@@ -81,26 +83,14 @@ class CommentsController extends ControllerController
 
         if (!empty($_FILES['image']['tmp_name']))
         {
-            /*$destFile = ConfigHelper::getInstance()->getConfig()['appDir'] . '/user_data/images_temp/'
-                . basename($_FILES['image']['tmp_name']);
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $destFile))
-            {
-                CommonHelper::startSession();
-                $_SESSION['preview_image'] = $destFile;
-            }
-            else
-            {
-                CommonHelper::sendJsonResponse(false, ['message' => 'Ошибка загрузки файла.']);
-            }*/
-
             if (is_uploaded_file($_FILES['image']['tmp_name']))
             {
                 if (($images = ImageHelper::reduceImageToMaxDimensions($_FILES['image']['tmp_name'], true, true))
                     && (!empty($images['new']) && !empty($images['new_thumb']))
                 )
                 {
-                    #$images['new']['src'] = '/comments/show_temp_image?name=' . $images['new']['name'];
-                    #$images['new_thumb']['src'] = '/comments/show_temp_image?name=' . $images['new_thumb']['name'];
+                    $images['new']['src'] = '/images/comments/images_temp/' . $images['new']['name'];
+                    $images['new_thumb']['src'] = '/images/comments/images_temp/' . $images['new_thumb']['name'];
 
                     $fields['images_data']['image'] = $images['new'];
                     $fields['images_data']['image_thumb'] = $images['new_thumb'];

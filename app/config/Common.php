@@ -1,7 +1,8 @@
 <?php
 
 $config = [
-    'appDir' => dirname(__DIR__),
+    'appDir' => APP_DIR,
+    'webDir' => WEB_DIR,
     'site' => [
         'name' => 'Форма обратной связи',
         'comments' => [

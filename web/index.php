@@ -5,6 +5,7 @@ if (version_compare(phpversion(), '5.4.0', '<') == true)
     die(_('Please use version of PHP not less than 5.4.'));
 }
 
+define('WEB_DIR', realpath(__DIR__ . '/../web') . '/');
 define('APP_DIR', realpath(__DIR__ . '/../app') . '/');
 
 require(APP_DIR . 'helpers/Autoloader.php');
