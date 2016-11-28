@@ -31,6 +31,15 @@
 </head>
 <body>
 
+<script type="text/javascript">
+<?php
+    if (!empty($_GET['debug']))
+    {
+        echo "var globalDebug = true;\n";
+    }
+?>
+</script>
+
 <div class="container">
 <?php echo $content ?>
 </div>

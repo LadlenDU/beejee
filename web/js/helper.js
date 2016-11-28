@@ -33,7 +33,7 @@ if (!String.prototype.trim) {
 $(function () {
     var data = {ajax: 1};
     //data[$('meta[name="csrf-param"]').attr("content")] = $('meta[name="csrf-param"]').attr("token");
-    if (!empty($_GET['debug']))
+    if (typeof globalDebug !== 'undefined' && globalDebug)
     {
         data["debug"] = 1;
     }

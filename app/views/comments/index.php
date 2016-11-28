@@ -38,14 +38,7 @@
             <div id="preview_messages"></div>
         </div>
 
-        <div class="row" id="messages">
-            <?php if (!count($comments)): ?>
-                <p class="text-center">НЕТ СООБЩЕНИЙ</p>
-            <?php endif ?>
-            <?php foreach ($comments as $item): ?>
-                <?php echo $this->renderPhpFile(dirname(__FILE__) . '/_comment.php', ['item' => $item]); ?>
-            <?php endforeach ?>
-        </div>
+        <div class="row" id="messages"></div>
 
     </div>
 

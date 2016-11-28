@@ -56,7 +56,26 @@ class CommentsController extends ControllerController
 
     public function actionGet()
     {
-        
+        $orderBy = (isset($_GET['comments']['order']['by']) && in_array(
+                CommentModel::getValidOrderFields(),
+                $_GET['comments']['order']['by'],
+                true
+            )) ? $_GET['comments']['order']['by'] : 'created';
+
+        $orderDir = (isset($_GET['comments']['order']['dir']) && DbHelper::obj()->ifValidOrderDirection(
+                $_GET['comments']['order']['dir']
+            )) ? $_GET['comments']['order']['dir'] : 'DESC';
+
+        $comments = CommentModel::getComments($orderBy, $orderDir);
+
+        $html = $this->renderPartial(
+            'comment_list',
+            [
+                'comments' => $comments->rows
+            ]
+        );
+
+        CommonHelper::sendHtmlResponse($html);
     }
 
     public function actionNew()
@@ -101,6 +120,8 @@ class CommentsController extends ControllerController
 
                     $fields['images_data']['image'] = $images['new'];
                     $fields['images_data']['image_thumb'] = $images['new_thumb'];
+
+                    $fields['image_name'] = $images['new']['name'];
                 }
                 else
                 {
@@ -183,17 +204,6 @@ class CommentsController extends ControllerController
         $this->scripts['css'] .= CommonHelper::createCssLink('/css/comments.css');
         $this->scripts['js'] .= CommonHelper::createJsLink('/js/comments.js');
 
-        $orderBy = (isset($_POST['comments']['order']['by']) && in_array(
-                CommentModel::getValidOrderFields(),
-                $_POST['comments']['order']['by'],
-                true
-            )) ? $_POST['comments']['order']['by'] : 'created';
-
-        $orderDir = (isset($_POST['comments']['order']['dir']) && DbHelper::obj()->ifValidOrderDirection(
-                $_POST['comments']['order']['dir']
-            )) ? $_POST['comments']['order']['dir'] : 'DESC';
-
-        $comments = CommentModel::getComments($orderBy, $orderDir);
         $orderFields = CommentModel::getValidOrderFields();
         $orderLabels = CommentModel::getLabels();
         $orderTypes = [];
@@ -237,7 +247,6 @@ class CommentsController extends ControllerController
         $this->render(
             'index',
             [
-                'comments' => $comments->rows,
                 'orderTypes' => $orderTypes,
                 'fieldMaxLength' => $fieldMaxLength,
                 'fieldMinLength' => $fieldMinLength,

@@ -86,7 +86,7 @@ comments.handleJqueryFormError = function (x) {
 comments.getComments = function () {
     $.ajax({
         url: "/comments/get",
-        type: "POST",
+        type: "GET",
         success: function (data) {
             $("#messages").html(data);
             $("#preview_messages_wrapper").hide();
@@ -114,7 +114,9 @@ $(function () {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
 
-        comments.verifyFormData(formData);
+        if (!comments.verifyFormData(formData)) {
+            return false;
+        }
 
         $.ajax({
             url: '/comments/new?preview=1',
@@ -137,7 +139,9 @@ $(function () {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
 
-        comments.verifyFormData(formData);
+        if (!comments.verifyFormData(formData)) {
+            return false;
+        }
 
         $.ajax({
             url: '/comments/new',
@@ -146,6 +150,7 @@ $(function () {
             processData: false,
             success: function () {
                 comments.getComments();
+                alert('Спасибо! Ваш комментарий станет виден после проверки его администратором.');
             },
             error: function (x) {
                 comments.handleJqueryFormError(x);
