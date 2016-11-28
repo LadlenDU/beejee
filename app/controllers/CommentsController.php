@@ -56,18 +56,26 @@ class CommentsController extends ControllerController
 
     public function actionPreview()
     {
-        $data = $_POST;
+        $fields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
 
-        $data['username'] = trim($data['username']);
-        $data['email'] = trim($data['email']);
+        $fields = array_flip($fields);
 
-        if ($isNotValid = $this->validateCommentIncomingData($data))
+        array_walk(
+            $fields,
+            function (&$item1)
+            {
+                $item1 = '';
+            }
+        );
+
+        $fields['username'] = trim($_POST['username']);
+        $fields['email'] = trim($_POST['email']);
+
+        if ($isNotValid = $this->validateCommentIncomingData($fields))
         {
             CommonHelper::sendJsonResponse(false, $isNotValid);
         }
         //$fields = $this->mergeTableFieldsAndIncomingData($data);
-
-        $fields = [];
 
         $fields['images_data'] = [];
 

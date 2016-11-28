@@ -139,6 +139,13 @@ class MysqliDatabaseComponent implements DatabaseInterface
         $sql = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = '
             . $this->escape_string($table);
 
-        return $this->selectQuery($sql)->rows;
+        $rowsName = [];
+
+        foreach ($this->selectQuery($sql)->rows as $row)
+        {
+            $rowsName[] = $row->COLUMN_NAME;
+        }
+
+        return $rowsName;
     }
 }

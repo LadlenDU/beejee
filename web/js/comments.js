@@ -28,12 +28,6 @@ comments.verifyFormData = function (formData) {
             || itemContent.length > item.attr("maxlength")) {
 
             that.setFormError(itemName, item.attr("data-range-alert"));
-
-            /*$("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
-             $("#form_comment [name=" + itemName + "] + p.help-block-error")
-             .text(item.attr("data-range-alert"));
-             $("#form_comment [name=" + itemName + "] + p.help-block-error").show();*/
-
             return false;
         }
 
@@ -53,13 +47,7 @@ comments.verifyFormData = function (formData) {
 
     var expr = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!expr.test(emailContent)) {
-        /*$("#form_comment .form-group:has(input[name=email])").addClass("has-error");
-         $("#form_comment input[name=email] + p.help-block-error")
-         .text($("#form_comment input[name=email]").attr("wrong_email_alert"));
-         $("#form_comment input[name=email] + p.help-block-error").show();*/
-
         this.setFormError("email", $("#form_comment input[name=email]").attr("wrong_email_alert"));
-
         success = false;
     }
 
@@ -89,6 +77,7 @@ $(function () {
             contentType: false,
             processData: false,
             success: function (data) {
+                comments.verifyFormData(new FormData($("#form_comment")[0]));
                 $("#preview_messages").html(data);
                 $(".messages").hide();
                 $("#preview_messages").show(1000);
