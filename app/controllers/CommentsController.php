@@ -5,7 +5,7 @@ class CommentsController extends ControllerController
     /** @var bool показывать ли интерфейс администратора */
     protected $ifAdmin;
 
-    public function _construct($ifAdmin = false)
+    public function __construct($ifAdmin = false)
     {
         $this->ifAdmin = $ifAdmin;
     }
@@ -74,12 +74,14 @@ class CommentsController extends ControllerController
                 $_GET['comments']['order']['dir']
             )) ? $_GET['comments']['order']['dir'] : 'DESC';
 
-        $comments = CommentModel::getComments($orderBy, $orderDir);
+        $status = $this->ifAdmin ? false : 'APPROVED';
+        $comments = CommentModel::getComments($orderBy, $orderDir, $status);
 
         $html = $this->renderPartial(
             'comment_list',
             [
-                'comments' => $comments->rows
+                'comments' => $comments->rows,
+                'admin' => $this->ifAdmin
             ]
         );
 

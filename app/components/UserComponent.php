@@ -64,7 +64,13 @@ class UserComponent extends SingletonHelper
 
         if ($nId = $this->getUserId($id))
         {
-            $roles = UserModel::getRolesById($nId);
+            $roles = [];
+
+            $rolesRaw = UserModel::getRolesById($nId);
+            foreach ($rolesRaw as $rol)
+            {
+                $roles[] = $rol->name;
+            }
         }
 
         return $roles;
@@ -79,7 +85,7 @@ class UserComponent extends SingletonHelper
      */
     public function userHasRole($role, $id = false)
     {
-        $roles = $this->getUserRoles($id);
+        $roles = (array)$this->getUserRoles($id);
         return in_array($role, $roles, true);
     }
 

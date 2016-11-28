@@ -2,7 +2,7 @@
 
 class AdminDefaultController extends ControllerController
 {
-    public function _construct()
+    public function __construct()
     {
         if (!UserComponent::getInstance()->userHasRole('admin'))
         {
