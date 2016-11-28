@@ -70,6 +70,19 @@ class UserComponent extends SingletonHelper
         return $roles;
     }
 
+    /**
+     * Есть ли у пользователя роль $role.
+     *
+     * @param string $role
+     * @param bool|false int $id
+     * @return bool
+     */
+    public function userHasRole($role, $id = false)
+    {
+        $roles = $this->getUserRoles($id);
+        return in_array($role, $roles, true);
+    }
+
     public function getUserInfo($id = false)
     {
         $info = false;

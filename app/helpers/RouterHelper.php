@@ -47,7 +47,8 @@ class RouterHelper
 
         if (($map = $this->ifControllerClassAndActionNameExist($path)) ||
             ($map = $this->ifControllerClassAndDefaultActionNameExist($path)) ||
-            ($map = $this->ifDefaultControllerClassAndActionNameExist($path))
+            ($map = $this->ifDefaultControllerClassAndActionNameExist($path)) ||
+            ($map = $this->ifDefaultControllerClassAndDefaultActionNameExist($path))
         )
         {
             $ret = $map;
@@ -123,6 +124,32 @@ class RouterHelper
         if (class_exists($controllerClass))
         {
             $actionName = $this->getActionFunctionName(end($path));
+            if (is_callable([$controllerClass, $actionName]))
+            {
+                return ['controller' => $controllerClass, 'action' => $actionName];
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Проверка существования класса контроллера по умолчанию и функции акции по умолчанию (для URL типа /user, /admin).
+     *
+     * @param $path путь URL разбитый в массив
+     * @return array|bool PHP название контроллера и акции или false если соответствие не найдено
+     */
+    protected function ifDefaultControllerClassAndDefaultActionNameExist($path)
+    {
+        $ret = false;
+
+        $controllerPathURL = $path;
+        $controllerPathURL[] = $this->pageDefault['controller'];
+
+        $controllerClass = $this->getControllerClassName($controllerPathURL);
+        if (class_exists($controllerClass))
+        {
+            $actionName = $this->getActionFunctionName($this->pageDefault['action']);
             if (is_callable([$controllerClass, $actionName]))
             {
                 return ['controller' => $controllerClass, 'action' => $actionName];

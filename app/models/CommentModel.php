@@ -18,13 +18,18 @@ class CommentModel
         return self::$tableName;
     }
 
-    public static function getComments($orderBy = 'created', $orderDir = 'DESC')
+    public static function getComments($orderBy = 'created', $orderDir = 'DESC', $status = 'APPROVED')
     {
-        $res = DbHelper::obj()->selectQuery(
-            'SELECT * FROM ' . self::$tableName . ' AS com '
-            //. ' LEFT JOIN ' . ImageModel::getTableName() . ' AS img ON com.image_id=img.id '
-            . " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
-        );
+        $sql = 'SELECT * FROM ' . self::$tableName . ' AS com ';
+        //. ' LEFT JOIN ' . ImageModel::getTableName() . ' AS img ON com.image_id=img.id '
+        //. " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
+        if ($status)
+        {
+            $sql .= " WHERE `status` = '" . $status . "' ";
+        }
+        $sql .= " ORDER BY $orderBy $orderDir";
+
+        $res = DbHelper::obj()->selectQuery($sql);
 
         return $res;
     }

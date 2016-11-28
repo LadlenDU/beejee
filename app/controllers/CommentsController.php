@@ -2,6 +2,14 @@
 
 class CommentsController extends ControllerController
 {
+    /** @var bool показывать ли интерфейс администратора */
+    protected $ifAdmin;
+
+    public function _construct($ifAdmin = false)
+    {
+        $this->ifAdmin = $ifAdmin;
+    }
+
     /**
      * Валидация данных о комментарии.
      *
