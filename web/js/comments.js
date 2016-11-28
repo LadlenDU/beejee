@@ -62,6 +62,47 @@ comments.addClickForThumb = function () {
     $(".fancybox").fancybox();
 }
 
+comments.onLoadErrorHandling = function (errors) {
+    comments.verifyFormData(new FormData($("#form_comment")[0]));
+    if (errors.input_data) {
+        var arrLength = errors.input_data.length;
+        for (var i = 0; i < arrLength; ++i) {
+            comments.setFormError(errors.input_data[i].field, errors.input_data[i].message);
+        }
+    }
+    if (errors.common) {
+        helper.showError(helper.implode("\n", errors.common));
+    }
+}
+
+comments.handleJqueryFormError = function (x) {
+    if (x.status == 500) {
+        if ((((x || {}).responseJSON || {}).data || {}).errors) {
+            comments.onLoadErrorHandling(x.responseJSON.data.errors);
+        }
+    }
+}
+
+comments.getComments = function () {
+    $.ajax({
+        url: "/comments/get",
+        type: "POST",
+        success: function (data) {
+            $("#messages").html(data);
+            $("#preview_messages_wrapper").hide();
+            $("#messages").show(1000);
+            comments.addClickForThumb();
+        },
+        error: function (x) {
+            if (x.status == 500) {
+                if (((((x || {}).responseJSON || {}).data || {}).errors || {}).common) {
+                    helper.showError(helper.implode("\n", x.responseJSON.data.errors.common));
+                }
+            }
+        }
+    });
+}
+
 $(function () {
 
     $("#preview_button").click(function (e) {
@@ -76,34 +117,41 @@ $(function () {
         comments.verifyFormData(formData);
 
         $.ajax({
-            url: '/comments/preview',
+            url: '/comments/new?preview=1',
             data: formData,
             contentType: false,
             processData: false,
             success: function (data) {
-                comments.verifyFormData(new FormData($("#form_comment")[0]));
                 $("#preview_messages").html(data);
                 $("#messages").hide();
                 $("#preview_messages_wrapper").show(1000);
                 comments.addClickForThumb();
             },
             error: function (x) {
-                if (x.status == 500) {
-                    comments.verifyFormData(new FormData($("#form_comment")[0]));
-                    if ((((x || {}).responseJSON || {}).data || {}).errors) {
-                        if (x.responseJSON.data.errors.input_data) {
-                            var arrLength = x.responseJSON.data.errors.input_data.length;
-                            for (var i = 0; i < arrLength; ++i) {
-                                comments.setFormError(x.responseJSON.data.errors.input_data[i].field,
-                                    x.responseJSON.data.errors.input_data[i].message);
-                            }
-                        }
-                        if (x.responseJSON.data.errors.common) {
-                            helper.showError(helper.implode("\n", x.responseJSON.data.errors.common));
-                        }
-                    }
-                }
+                comments.handleJqueryFormError(x);
             }
         });
     });
+
+    $("#send_comment").click(function (e) {
+        var formData = new FormData($("#form_comment")[0]);
+        e.preventDefault();
+
+        comments.verifyFormData(formData);
+
+        $.ajax({
+            url: '/comments/new',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                comments.getComments();
+            },
+            error: function (x) {
+                comments.handleJqueryFormError(x);
+            }
+        });
+    });
+
+    comments.getComments();
 });

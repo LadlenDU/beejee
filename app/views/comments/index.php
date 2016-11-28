@@ -58,7 +58,7 @@
                 <div class="row container-fluid">
 
                     <?php echo FormWidget::startForm(
-                        ['enctype' => 'multipart/form-data', 'action' => '/comments/add', 'id' => 'form_comment']
+                        ['enctype' => 'multipart/form-data', 'action' => '/comments/new?preview=1', 'id' => 'form_comment']
                     ) ?>
 
                     <div class="form-group required">

@@ -54,7 +54,12 @@ class CommentsController extends ControllerController
         return $fields;
     }*/
 
-    public function actionPreview()
+    public function actionGet()
+    {
+        
+    }
+
+    public function actionNew()
     {
         $fields = DbHelper::obj()->getFieldsName(CommentModel::getTableName());
 
@@ -89,8 +94,10 @@ class CommentsController extends ControllerController
                     && (!empty($images['new']) && !empty($images['new_thumb']))
                 )
                 {
-                    $images['new']['src'] = '/images/comments/images_temp/' . $images['new']['name'];
-                    $images['new_thumb']['src'] = '/images/comments/images_temp/' . $images['new_thumb']['name'];
+                    $imgPath = empty($_GET['preview']) ? '/images/comments/images/' : '/images/comments/images_temp/';
+
+                    $images['new']['src'] = $imgPath . $images['new']['name'];
+                    $images['new_thumb']['src'] = $imgPath . $images['new_thumb']['name'];
 
                     $fields['images_data']['image'] = $images['new'];
                     $fields['images_data']['image_thumb'] = $images['new_thumb'];
@@ -98,11 +105,25 @@ class CommentsController extends ControllerController
                 else
                 {
                     LoggerComponent::getInstance()->log('Ошибка сохранения загруженного файла.');
+                    CommonHelper::sendJsonResponse(
+                        false,
+                        ['errors' => ['common' => ['Ошибка сохранения загруженного файла']]]
+                    );
                 }
             }
             else
             {
-                CommonHelper::sendJsonResponse(false, ['message' => 'Ошибка загрузки файла.']);
+                LoggerComponent::getInstance()->log('Ошибка загрузки файла.');
+                CommonHelper::sendJsonResponse(false, ['errors' => ['common' => ['Ошибка загрузки файла']]]);
+            }
+        }
+
+        if (empty($_GET['preview']))
+        {
+            if (!CommentModel::setNewComment($fields))
+            {
+                LoggerComponent::getInstance()->log('Не удалось сохранить комментарий.');
+                CommonHelper::sendJsonResponse(false, ['errors' => ['common' => ['Не удалось сохранить комментарий']]]);
             }
         }
 
@@ -111,7 +132,6 @@ class CommentsController extends ControllerController
             ['item' => $fields]
         );
 
-        //CommonHelper::sendJsonResponse(true, $html);
         CommonHelper::sendHtmlResponse($html);
     }
 
@@ -183,10 +203,7 @@ class CommentsController extends ControllerController
         }
 
         $fieldMaxLength = [];
-        #$fieldMaxLength['username'] = DbHelper::obj()->getCharacterMaximumLength(
-        #    CommentModel::getTableName(),
-        #    'username'
-        #);
+
         $confTS = ConfigHelper::getInstance()->getConfig()['site']['comments']['creation_settings']['text_sizes'];
 
         $fieldMaxLength['username'] = $confTS['username']['max'];

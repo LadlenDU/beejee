@@ -29,6 +29,14 @@ class CommentModel
         return $res;
     }
 
+    public static function setNewComment($data)
+    {
+        // Изображения может и не быть
+        $data['image'] = isset($data['image']) ? $data['image'] : '';
+        $sql = 'INSERT INTO ' . self::$tableName . ' SET username = %s, email = %s, text = %s, image_name = %s';
+        return DbHelper::obj()->query($sql, $data['username'], $data['email'], $data['text'], $data['image']);
+    }
+
     /**
      * Поля по которым сортируем.
      *
