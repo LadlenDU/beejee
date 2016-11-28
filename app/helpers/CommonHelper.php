@@ -82,7 +82,6 @@ class CommonHelper
                 htmlspecialchars($pVal, ENT_QUOTES, ConfigHelper::getInstance()->getConfig()['globalEncoding']) . '" ';
         }
 
-
         return $s;
     }
 

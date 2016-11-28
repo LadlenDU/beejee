@@ -64,12 +64,16 @@ $(function () {
         alert($(this).attr('data-preview-src'));
     });
 
+    $("#preview_button").click(function (e) {
+        $("#preview_messages_wrapper").hide();
+        $("#messages").show(1000);
+    });
+
     $("#comment_preview").click(function (e) {
         var formData = new FormData($("#form_comment")[0]);
         e.preventDefault();
 
-        //comments.verifyFormData(formData);
-        //return false;
+        comments.verifyFormData(formData);
 
         $.ajax({
             url: '/comments/preview',
@@ -79,8 +83,8 @@ $(function () {
             success: function (data) {
                 comments.verifyFormData(new FormData($("#form_comment")[0]));
                 $("#preview_messages").html(data);
-                $(".messages").hide();
-                $("#preview_messages").show(1000);
+                $("#messages").hide();
+                $("#preview_messages_wrapper").show(1000);
                 /*if (helper.ifJson(data)) {
                  if (data.success) {
                  $("#preview_messages").html(data.data);

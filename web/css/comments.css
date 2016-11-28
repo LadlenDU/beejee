@@ -101,3 +101,43 @@
 .help-block-error {
     display: none;
 }
+
+.image:hover {
+    cursor: pointer;
+}
+
+.name-email {
+    font-weight: 700;
+}
+
+.name-email a {
+    text-decoration-style: dashed;
+    font-style: italic;
+}
+
+#preview_messages {
+    padding: 10px;
+}
+
+#preview_messages_wrapper {
+    display: none;
+}
+
+.comment_panel {
+    border: 1px outset #EEE;
+    padding: 5px 10px;
+}
+
+.thumb_image {
+    margin-top: 5px;
+    float: right;
+}
+
+.text .value {
+    background-color: #EEE;
+    font-size: 17px;
+}
+
+#preview_button {
+    padding-bottom: 5px;
+}

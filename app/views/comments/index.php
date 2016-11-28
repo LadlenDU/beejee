@@ -1,31 +1,5 @@
 <?php echo CommonWidget::headerPanel() ?>
 
-<script type="text/javascript">
-    //var comments = {};
-    /*var comments = {
-        elements: {
-            lengths: {
-                username: {
-                    min:<?php echo json_encode($fieldMinLength['username']) ?>,
-                    max:<?php echo json_encode($fieldMaxLength['username']) ?>,
-                    range_alert:<?php echo json_encode($allowedRangeAlert['username']) ?>
-                },
-                email: {
-                    min:<?php echo json_encode($fieldMinLength['email']) ?>,
-                    max:<?php echo json_encode($fieldMaxLength['email']) ?>,
-                    range_alert:<?php echo json_encode($allowedRangeAlert['email']) ?>,
-                    wrong_email_alert:<?php echo json_encode($wrongEmailAlert) ?>
-                },
-                text: {
-                    min:<?php echo json_encode($fieldMinLength['text']) ?>,
-                    max:<?php echo json_encode($fieldMaxLength['text']) ?>,
-                    range_alert:<?php echo json_encode($allowedRangeAlert['text']) ?>
-                }
-            }
-        }
-    };*/
-</script>
-
 <div class="row wrapper">
 
     <div class="col-md-2 hidden-xs hidden-sm list_caption main_column"><p class="text-center">Список:</p></div>
@@ -59,8 +33,12 @@
 
         </div>
 
-        <div class="row" id="preview_messages"></div>
-        <div class="row messages">
+        <div class="row" id="preview_messages_wrapper">
+            <button id="preview_button" title="Нажмите чтобы скрыть превью">Предварительный просмотр:</button>
+            <div id="preview_messages"></div>
+        </div>
+
+        <div class="row" id="messages">
             <?php if (!count($comments)): ?>
                 <p class="text-center">НЕТ СООБЩЕНИЙ</p>
             <?php endif ?>
