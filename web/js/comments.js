@@ -17,6 +17,8 @@ comments.verifyFormData = function (formData) {
 
     var success = true;
 
+    var that = this;
+
     function setWrongLengthInput(itemName) {
         var item = $("#form_comment [name=" + itemName + "]");
 
@@ -25,7 +27,7 @@ comments.verifyFormData = function (formData) {
         if (itemContent.length < item.attr("data-minlength")
             || itemContent.length > item.attr("maxlength")) {
 
-            this.setFormError(itemName, item.attr("data-range-alert"));
+            that.setFormError(itemName, item.attr("data-range-alert"));
 
             /*$("#form_comment .form-group:has([name=" + itemName + "])").addClass("has-error");
              $("#form_comment [name=" + itemName + "] + p.help-block-error")
@@ -105,7 +107,7 @@ $(function () {
             },
             error: function (x) {
                 if (x.status == 500) {
-                    //if (typeof (((x || {}).responseJSON || {}).data || {}).errors !== 'undefined')
+                    comments.verifyFormData(new FormData($("#form_comment")[0]));
                     if ((((x || {}).responseJSON || {}).data || {}).errors) {
                         if (x.responseJSON.data.errors.input_data) {
                             var arrLength = x.responseJSON.data.errors.input_data.length;
@@ -115,11 +117,10 @@ $(function () {
                             }
                         }
                         if (x.responseJSON.data.errors.common) {
-                            helper.showError(implode("\n", x.responseJSON.data.errors.common));
+                            helper.showError(helper.implode("\n", x.responseJSON.data.errors.common));
                         }
                     }
                 }
-                comments.verifyFormData(new FormData($("#form_comment")[0]));
             }
         });
     });
