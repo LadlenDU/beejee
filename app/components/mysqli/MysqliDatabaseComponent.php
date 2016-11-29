@@ -78,6 +78,24 @@ class MysqliDatabaseComponent implements DatabaseInterface
 
     /**
      * @inheritdoc
+     */
+    public function selectQueryA($sql)
+    {
+        $ret = $this->selectQuery($sql);
+
+        array_walk(
+            $ret->rows,
+            function (&$row)
+            {
+                $row = get_object_vars($row);
+            }
+        );
+
+        return $ret;
+    }
+
+    /**
+     * @inheritdoc
      * @return bool|mysqli_result
      */
     public function query($sql)
