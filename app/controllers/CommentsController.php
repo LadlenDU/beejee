@@ -84,6 +84,18 @@ class CommentsController extends ControllerController
 
         $comments = CommentModel::getComments($orderBy, $orderDir, $status);
 
+        foreach ($comments->rows as &$row)
+        {
+            $row['images_data'] = false;
+            if ($row['image_name'])
+            {
+                $row['images_data'] = $this->fillImagesDataValue(
+                    $row['image_name'],
+                    ImageHelper::getThumbName($row['image_name'])
+                );
+            }
+        }
+
         $html = $this->renderPartial(
             'comment_list',
             [
@@ -113,7 +125,6 @@ class CommentsController extends ControllerController
 
         $fields['username'] = trim($fields['username']);
         $fields['email'] = trim($fields['email']);
-        //$fields['text'] = nl2br($fields['text']);
 
         if ($isNotValid = $this->validateCommentIncomingData($fields))
         {
@@ -131,14 +142,10 @@ class CommentsController extends ControllerController
                     && (!empty($images['new']) && !empty($images['new_thumb']))
                 )
                 {
-                    $imgPath = empty($_GET['preview']) ? '/images/comments/images/' : '/images/comments/images_temp/';
-
-                    $images['new']['src'] = $imgPath . $images['new']['name'];
-                    $images['new_thumb']['src'] = $imgPath . $images['new_thumb']['name'];
-
-                    $fields['images_data']['image'] = $images['new'];
-                    $fields['images_data']['image_thumb'] = $images['new_thumb'];
-
+                    $fields['images_data'] = $this->fillImagesDataValue(
+                        $images['new']['name'],
+                        $images['new_thumb']['name']
+                    );
                     $fields['image_name'] = $images['new']['name'];
                 }
                 else
@@ -165,13 +172,38 @@ class CommentsController extends ControllerController
                 CommonHelper::sendJsonResponse(false, ['errors' => ['common' => ['Не удалось сохранить комментарий']]]);
             }
         }
+        else
+        {
+            $html = $this->renderPartial(
+                '_comment',
+                ['item' => $fields]
+            );
 
-        $html = $this->renderPartial(
-            '_comment',
-            ['item' => $fields]
-        );
+            CommonHelper::sendHtmlResponse($html);
+        }
+    }
 
-        CommonHelper::sendHtmlResponse($html);
+    protected function fillImagesDataValue($image, $imageThumb)
+    {
+        $imgPath = empty($_GET['preview']) ? '/images/comments/images/' : '/images/comments/images_temp/';
+
+        $ret['image']['src'] = $imgPath . $image;
+        $ret['image_thumb']['src'] = $imgPath . $imageThumb;
+
+        $imageAbsPath = ConfigHelper::getInstance()->getConfig()['webDir'] . ltrim($ret['image']['src'], '/');
+        $imageSize = getimagesize($imageAbsPath);
+        $ret['image']['width'] = $imageSize[0];
+        $ret['image']['height'] = $imageSize[1];
+
+        $imageThumbAbsPath = ConfigHelper::getInstance()->getConfig()['webDir'] . ltrim(
+                $ret['image_thumb']['src'],
+                '/'
+            );
+        $imageThumbSize = getimagesize($imageThumbAbsPath);
+        $ret['image_thumb']['width'] = $imageThumbSize[0];
+        $ret['image_thumb']['height'] = $imageThumbSize[1];
+
+        return $ret;
     }
 
     /**

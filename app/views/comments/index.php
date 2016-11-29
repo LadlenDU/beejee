@@ -31,8 +31,8 @@
             </div>
             <div class="col-md-4 col-sm-4 narrow-sides">
                 <select name="order_direction" class="form-control">
-                    <option value="asc">Возрастание</option>
                     <option value="desc">Убывание</option>
+                    <option value="asc">Возрастание</option>
                 </select>
             </div>
 
