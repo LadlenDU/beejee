@@ -21,16 +21,16 @@
             <div class="col-md-4 col-sm-4 narrow-sides"><label class="text-nowrap control-label">Сортировать по:</label>
             </div>
             <div class="col-md-4 col-sm-4 narrow-sides">
-                <select name="order_by" class="form-control">
+                <select id="order_by" name="order_by" class="form-control">
                     <?php foreach ($orderTypes as $o): ?>
                         <option value="<?php echo $o['id'] ?>">
-                            <?php echo CommonHelper::_h($o['name']) ?>
+                            <?php echo CommonHelper::_h($o['username']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="col-md-4 col-sm-4 narrow-sides">
-                <select name="order_direction" class="form-control">
+                <select id="order_direction" name="order_direction" class="form-control">
                     <option value="desc">Убывание</option>
                     <option value="asc">Возрастание</option>
                 </select>

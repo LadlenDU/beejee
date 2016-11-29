@@ -47,14 +47,14 @@ class CommentModel
      */
     public static function getValidOrderFields()
     {
-        return ['created', 'name', 'email'];
+        return ['created', 'username', 'email'];
     }
 
     public static function getLabels()
     {
         return [
             'created' => _('Дата создания'),
-            'name' => _('Имя'),
+            'username' => _('Имя'),
             'email' => _('Email'),
         ];
     }

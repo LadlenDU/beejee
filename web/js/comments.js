@@ -81,11 +81,20 @@ comments.handleJqueryFormError = function (x) {
     }
 }
 
-comments.getComments = function () {
+comments.prepareDataForGet = function () {
     var data = {};
+
     if (comments.checkAdmin) {
         data.checkAdmin = 1;
     }
+    data.order_by = $("#order_by").val();
+    data.order_direction = $("#order_direction").val();
+
+    return data;
+}
+
+comments.getComments = function () {
+    var data = comments.prepareDataForGet();
     $.ajax({
         url: "/comments/get",
         type: "GET",
@@ -159,6 +168,10 @@ $(function () {
                 comments.handleJqueryFormError(x);
             }
         });
+    });
+
+    $("#order_by, #order_direction").click(function (e) {
+        comments.getComments();
     });
 
     comments.getComments();

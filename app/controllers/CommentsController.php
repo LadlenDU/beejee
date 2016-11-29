@@ -64,15 +64,15 @@ class CommentsController extends ControllerController
 
     public function actionGet()
     {
-        $orderBy = (isset($_GET['comments']['order']['by']) && in_array(
+        $orderBy = (isset($_GET['order_by']) && in_array(
+                $_GET['order_by'],
                 CommentModel::getValidOrderFields(),
-                $_GET['comments']['order']['by'],
                 true
-            )) ? $_GET['comments']['order']['by'] : 'created';
+            )) ? $_GET['order_by'] : 'created';
 
-        $orderDir = (isset($_GET['comments']['order']['dir']) && DbHelper::obj()->ifValidOrderDirection(
-                $_GET['comments']['order']['dir']
-            )) ? $_GET['comments']['order']['dir'] : 'DESC';
+        $orderDir = (isset($_GET['order_direction']) && DbHelper::obj()->ifValidOrderDirection(
+                $_GET['order_direction']
+            )) ? $_GET['order_direction'] : 'DESC';
 
         $status = 'APPROVED';
         if (!empty($_GET['checkAdmin']) &&
@@ -138,7 +138,8 @@ class CommentsController extends ControllerController
         {
             if (is_uploaded_file($_FILES['image']['tmp_name']))
             {
-                if (($images = ImageHelper::reduceImageToMaxDimensions($_FILES['image']['tmp_name'], true, true))
+                $temporary = empty($_GET['preview']) ? false : true;
+                if (($images = ImageHelper::reduceImageToMaxDimensions($_FILES['image']['tmp_name'], true, $temporary))
                     && (!empty($images['new']) && !empty($images['new_thumb']))
                 )
                 {
@@ -259,7 +260,7 @@ class CommentsController extends ControllerController
         $orderTypes = [];
         foreach ($orderFields as $ot)
         {
-            $orderTypes[] = ['id' => $ot, 'name' => $orderLabels[$ot]];
+            $orderTypes[] = ['id' => $ot, 'username' => $orderLabels[$ot]];
         }
 
         $fieldMaxLength = [];
