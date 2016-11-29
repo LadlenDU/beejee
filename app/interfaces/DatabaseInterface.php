@@ -17,6 +17,15 @@ interface DatabaseInterface
     public function selectQuery($sql);
 
     /**
+     * Запрос выбирающий данные.
+     *
+     * @param string $sql строка запроса SQL
+     * @return array массив с результатами
+     * @throws Exception
+     */
+    public function selectQueryA($sql);
+
+    /**
      * Запрос SQL.
      *
      * @param string $sql строка запроса SQL

@@ -74,7 +74,14 @@ class CommentsController extends ControllerController
                 $_GET['comments']['order']['dir']
             )) ? $_GET['comments']['order']['dir'] : 'DESC';
 
-        $status = $this->ifAdmin ? false : 'APPROVED';
+        $status = 'APPROVED';
+        if (!empty($_GET['checkAdmin']) &&
+            UserComponent::getInstance()->userHasRole('admin')
+        )
+        {
+            $status = false;
+        }
+
         $comments = CommentModel::getComments($orderBy, $orderDir, $status);
 
         $html = $this->renderPartial(
@@ -106,6 +113,7 @@ class CommentsController extends ControllerController
 
         $fields['username'] = trim($fields['username']);
         $fields['email'] = trim($fields['email']);
+        //$fields['text'] = nl2br($fields['text']);
 
         if ($isNotValid = $this->validateCommentIncomingData($fields))
         {
@@ -257,6 +265,7 @@ class CommentsController extends ControllerController
         $this->render(
             'index',
             [
+                'checkAdmin' => $this->ifAdmin,
                 'orderTypes' => $orderTypes,
                 'fieldMaxLength' => $fieldMaxLength,
                 'fieldMinLength' => $fieldMinLength,

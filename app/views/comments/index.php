@@ -1,5 +1,12 @@
 <?php echo CommonWidget::headerPanel() ?>
 
+<script type="text/javascript">
+    var comments = {};
+    <?php if ($checkAdmin): ?>
+    comments.checkAdmin = true;
+    <?php endif; ?>
+</script>
+
 <div class="row wrapper">
 
     <div class="col-md-2 hidden-xs hidden-sm list_caption main_column"><p class="text-center">Список:</p></div>

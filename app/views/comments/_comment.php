@@ -8,10 +8,10 @@
     Написал(а):
 
     <div class="text">
-        <div class="value"><?php echo CommonHelper::h($item['text']) ?></div>
+        <div class="value"><?php echo nl2br(CommonHelper::h($item['text'])) ?></div>
     </div>
 
-    <?php if ($item['images_data']): ?>
+    <?php if (!empty($item['images_data'])): ?>
         <a class="fancybox" href="<?php echo $item['images_data']['image']['src'] ?>">
             <div class="image row">
                 <img class="thumb_image" data-preview-src="<?php echo $item['images_data']['image']['src'] ?>" width="<?php echo $item['images_data']['image_thumb']['width'] ?>"

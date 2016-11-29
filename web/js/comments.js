@@ -1,5 +1,3 @@
-var comments = {};
-
 comments.verifyLength = function (type, length) {
     if (length < this.elements.lengths[type].min || length > this.elements.lengths[type].max) {
         return false;
@@ -84,9 +82,14 @@ comments.handleJqueryFormError = function (x) {
 }
 
 comments.getComments = function () {
+    var data = {};
+    if (comments.checkAdmin) {
+        data.checkAdmin = 1;
+    }
     $.ajax({
         url: "/comments/get",
         type: "GET",
+        data: data,
         success: function (data) {
             $("#messages").html(data);
             $("#preview_messages_wrapper").hide();

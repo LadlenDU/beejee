@@ -29,7 +29,7 @@ class CommentModel
         }
         $sql .= " ORDER BY $orderBy $orderDir";
 
-        $res = DbHelper::obj()->selectQuery($sql);
+        $res = DbHelper::obj()->selectQueryA($sql);
 
         return $res;
     }
