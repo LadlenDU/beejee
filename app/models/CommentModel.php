@@ -40,10 +40,10 @@ class CommentModel
         return DbHelper::obj()->query($sql, $data['username'], $data['email'], $data['text'], $data['image_name']);
     }
 
-    public static function setStatus($id, $status)
+    public static function setField($id, $field, $value)
     {
-        $sql = 'UPDATE `' . self::$tableName . '` SET `status` = %s WHERE `id` = %s';
-        return DbHelper::obj()->query($sql, $status, $id);
+        $sql = 'UPDATE `' . self::$tableName . '` SET `' . $field . '` = %s WHERE `id` = %s';
+        return DbHelper::obj()->query($sql, $value, $id);
     }
 
     /**

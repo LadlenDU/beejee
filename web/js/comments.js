@@ -94,6 +94,22 @@ comments.prepareEventsForComments = function () {
         $(".edit_text_wrapper .save", currPanel).hide();
         $(".edit_text_wrapper .edit", currPanel).show();
     });
+
+    $(".edit_text_wrapper .save").click(function (e) {
+        var currPanel = $(this).closest(".comment_panel");
+        var data = {text: $(".text_mod", currPanel).val(), id: currPanel.attr("data-id")};
+        $.ajax({
+            url: '/admin/comments/changetext',
+            data: data,
+            success: function (msg) {
+                alert(msg);
+                comments.getComments();
+            },
+            error: function (x) {
+                comments.handleCommonJqueryAjaxErrors(x);
+            }
+        });
+    });
 }
 
 comments.onLoadErrorHandling = function (errors) {
