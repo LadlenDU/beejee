@@ -46,25 +46,28 @@ class CommentsController extends ControllerController
             }
             else
             {
-                if ($_FILES['image']['error'])
+                if ($_FILES['image']['name'])
                 {
-                    $res['errors']['input_data'][] = [
-                        'field' => 'image',
-                        'message' => "Произошла ошибка с кодом {$_FILES[image][error]}."
-                    ];
-                }
-                else
-                {
-                    if ($_FILES['image']['tmp_name'])
-                    {
-                        $validationData['image'] = $_FILES['image']['tmp_name'];
-                    }
-                    else
+                    if ($_FILES['image']['error'])
                     {
                         $res['errors']['input_data'][] = [
                             'field' => 'image',
-                            'message' => 'Файл не загрузился по неизвестным причинам.'
+                            'message' => "Произошла ошибка с кодом {$_FILES['image']['error']}."
                         ];
+                    }
+                    else
+                    {
+                        if ($_FILES['image']['tmp_name'])
+                        {
+                            $validationData['image'] = $_FILES['image']['tmp_name'];
+                        }
+                        else
+                        {
+                            $res['errors']['input_data'][] = [
+                                'field' => 'image',
+                                'message' => 'Файл не загрузился по неизвестным причинам.'
+                            ];
+                        }
                     }
                 }
             }
