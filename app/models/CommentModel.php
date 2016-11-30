@@ -20,14 +20,14 @@ class CommentModel
 
     public static function getComments($orderBy = 'created', $orderDir = 'DESC', $status = 'APPROVED')
     {
-        $sql = 'SELECT * FROM ' . self::$tableName . ' AS com ';
+        $sql = 'SELECT * FROM `' . self::$tableName . '` AS `com` ';
         //. ' LEFT JOIN ' . ImageModel::getTableName() . ' AS img ON com.image_id=img.id '
         //. " WHERE `status` = 'APPROVED' ORDER BY $orderBy $orderDir"
         if ($status)
         {
             $sql .= " WHERE `status` = '" . $status . "' ";
         }
-        $sql .= " ORDER BY $orderBy $orderDir";
+        $sql .= " ORDER BY `$orderBy` $orderDir";
 
         $res = DbHelper::obj()->selectQueryA($sql);
 
@@ -36,8 +36,14 @@ class CommentModel
 
     public static function setNewComment($data)
     {
-        $sql = 'INSERT INTO ' . self::$tableName . ' SET username = %s, email = %s, text = %s, image_name = %s';
+        $sql = 'INSERT INTO `' . self::$tableName . '` SET `username` = %s, `email` = %s, `text` = %s, `image_name` = %s';
         return DbHelper::obj()->query($sql, $data['username'], $data['email'], $data['text'], $data['image_name']);
+    }
+
+    public static function setStatus($id, $status)
+    {
+        $sql = 'UPDATE `' . self::$tableName . '` SET `status` = %s WHERE `id` = %s';
+        return DbHelper::obj()->query($sql, $status, $id);
     }
 
     /**

@@ -56,8 +56,22 @@ comments.verifyFormData = function (formData) {
     return success;
 };
 
-comments.addClickForThumb = function () {
+comments.prepareEventsForComments = function () {
     $(".fancybox").fancybox();
+
+    $("[name='comment_status']").change(function (e) {
+        var data = {status: $(this).val(), id: $(this).closest(".comment_panel").attr("data-id")};
+        $.ajax({
+            url: '/admin/comments/changestatus',
+            data: data,
+            success: function (msg) {
+                alert(msg);
+            },
+            error: function (x) {
+                comments.handleCommonJqueryAjaxErrors(x);
+            }
+        });
+    });
 }
 
 comments.onLoadErrorHandling = function (errors) {
@@ -103,19 +117,20 @@ comments.getComments = function () {
             $("#messages").html(html);
             $("#preview_messages_wrapper").hide();
             $("#messages").show(1000);
-            comments.addClickForThumb();
+            comments.prepareEventsForComments();
 
             window.history.replaceState('sort', '', '?order_by=' + data.order_by + '&order_direction=' + data.order_direction);
 
-        },
-        error: function (x) {
-            if (x.status == 500) {
-                if (((((x || {}).responseJSON || {}).data || {}).errors || {}).common) {
-                    helper.showError(helper.implode("\n", x.responseJSON.data.errors.common));
-                }
-            }
         }
     });
+}
+
+comments.handleCommonJqueryAjaxErrors = function (x) {
+    if (x.status == 500) {
+        if ((((x || {}).responseJSON || {}).data || {}).errors) {
+            helper.showError(helper.implode("\n", x.responseJSON.data.errors));
+        }
+    }
 }
 
 $(function () {
@@ -142,7 +157,7 @@ $(function () {
                 $("#preview_messages").html(data);
                 $("#messages").hide();
                 $("#preview_messages_wrapper").show(1000);
-                comments.addClickForThumb();
+                comments.prepareEventsForComments();
             },
             error: function (x) {
                 comments.handleJqueryFormError(x);
@@ -175,22 +190,6 @@ $(function () {
 
     $("#order_by, #order_direction").change(function (e) {
         comments.getComments();
-    });
-
-    $("[name='comment_status']").change(function (e) {
-        $.ajax({
-            url: '/admin/new',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function () {
-                comments.getComments();
-                alert('Спасибо! Ваш комментарий станет виден после проверки его администратором.');
-            },
-            error: function (x) {
-                comments.handleJqueryFormError(x);
-            }
-        });
     });
 
     comments.getComments();
