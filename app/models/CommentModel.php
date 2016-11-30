@@ -40,9 +40,15 @@ class CommentModel
         return DbHelper::obj()->query($sql, $data['username'], $data['email'], $data['text'], $data['image_name']);
     }
 
-    public static function setField($id, $field, $value)
+    public static function setField($id, $field, $value, $modified = false)
     {
-        $sql = 'UPDATE `' . self::$tableName . '` SET `' . $field . '` = %s WHERE `id` = %s';
+        $sql = 'UPDATE `' . self::$tableName . '` SET `' . $field . '` = %s';
+        if ($modified)
+        {
+            $sql .= ', `modified` = NOW() ';
+        }
+        $sql .= ' WHERE `id` = %s';
+
         return DbHelper::obj()->query($sql, $value, $id);
     }
 

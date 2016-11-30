@@ -20,7 +20,7 @@ class AdminCommentsController extends ControllerController
         if (CommentModel::setField($_POST['id'], 'status', $_POST['status']))
         {
             //TODO: на самом деле просто установка прошла без ошибок, но это не значит что статус установился
-            die('Статус успешно установлен.');
+            CommonHelper::sendHtmlResponse('Статус успешно установлен.');
         }
         else
         {
@@ -30,10 +30,10 @@ class AdminCommentsController extends ControllerController
 
     public function actionChangeText()
     {
-        if (CommentModel::setField($_POST['id'], 'text', $_POST['text']))
+        if (CommentModel::setField($_POST['id'], 'text', $_POST['text'], true))
         {
             //TODO: на самом деле просто установка прошла без ошибок, но это не значит что статус установился
-            die('Текст успешно обновлен.');
+                CommonHelper::sendHtmlResponse('Текст успешно обновлен.');
         }
         else
         {

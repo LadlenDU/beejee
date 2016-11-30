@@ -37,9 +37,9 @@ $config = [
         'tokenName' => '_csrf',
     ],
     // Switch the debug mode
-    'debug' => true
+    'debug' => false
 ];
 
-#$config['debug'] = !empty($_GET['debug']);
+$config['debug'] = !empty($_GET['debug']);
 
 return $config;
