@@ -18,6 +18,37 @@ var helper = {
     },
     implode: function (glue, pieces) {
         return ((pieces instanceof Array) ? pieces.join(glue) : pieces);
+    },
+    /**
+     * Вставка параметра URL
+     */
+    insertUrlParam: function (urlParams, key, value) {
+        key = encodeURI(key);
+        value = encodeURI(value);
+
+        var kvp = urlParams.split('&');
+
+        var i = kvp.length;
+        var x;
+        while (i--) {
+            x = kvp[i].split('=');
+
+            if (x[0] == key) {
+                x[1] = value;
+                kvp[i] = x.join('=');
+                break;
+            }
+        }
+
+        if (i < 0) {
+            kvp[kvp.length] = [key, value].join('=');
+        }
+
+        if (kvp[0] == "") {
+            kvp.shift();
+        }
+
+        return kvp.join('&');
     }
 }
 
@@ -33,8 +64,7 @@ if (!String.prototype.trim) {
 $(function () {
     var data = {ajax: 1};
     data[$('meta[name="csrf-param"]').attr("content")] = $('meta[name="csrf-token"]').attr("content");
-    if (typeof globalDebug !== 'undefined' && globalDebug)
-    {
+    if (typeof globalDebug !== 'undefined' && globalDebug) {
         data["debug"] = 1;
     }
     $.ajaxSetup({

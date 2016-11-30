@@ -145,7 +145,7 @@ comments.prepareDataForGet = function () {
     return data;
 }
 
-comments.getComments = function () {
+comments.getComments = function (changeHistory) {
     var data = comments.prepareDataForGet();
     $.ajax({
         url: "/comments/get",
@@ -157,7 +157,11 @@ comments.getComments = function () {
             $("#messages").show(1000);
             comments.prepareEventsForComments();
 
-            window.history.replaceState('sort', '', '?order_by=' + data.order_by + '&order_direction=' + data.order_direction);
+            if (changeHistory) {
+                var params = helper.insertUrlParam(document.location.search.substr(1), "order_by", data.order_by);
+                params = helper.insertUrlParam(params, "order_direction", data.order_direction);
+                window.history.replaceState('sort', '', '?' + params);
+            }
 
         }
     });
@@ -227,7 +231,7 @@ $(function () {
     });
 
     $("#order_by, #order_direction").change(function (e) {
-        comments.getComments();
+        comments.getComments(true);
     });
 
     comments.getComments();
