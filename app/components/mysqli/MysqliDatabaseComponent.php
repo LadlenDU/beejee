@@ -154,7 +154,8 @@ class MysqliDatabaseComponent implements DatabaseInterface
      */
     public function getFieldsName($table)
     {
-        $sql = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = '
+        $sql = 'SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = '
+            . $this->escape_string($this->config['database']['connection']['databaseName']) . ' AND `TABLE_NAME` = '
             . $this->escape_string($table);
 
         $rowsName = [];
