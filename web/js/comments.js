@@ -45,7 +45,7 @@ comments.verifyFormData = function (formData) {
 
     var expr = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!expr.test(emailContent)) {
-        this.setFormError("email", $("#form_comment input[name=email]").attr("wrong_email_alert"));
+        this.setFormError("email", $("#form_comment input[name=email]").attr("data-wrong-email-alert"));
         success = false;
     }
 
