@@ -35,13 +35,16 @@ comments.verifyFormData = function (formData) {
     $("#form_comment .form-group").removeClass("has-error");
     $("#form_comment .help-block-error").html("");
 
-    var usernameContent = formData.get("username").trim();
+    //var usernameContent = formData.get("username").trim();
+    var usernameContent = $("#form_comment input[name=username]").val().trim();
     $("#form_comment input[name=username]").val(usernameContent);
 
-    var emailContent = formData.get("email").trim();
+    //var emailContent = formData.get("email").trim();
+    var emailContent = $("#form_comment input[name=email]").val().trim();
     $("#form_comment input[name=email]").val(emailContent);
 
-    var textContent = formData.get("text");
+    //var textContent = formData.get("text");
+    var textContent = $("#form_comment .text").val();
 
     var expr = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!expr.test(emailContent)) {
