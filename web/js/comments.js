@@ -72,6 +72,28 @@ comments.prepareEventsForComments = function () {
             }
         });
     });
+
+    $(".edit_text_wrapper .edit").click(function (e) {
+        var currPanel = $(this).closest(".comment_panel");
+
+        $(".text .value", currPanel).hide();
+        $(".text_mod", currPanel).show();
+
+        $(".edit_text_wrapper .edit", currPanel).hide();
+        $(".edit_text_wrapper .cancel", currPanel).show();
+        $(".edit_text_wrapper .save", currPanel).show();
+    });
+
+    $(".edit_text_wrapper .cancel").click(function (e) {
+        var currPanel = $(this).closest(".comment_panel");
+
+        $(".text_mod", currPanel).hide();
+        $(".text .value", currPanel).show();
+
+        $(".edit_text_wrapper .cancel", currPanel).hide();
+        $(".edit_text_wrapper .save", currPanel).hide();
+        $(".edit_text_wrapper .edit", currPanel).show();
+    });
 }
 
 comments.onLoadErrorHandling = function (errors) {

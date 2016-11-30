@@ -1,4 +1,4 @@
-<div class="comment_panel" data-id="<?php echo $item['id'] ?>">
+<div class="comment_panel" data-id="<?php echo $item['id'] ?>" xmlns="http://www.w3.org/1999/html">
 
     <?php if ($item['modified']): ?>
         <div class="admin_modified">Изменен администратором [ <div class="time"><?php echo $item['modified'] ?></div> ]</div>
@@ -9,7 +9,16 @@
 
     <div class="text">
         <div class="value"><?php echo nl2br(CommonHelper::h($item['text'])) ?></div>
+        <textarea style="display: none" class="text_mod" rows="5"><?php echo CommonHelper::h($item['text']) ?></textarea>
     </div>
+
+    <?php if ($this->ifAdmin): ?>
+        <div class="edit_text_wrapper">
+            <button type="button" class="btn btn-default btn-sm edit">Редактировать текст</button>
+            <button type="button" class="btn btn-default btn-sm cancel" style="display: none">Отменить</button>
+            <button type="button" class="btn btn-default btn-sm save" style="display: none">Сохранить</button>
+        </div>
+    <?php endif; ?>
 
     <?php if (!empty($item['images_data'])): ?>
         <a class="fancybox" href="<?php echo $item['images_data']['image']['src'] ?>">

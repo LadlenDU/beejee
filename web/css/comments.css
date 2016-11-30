@@ -135,6 +135,9 @@
 .text .value {
     background-color: #EEE;
     font-size: 17px;
+}
+
+.text {
     margin-bottom: 10px;
 }
 
@@ -150,4 +153,12 @@
     font-size: smaller;
     font-style: italic;
     display: inline;
+}
+
+.edit_text_wrapper {
+    margin-bottom: 10px;
+}
+
+.text_mod {
+    width: 100%;
 }
