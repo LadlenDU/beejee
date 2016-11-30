@@ -135,6 +135,7 @@
 .text .value {
     background-color: #EEE;
     font-size: 17px;
+    margin-bottom: 10px;
 }
 
 #preview_button {
@@ -142,7 +143,7 @@
 }
 
 .image {
-    margin: 10px 20px;
+    margin: 0 20px 10px;
 }
 
 .time {
