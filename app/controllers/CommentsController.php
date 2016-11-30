@@ -32,13 +32,13 @@ class CommentsController extends ControllerController
 
         $validationData = $data;
 
-        if (!empty($_FILES['image']['tmp_name']))
+        if (!empty($_FILES['image']))
         {
-            if ($_FILES['image']['size'] > ConfigHelper::getInstance()->getConfig(
+            if ($_FILES['image']['error'] == UPLOAD_ERR_INI_SIZE
+                || $_FILES['image']['size'] > ConfigHelper::getInstance()->getConfig(
                 )['site']['comments']['creation_settings']['max_file_size']
             )
             {
-                #CommonHelper::sendJsonResponse(false, ['message' => 'Вы пытались загрузить слишком большой файл.']);
                 $res['errors']['input_data'][] = [
                     'field' => 'image',
                     'message' => 'Вы пытались загрузить слишком большой файл.'
@@ -46,14 +46,33 @@ class CommentsController extends ControllerController
             }
             else
             {
-                $validationData['image'] = $_FILES['image']['tmp_name'];
+                if ($_FILES['image']['error'])
+                {
+                    $res['errors']['input_data'][] = [
+                        'field' => 'image',
+                        'message' => "Произошла ошибка с кодом {$_FILES[image][error]}."
+                    ];
+                }
+                else
+                {
+                    if ($_FILES['image']['tmp_name'])
+                    {
+                        $validationData['image'] = $_FILES['image']['tmp_name'];
+                    }
+                    else
+                    {
+                        $res['errors']['input_data'][] = [
+                            'field' => 'image',
+                            'message' => 'Файл не загрузился по неизвестным причинам.'
+                        ];
+                    }
+                }
             }
         }
 
         if ($validationResult = $this->commentDataValidation($validationData))
         {
             $res = array_merge_recursive($res, $validationResult);
-            #CommonHelper::sendJsonResponse(false, ['message' => 'Не пройдена валидация.']);
         }
 
         return $res;

@@ -173,8 +173,24 @@ $(function () {
         });
     });
 
-    $("#order_by, #order_direction").click(function (e) {
+    $("#order_by, #order_direction").change(function (e) {
         comments.getComments();
+    });
+
+    $("[name='comment_status']").change(function (e) {
+        $.ajax({
+            url: '/admin/new',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                comments.getComments();
+                alert('Спасибо! Ваш комментарий станет виден после проверки его администратором.');
+            },
+            error: function (x) {
+                comments.handleJqueryFormError(x);
+            }
+        });
     });
 
     comments.getComments();

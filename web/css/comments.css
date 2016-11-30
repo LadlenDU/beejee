@@ -144,3 +144,9 @@
 .image {
     margin: 10px 20px;
 }
+
+.time {
+    font-size: smaller;
+    font-style: italic;
+    display: inline;
+}
