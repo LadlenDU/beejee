@@ -129,7 +129,6 @@
 }
 
 .thumb_image {
-    margin-top: 5px;
     float: right;
 }
 
@@ -143,5 +142,5 @@
 }
 
 .image {
-    margin: 5px 20px;
+    margin: 10px 20px;
 }

@@ -3,11 +3,21 @@
 class CommentsController extends ControllerController
 {
     /** @var bool показывать ли интерфейс администратора */
-    protected $ifAdmin;
+    protected $ifAdmin = false;
 
     public function __construct($ifAdmin = false)
     {
-        $this->ifAdmin = $ifAdmin;
+        if (CommonHelper::ifAjax() &&
+            !empty($_REQUEST['checkAdmin']) &&
+            UserComponent::getInstance()->userHasRole('admin')
+        )
+        {
+            $this->ifAdmin = true;
+        }
+        else
+        {
+            $this->ifAdmin = $ifAdmin;
+        }
     }
 
     /**
@@ -74,14 +84,7 @@ class CommentsController extends ControllerController
                 $_GET['order_direction']
             )) ? $_GET['order_direction'] : 'DESC';
 
-        $status = 'APPROVED';
-        if (!empty($_GET['checkAdmin']) &&
-            UserComponent::getInstance()->userHasRole('admin')
-        )
-        {
-            $status = false;
-        }
-
+        $status = $this->ifAdmin ? false : 'APPROVED';
         $comments = CommentModel::getComments($orderBy, $orderDir, $status);
 
         foreach ($comments->rows as &$row)
@@ -260,8 +263,15 @@ class CommentsController extends ControllerController
         $orderTypes = [];
         foreach ($orderFields as $ot)
         {
-            $orderTypes[] = ['id' => $ot, 'username' => $orderLabels[$ot]];
+            $orderTypes[] = [
+                'id' => $ot,
+                'name' => $orderLabels[$ot],
+                'selected' => (empty($_GET['order_by']) ? false : ($_GET['order_by'] == $ot))
+            ];
         }
+
+        $directionSelect['asc'] = empty($_GET['order_direction']) ? false : ($_GET['order_direction'] == 'asc');
+        $directionSelect['desc'] = empty($_GET['order_direction']) ? false : ($_GET['order_direction'] == 'desc');
 
         $fieldMaxLength = [];
 
@@ -300,6 +310,7 @@ class CommentsController extends ControllerController
             [
                 'checkAdmin' => $this->ifAdmin,
                 'orderTypes' => $orderTypes,
+                'directionSelect' => $directionSelect,
                 'fieldMaxLength' => $fieldMaxLength,
                 'fieldMinLength' => $fieldMinLength,
                 'allowedRangeAlert' => $allowedRangeAlert,

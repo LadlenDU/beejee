@@ -1,11 +1,11 @@
 <div class="comment_panel" data-id="<?php echo $item['id'] ?>">
 
     <?php if ($item['modified']): ?>
-    <div class="admin_modified">Изменен администратором</div>
+        <div class="admin_modified">Изменен администратором [ <i style="font-size:smaller"><?php echo $item['modified'] ?></i> ]</div>
     <?php endif; ?>
 
     <div class="name-email"><?php echo CommonHelper::h($item['username']) ?> (<a href="mailto:<?php echo CommonHelper::h($item['email']) ?>"><?php echo CommonHelper::h($item['email']) ?></a>)</div>
-    Написал(а):
+    Написал(а): <?php if ($item['created']) echo '[ <i style="font-size:smaller">' . $item['created'] . '</i> ]'; ?>
 
     <div class="text">
         <div class="value"><?php echo nl2br(CommonHelper::h($item['text'])) ?></div>
@@ -21,6 +21,17 @@
                      title="Нажмите для полного просмотра"/>
             </div>
         </a>
+    <?php endif; ?>
+
+    <?php if ($this->ifAdmin): ?>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Статус:</span>
+            <select class="form-control">
+                <option value="UNDEFINED">Не определен</option>
+                <option value="APPROVED">Принят</option>
+                <option value="REJECTED">Отклонен</option>
+            </select>
+        </div>
     <?php endif; ?>
 
 </div>

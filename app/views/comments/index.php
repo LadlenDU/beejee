@@ -23,16 +23,25 @@
             <div class="col-md-4 col-sm-4 narrow-sides">
                 <select id="order_by" name="order_by" class="form-control">
                     <?php foreach ($orderTypes as $o): ?>
-                        <option value="<?php echo $o['id'] ?>">
-                            <?php echo CommonHelper::_h($o['username']) ?>
+                        <option value="<?php echo $o['id'] ?>"
+                        <?php if ($o['selected']): ?>
+                            selected="selected"
+                        <?php endif; ?>>
+                            <?php echo CommonHelper::_h($o['name']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="col-md-4 col-sm-4 narrow-sides">
                 <select id="order_direction" name="order_direction" class="form-control">
-                    <option value="desc">Убывание</option>
-                    <option value="asc">Возрастание</option>
+                    <option value="desc"
+                        <?php if ($directionSelect['desc']): ?>
+                            selected="selected"
+                        <?php endif; ?>>Убывание</option>
+                    <option value="asc"
+                        <?php if ($directionSelect['asc']): ?>
+                            selected="selected"
+                        <?php endif; ?>>Возрастание</option>
                 </select>
             </div>
 

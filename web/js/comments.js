@@ -99,11 +99,14 @@ comments.getComments = function () {
         url: "/comments/get",
         type: "GET",
         data: data,
-        success: function (data) {
-            $("#messages").html(data);
+        success: function (html) {
+            $("#messages").html(html);
             $("#preview_messages_wrapper").hide();
             $("#messages").show(1000);
             comments.addClickForThumb();
+
+            window.history.replaceState('sort', '', '?order_by=' + data.order_by + '&order_direction=' + data.order_direction);
+
         },
         error: function (x) {
             if (x.status == 500) {
