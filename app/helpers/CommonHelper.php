@@ -121,7 +121,7 @@ class CommonHelper
 
     public static function sendHtmlResponse($html)
     {
-        header('Content-Type: text/html');
+        header('Content-Type: text/html; charset=' . ConfigHelper::getInstance()->getConfig()['globalEncoding']);
         die($html);
     }
 

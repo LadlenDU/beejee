@@ -6,7 +6,8 @@ class AdminCommentsController extends ControllerController
     {
         if (!UserComponent::getInstance()->userHasRole('admin'))
         {
-            throw new Exception('У вас нет прав просматривать эту страницу');
+            //throw new Exception('У вас нет прав просматривать эту страницу');
+            CommonHelper::sendHtmlResponse('У вас нет прав просматривать эту страницу');
         }
     }
 
