@@ -33,7 +33,7 @@ class AdminCommentsController extends ControllerController
         if (CommentModel::setField($_POST['id'], 'text', $_POST['text'], true))
         {
             //TODO: на самом деле просто установка прошла без ошибок, но это не значит что статус установился
-                CommonHelper::sendHtmlResponse('Текст успешно обновлен.');
+            CommonHelper::sendHtmlResponse('Текст успешно обновлен.');
         }
         else
         {
