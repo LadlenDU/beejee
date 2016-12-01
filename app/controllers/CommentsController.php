@@ -34,14 +34,19 @@ class CommentsController extends ControllerController
 
         if (!empty($_FILES['image']))
         {
+            $maxFileSize = ConfigHelper::getInstance()->getConfig(
+            )['site']['comments']['creation_settings']['max_file_size'];
             if ($_FILES['image']['error'] == UPLOAD_ERR_INI_SIZE
-                || $_FILES['image']['size'] > ConfigHelper::getInstance()->getConfig(
-                )['site']['comments']['creation_settings']['max_file_size']
+                || $_FILES['image']['error'] == UPLOAD_ERR_FORM_SIZE
+                || $_FILES['image']['size'] > $maxFileSize
             )
             {
+                $errMsg = 'Вы пытались загрузить слишком большой файл. Максимальный размер - '
+                    . "$maxFileSize байт.";
+                $errMsg .= $_FILES['image']['size'] ? " {$_FILES['image']['size']} байт - размер вашего файла." : '';
                 $res['errors']['input_data'][] = [
                     'field' => 'image',
-                    'message' => 'Вы пытались загрузить слишком большой файл.'
+                    'message' => $errMsg
                 ];
             }
             else
@@ -343,34 +348,4 @@ class CommentsController extends ControllerController
             ]
         );
     }
-
-    /*public function actionUpdate()
-    {
-        $ret = ['success' => false];
-
-        $_REQUEST['value'] = trim($_REQUEST['value']);
-
-        $model = new User();
-        $win1251Value = mb_convert_encoding(
-            $_REQUEST['value'],
-            ConfigHelper::getInstance()->getConfig()['globalEncoding'],
-            'UTF-8'
-        );
-
-        if ($errors = $model->verifyUserInfo([$_REQUEST['name'] => $win1251Value]))
-        {
-            $ret = ['success' => false, 'messages' => $errors];
-        }
-        else
-        {
-            if ($model->updateUser($_REQUEST['id'], $_REQUEST['name'], $win1251Value))
-            {
-                $ret = ['success' => true, 'value' => $_REQUEST['value']];
-            }
-        }
-
-        echo prepareJSON::jsonEncode($ret);
-        exit;
-    }*/
-
 }
