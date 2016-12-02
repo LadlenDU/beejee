@@ -101,13 +101,20 @@ class ImageHelper
                 $width = $size[0] / $ratio;
             }*/
 
+            if (!$extension = self::getMimeExtension($size['mime']))
+            {
+                throw new Exception('Не поддерживаемый MIME тип: ' . $size['mime']);
+            }
+
+            $realNewName = "$newPath.$extension";
+
             $scale = min($maxSize['width'] / $size[0], $maxSize['height'] / $size[1]);
 
             if ($scale >= 1)
             {
-                if (copy($currentPath, $newPath))
+                if (copy($currentPath, $realNewName))
                 {
-                    $ret = ['name' => basename($newPath), 'width' => $size[0], 'height' => $size[1]];
+                    $ret = ['name' => basename($realNewName), 'width' => $size[0], 'height' => $size[1]];
                 }
             }
             else
@@ -121,41 +128,66 @@ class ImageHelper
                 imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
                 imagedestroy($src);
 
-                switch ($size['mime'])
+                switch ($extension)
                 {
-                    case 'image/jpeg':
-                    case 'image/pjpeg':
+                    case 'jpg':
                     {
-                        $name = $newPath . '.jpg';
-                        $ret = imagejpeg($dst, $name);
+                        $ret = imagejpeg($dst, $realNewName);
                     }
                         break;
-                    case 'image/gif':
+                    case 'gif':
                     {
-                        $name = $newPath . '.gif';
-                        $ret = imagegif($dst, $name);
+                        $ret = imagegif($dst, $realNewName);
                     }
                         break;
-                    case 'image/png':
-                    case 'image/x-png':
+                    case 'png':
                     {
-                        $name = $newPath . '.png';
-                        $ret = imagepng($dst, $name, 9, PNG_ALL_FILTERS);
+                        $ret = imagepng($dst, $realNewName, 9, PNG_ALL_FILTERS);
                     }
                         break;
-                    default:
-                    {
-                        throw new Exception('Не поддерживаемый MIME тип: ' . $size['mime']);
-                    }
                 }
 
                 imagedestroy($dst);
 
                 if ($ret)
                 {
-                    $ret = ['name' => basename($name), 'width' => $width, 'height' => $height];
+                    $ret = ['name' => basename($realNewName), 'width' => $width, 'height' => $height];
                 }
             }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Вернуть расширение для файла по MIME типу.
+     *
+     * @param string $mime
+     * @return bool|string расширения для файла или false если MIME тип не поддерживается
+     */
+    protected static function getMimeExtension($mime)
+    {
+        $ret = false;
+
+        switch ($mime)
+        {
+            case 'image/jpeg':
+            case 'image/pjpeg':
+            {
+                $ret = 'jpg';
+            }
+                break;
+            case 'image/gif':
+            {
+                $ret = 'gif';
+            }
+                break;
+            case 'image/png':
+            case 'image/x-png':
+            {
+                $ret = 'png';
+            }
+                break;
         }
 
         return $ret;
