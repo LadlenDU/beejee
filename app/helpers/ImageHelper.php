@@ -15,7 +15,8 @@ class ImageHelper
         $thumbPath = '';
 
         $info = pathinfo($path);
-        $thumbPath .= isset($info['dirname']) ? ($info['dirname'] . '/') : '';
+        $thumbPath .= (isset($info['dirname']) && $info['dirname'] != '' && $info['dirname'] != '.')
+            ? ($info['dirname'] . '/') : '';
         $thumbPath .= $info['filename'] . self::THUMBNAIL_PREFIX;
         $thumbPath .= isset($info['extension']) ? ('.' . $info['extension']) : '';
 
@@ -179,7 +180,8 @@ class ImageHelper
                     $size['mime'],
                     ConfigHelper::getInstance()->getConfig(
                     )['site']['comments']['creation_settings']['image']['types_allowed_mime']
-                ))
+                )
+                )
                 {
                     //$ret = true;
                     $ret['error'] = 'Не допустимый тип изображения: ' . $size['mime'];
