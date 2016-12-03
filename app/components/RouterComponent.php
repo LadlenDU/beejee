@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class RouterHelper
+ * Class RouterComponent
  *
  * Работа с роутингом.
  */
-class RouterHelper
+class RouterComponent
 {
     /**
      * URL части страницы по умолчанию.

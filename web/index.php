@@ -8,8 +8,8 @@ if (version_compare(phpversion(), '5.4.0', '<') == true)
 define('WEB_DIR', __DIR__ . '/');
 define('APP_DIR', realpath(__DIR__ . '/../app') . '/');
 #define('APP_DIR', __DIR__ . '/app/');
-
-require(APP_DIR . 'helpers/Autoloader.php');
+die(APP_DIR);
+require(APP_DIR . 'core/Autoloader.php');
 
 $config = ConfigHelper::getInstance()->getConfig();
 
@@ -32,7 +32,7 @@ try
         throw new Exception('Ошибка CSRF токена');
     }
 
-    (new RouterHelper())->run();
+    (new RouterComponent())->run();
     #UserComponent::getInstance()->logIn('admin', '123');
     #$roles = UserComponent::getInstance()->getUserRoles();
 }
