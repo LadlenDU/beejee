@@ -8,7 +8,7 @@ if (version_compare(phpversion(), '5.4.0', '<') == true)
 define('WEB_DIR', __DIR__ . '/');
 define('APP_DIR', realpath(__DIR__ . '/../app') . '/');
 #define('APP_DIR', __DIR__ . '/app/');
-die(APP_DIR);
+
 require(APP_DIR . 'core/Autoloader.php');
 
 $config = ConfigHelper::getInstance()->getConfig();

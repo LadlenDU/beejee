@@ -28,7 +28,7 @@ CREATE TABLE comment
   --  `image_id` INT(11) UNSIGNED                           NULL,
   `image_name` VARCHAR(100)                               NULL,
   `status`     ENUM ('UNDEFINED', 'REJECTED', 'APPROVED') NOT NULL DEFAULT 'UNDEFINED',
-  `created`    TIMESTAMP                                  NOT NULL,
+  `created`    TIMESTAMP                                  NULL,
   `modified`   TIMESTAMP                                  NULL,
   --  FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
   --    ON DELETE SET NULL,
