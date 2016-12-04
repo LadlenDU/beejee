@@ -40,6 +40,6 @@ $config = [
     'debug' => false
 ];
 
-$config['debug'] = !empty($_GET['debug']);
+$config['debug'] = isset($_GET['debug']);
 
 return $config;
